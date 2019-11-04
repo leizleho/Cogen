@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include 'meta.html' %}
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  </head>
+  <body>
+
+    {% block content %}{% endblock %}
+
+    <!-- Scripts -->
+    {% include 'scripts.html' %}
+    {% block more_scripts %}{% endblock %}
+  </body>
+</html>
