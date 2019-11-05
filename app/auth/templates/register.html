@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div>
+<h1>{{ body }}</h1>
+
+<form action="/register" method="POST">
+  <div>
+    <label>
+      First Name
+      <input type="number" name="fname">
+    </label>
+  </div>
+
+  <div>
+    <label>
+      Last Name
+      <input type="text" name="lname">
+    </label>
+  </div>
+
+  <div>
+    <label>
+        Email
+        <input type="email" name="email">
+    </label>
+  </div>
+
+  <div>
+    <label>
+      Password
+      <input type="password" name="password">
+    </label>
+  </div>
+
+
+  <div>
+    <input type="submit" value="Register">
+  </div>
+
+</form>
+</div>
+
+{% endblock %}
