@@ -11,18 +11,6 @@ user_bp = Blueprint('user_bp', __name__,
                     url_prefix='/users')
 
 
-@user_bp.route('/profile')
-def me():
-    """User profile page"""
-
-    user = User.query.filter_by(id=1).one()
-
-    return render_template('profile.html',
-                           title='Profile',
-                           template='profile',
-                           body="Profile Page", user=user)
-
-
 @user_bp.route('/register')
 def register_form():
     """User Registration page"""
@@ -48,4 +36,12 @@ def register():
     db.session.commit()
 
     flash(f"User {fname} {lname} is added.")
-    return redirect(f"/users/{new_user.user_id}")
+    return redirect(f"/users/{new_user.id}")
+
+
+@user_bp.route("/<int:user_id>")
+def user_info(user_id):
+    """Show info about user."""
+    user = User.query.options(db.joinedload(
+        'projects')).get(user_id)
+    return render_template("user.html", body="User Info", user=user)
