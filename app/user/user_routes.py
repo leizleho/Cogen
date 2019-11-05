@@ -1,17 +1,17 @@
-"""Routes for Auth pages (Register/Login/Logout/Profile)."""
+"""Routes for user pages (Register/Login/Logout/Profile)."""
 from flask import Blueprint, render_template, request, flash, redirect, session
 from flask import current_app as app
 from app.models import connect_to_db, db, User
 
 
 # Blueprint Configuration
-auth_bp = Blueprint('auth_bp', __name__,
+user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates',
                     static_folder='static',
-                    url_prefix='/auth')
+                    url_prefix='/users')
 
 
-@auth_bp.route('/profile')
+@user_bp.route('/profile')
 def me():
     """User profile page"""
 
@@ -23,7 +23,7 @@ def me():
                            body="Profile Page", user=user)
 
 
-@auth_bp.route('/register')
+@user_bp.route('/register')
 def register_form():
     """User Registration page"""
 
@@ -33,7 +33,7 @@ def register_form():
                            body="User Registration")
 
 
-@auth_bp.route('/register', methods=['POST'])
+@user_bp.route('/register', methods=['POST'])
 def register():
     """Process registration."""
     # Get form variables
