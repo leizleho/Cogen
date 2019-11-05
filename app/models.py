@@ -7,7 +7,7 @@ db = SQLAlchemy()
 class User(db.Model):
     """User of Cogen App."""
 
-    __tablename__ = "users"
+    __tablename__ = 'users'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(30), nullable=True)
@@ -16,14 +16,14 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        """Provide helpful representation when printed."""
-        return f"<User id={self.id} email={self.email}>"
+        """User info"""
+        return f'<User id={self.id} email={self.email}>'
 
 
 class Project(db.Model):
     """Table for Project settings and information."""
 
-    __tablename__ = "projects"
+    __tablename__ = 'projects'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index=True)
@@ -32,13 +32,89 @@ class Project(db.Model):
     db_uri = db.Column(db.String(200))
 
     # Relationship to user
-    user = db.relationship("User",
-                           backref=db.backref("projects", order_by=id))
+    user = db.relationship('User',
+                           backref=db.backref('projects', order_by=id))
 
     def __repr__(self):
-        """Provide helpful representation when printed."""
+        """Project info"""
 
-        return f"""<Project project_id={self.id} user_id={self.user_id}>"""
+        return f'<Project project_id={self.id} project_name={self.name} user_id={self.user_id}>'
+
+
+class Table(db.Model):
+    """Table info for each project."""
+
+    __tablename__ = 'tables'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    project_id = db.Column(
+        db.Integer, db.ForeignKey('projects.id'), index=True)
+    name = db.Column(db.String(30), nullable=False)
+
+    # Relationship to project
+    project = db.relationship('Project',
+                              backref=db.backref('tables', order_by=id))
+
+    def __repr__(self):
+        """Table info"""
+
+        return f'<Table table_id={self.id} table_name={self.name} project_id={self.project_id}>'
+
+
+class Field(db.Model):
+    """Fields info for each table."""
+
+    __tablename__ = 'fields'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    table_id = db.Column(
+        db.Integer, db.ForeignKey('tables.id'), index=True)
+    name = db.Column(db.String(30), nullable=False)
+    label = db.Column(db.String(100), nullable=False)
+    placeholder = db.Column(db.String(100))
+    input_type = db.Column(db.String(25))
+    required = db.Column(db.Boolean, default=False)
+    list_page = db.Column(db.Boolean, default=False)
+    add_page = db.Column(db.Boolean, default=False)
+    edit_page = db.Column(db.Boolean, default=False)
+    view_page = db.Column(db.Boolean, default=False)
+    string_len = db.Column(db.Integer)
+    default_val = db.Column(db.String(200))
+    choices_from_tblname = db.Column(db.String(30))
+    choices_from_tblfield = db.Column(db.String(30))
+    choices = db.Column(db.Text)
+
+    # Relationship to tables
+    table = db.relationship('Table',
+                            backref=db.backref('fields', order_by=id))
+
+    def __repr__(self):
+        """Field info"""
+
+        return f'<Field field_id={self.id} field_name={self.name} table_id={self.table_id}>'
+
+# Additional Features if time allows
+# class Relationship(db.Model):
+#     """Table Relationships"""
+
+#     __tablename__ = "relationships"
+
+#     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     project_id = db.Column(
+#         db.Integer, db.ForeignKey('projects.id'), index=True)
+#     parent_table = db.Column(db.String(30))
+#     parent_key = db.Column(db.String(30))
+#     child_table = db.Column(db.String(30))
+#     child_key = db.Column(db.String(30))
+
+#     # Relationship to projects
+#     project = db.relationship('Project',
+#                               backref=db.backref('relationships', order_by=id))
+
+#     def __repr__(self):
+#         """Field info"""
+
+#         return f'<Relationship relationship_id={self.id}  project_id={self.project_id}>'
 
 
 ##############################################################################
