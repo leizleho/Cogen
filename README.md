@@ -1,4 +1,4 @@
-<h1 align="center">🚀 Cogen App - Rapid CRUD development for your web app</h1>
+<h2 align="center">🚀 Cogen App - CRUD generator for your web app</h2>
 <br />
 
 ## Tech Stack
