@@ -25,7 +25,7 @@ def register_form():
 def register():
     """Process registration."""
     # Get form variables
-    fname = int(request.form["fname"])
+    fname = request.form["fname"]
     lname = request.form["lname"]
     email = request.form["email"]
     password = request.form["password"]
