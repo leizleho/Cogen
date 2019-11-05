@@ -4,5 +4,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 connect_to_db(app)
 # Use the DebugToolbar
+app.debug = True
 DebugToolbarExtension(app)
-app.run(debug=True)
+app.run()
