@@ -11,6 +11,6 @@ main_bp = Blueprint('main_bp', __name__,
 def home():
     """Homepage route."""
     return render_template('index.html',
-                           title='Flask-Blueprint Tutorial | Home',
+                           title='Cogen - Code Generator App',
                            template='home',
                            body='Home')

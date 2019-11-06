@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div>
+    <h1>{{body}}</h1>
+
+    <a href="/projects/create">Create New Project</a>
+    <ul>
+    {% for project in projects %}
+      <li>
+        <b><a href="/projects/{{ project.id }}">{{ project.name }}</a></b>
+        {{ project.description }}
+      </li>
+    {% endfor %}
+    </ul>
+
+  </div>
+{% endblock %}

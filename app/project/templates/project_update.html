@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div>
+    <h1>{{body}}</h1>
+
+    <form action="/projects/create" method="PUT">
+      <div>
+        <label>
+          Project Name
+          <input type="text" name="name">
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Project Description
+          <input type="text" name="description">
+        </label>
+      </div>
+
+      <div>
+        <label>
+            DB Connection String
+            <input type="text" name="db_uri">
+        </label>
+      </div>
+
+      <div>
+        <input type="submit" value="Update Project">
+      </div>
+
+    </form>
+  </div>
+{% endblock %}
