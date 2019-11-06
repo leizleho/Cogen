@@ -5,7 +5,23 @@
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
   </head>
   <body>
+  <!-- Show navbar -->
+    <div>
+    {% if "user_id" not in session %}
+        {% include "navbar_default.html" %}
+    {% else %}
+        {% include "navbar_loggedin.html" %}
+    {% endif %}
+    </div>
 
+  <!-- Show flashed messages -->
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+  <!-- Show page content -->
     {% block content %}{% endblock %}
 
     <!-- Scripts -->
