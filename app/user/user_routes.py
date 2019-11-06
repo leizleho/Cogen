@@ -39,6 +39,48 @@ def register():
     return redirect(f"/users/{new_user.id}")
 
 
+@user_bp.route('/login')
+def login_form():
+    """User Login page"""
+
+    return render_template('login.html',
+                           title='User Login',
+                           template='login',
+                           body="User Login")
+
+
+@user_bp.route('/login', methods=['POST'])
+def login():
+    """Process login."""
+    # Get form variables
+    email = request.form['email']
+    password = request.form['password']
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        flash("No such user")
+        return redirect("/users/login")
+
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect("/users/login")
+
+    session["user_id"] = user.id
+
+    flash("Logged in")
+    return redirect(f"/users/{user.id}")
+
+
+@user_bp.route('/logout')
+def logout():
+    """Log out."""
+
+    session.clear()
+    flash("Logged Out.")
+    return redirect("/")
+
+
 @user_bp.route("/<int:user_id>")
 def user_info(user_id):
     """Show info about user."""
