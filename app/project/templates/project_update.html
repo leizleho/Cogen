@@ -3,9 +3,9 @@
 
 {% block content %}
   <div>
-    <h1>{{body}}</h1>
+    <h1>Update Project</h1>
 
-    <form action="/projects/update/{{ project_id }}" method="POST">
+    <form action="/projects/update/{{ id }}" method="POST">
       {{ form.csrf_token }}
       {{ render_field(form.name)}}<br>
       {{ render_field(form.description)}}<br>
