@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% from "_render_field.html" import render_field %}
+
+{% block content %}
+  <div>
+    <h1>Update Table</h1>
+
+    <form action="/projects/tables/update/{{ table_id }}" method="POST">
+      {{ form.csrf_token }}
+      {{ render_field(form.name)}}<br>
+      <div>
+        <input type="submit" value="Update Table">
+      </div>
+
+    </form>
+  </div>
+{% endblock %}
