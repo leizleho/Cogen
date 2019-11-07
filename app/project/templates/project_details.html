@@ -3,14 +3,21 @@
 {% block content %}
   <div>
       <h1>{{body}}</h1>
+      [<a href="/projects/update/{{ project.id }}">Update</a>]
+      [<a href="/projects/del/{{ project.id }}">Delete</a>]<br>
+      <br>
       <b>Project #:</b> {{ project.id }} <br>
       <b>Project Name:</b> {{ project.name }} <br>
       <b>Project Description:</b> {{ project.description }}<br>
       <b>DB Connection String:</b> {{ project.db_uri }}<hr>
+
       <h2>Tables</h2>
+      [<a href="/projects/tables/create">Add a table</a>]<br>
       <ul>
       {% for table in project.tables %}
         <li>
+          [<a href="/projects/tables/update/{{ table.id }}">Update</a>]
+          [<a href="/projects/tables/del/{{ table.id }}">Delete</a>]
           <b><a href="/tables/{{ table.id }}">{{ table.name }}</a></b>
         </li>
       {% endfor %}
