@@ -2,7 +2,7 @@
 
 {% block content %}
   <div>
-      <h1>{{body}}</h1>
+      <h1>Project Info</h1>
       [<a href="/projects/update/{{ project.id }}">Update</a>]
       [<a href="/projects/del/{{ project.id }}">Delete</a>]<br>
       <br>
@@ -12,7 +12,7 @@
       <b>DB Connection String:</b> {{ project.db_uri }}<hr>
 
       <h2>Tables</h2>
-      [<a href="/projects/tables/create">Add a table</a>]<br>
+      [<a href="/projects/{{ project.id }}/tables/create">Add a table</a>]<br>
       <ul>
       {% for table in project.tables %}
         <li>
