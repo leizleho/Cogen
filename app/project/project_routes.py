@@ -1,6 +1,7 @@
 """Routes for user pages (Register/Login/Logout/Profile)."""
 from flask import Blueprint, render_template, request, flash, redirect, session
 from app.models import connect_to_db, db, User, Project
+from app.project.project_forms import ProjectForm
 
 # Blueprint Config
 project_bp = Blueprint('project_bp', __name__,
@@ -32,7 +33,7 @@ def create_project():
     if request.method == 'POST':
         """Process project creation."""
 
-        # Get form variables
+        # Get form data
         user_id = session["user_id"]
         name = request.form["name"]
         description = request.form["description"]
@@ -48,25 +49,29 @@ def create_project():
         return redirect(f"/projects/{new_project.id}")
 
 
-@project_bp.route('/update/<int:project_id>', methods=['GET', 'PUT'])
+@project_bp.route('/update/<int:project_id>', methods=['GET', 'POST'])
 def update_project(project_id):
+    project = Project.query.get(project_id)
+    form = ProjectForm()
 
-    if request.method == 'GET':
-        project = Project.query.filter_by(id=project_id).one()
-        return render_template('project_update.html',
-                               title='Projects',
-                               body="Update Project",
-                               project=project)
+    if form.validate_on_submit():
+        project.name = request.form['name']
+        project.description = request.form['description']
+        project.db_uri = request.form['db_uri']
+        db.session.commit()
+        return redirect(f"/projects/{project_id}")
 
-    if request.method == 'PUT':
-        updated_project = ""
-
-        return redirect(f"/projects/{updated_project.id}")
+    form.name.data = project.name
+    form.description.data = project.description
+    form.db_uri.data = project.db_uri
+    return render_template('project_update.html',
+                           title='Projects',
+                           body="Update Project",
+                           project_id=project_id, form=form)
 
 
 # show_project_details
 @project_bp.route('/<int:project_id>', methods=['GET'])
 def show_project_details(project_id):
-    # project = Project.query.filter_by(id=project_id).one()
     project = Project.query.get(project_id)
     return render_template("project_details.html", body="Project Info", project=project)
