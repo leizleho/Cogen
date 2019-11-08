@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% from "_render_field.html" import render_field %}
+
+{% block content %}
+  <div>
+    <h1>Update a Field</h1>
+
+    <form action="/projects/tables/fields/update/{{ field_id }}" method="POST">
+      {{ form.csrf_token }}
+      {{ render_field(form.name) }}<br>
+      {{ render_field(form.label) }}<br>
+      {{ render_field(form.placeholder) }}<br>
+      {{ render_field(form.input_type) }}<br>
+      {{ render_field(form.required) }}<br>
+      {{ render_field(form.list_page) }}<br>
+      {{ render_field(form.add_page) }}<br>
+      {{ render_field(form.edit_page) }}<br>
+      {{ render_field(form.view_page) }}<br>
+      {{ render_field(form.string_len) }}<br>
+      {{ render_field(form.default_val) }}<br>
+      <div>
+        <input type="submit" value="Update Field">
+      </div>
+    </form>
+
+  </div>
+{% endblock %}

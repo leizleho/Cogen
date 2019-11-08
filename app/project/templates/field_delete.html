@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% from "_render_field.html" import render_field %}
+
+{% block content %}
+  <div>
+    <h1>Delete Field</h1>
+    <h3 class="danger">Danger! You are deleting field {{ field.id }} {{ field.name }}</h3>
+
+    <form action="/projects/tables/fields/del/{{ field.id }}" method="POST">
+      <div>
+        <input type="submit" value="CONFIRM DELETION">
+      </div>
+    </form>
+
+  </div>
+{% endblock %}
