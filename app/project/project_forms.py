@@ -25,11 +25,15 @@ class FieldForm(FlaskForm):
                         InputRequired("Label is required")])
     placeholder = StringField('Placeholder', validators=[Length(
         max=30, message="Placeholder should not exceed 100.")])
-    input_type = "25"
-    required = BooleanField('Required?')
-    list_page = BooleanField('List')
-    add_page = BooleanField('Add')
-    edit_page = BooleanField('Edit')
-    view_page = BooleanField('View')
+    input_type = StringField('Input type')
+    required = BooleanField(u'Required', default='checked',
+                            render_kw={'checked': True})
+    list_page = BooleanField('List',
+                             false_values=(False, 'f', 0))
+    add_page = BooleanField('Add', false_values=(False, 'f', 0))
+    edit_page = BooleanField('Edit',
+                             false_values=(False, 'f', 0))
+    view_page = BooleanField('View',
+                             false_values=(False, 'f', 0))
     string_len = IntegerField('Max char')
     default_val = StringField('Default value')
