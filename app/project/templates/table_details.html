@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div>
+      <h1>Table Info</h1>
+
+      [<a href="/projects/tables/update/{{ table.id }}">Update</a>]
+      [<a href="/projects/tables/del/{{ table.id }}">Delete</a>]<br>
+      <b>Table #</b> {{ table.id }}<br>
+      <b>Table Name:</b> {{ table.name }}<br>
+      <hr>
+      <b>Project #:</b> {{ table.project.id }} <br>
+      <b>Project Name:</b> {{ table.project.name }} <br>
+      <b>Project Description:</b> {{ table.project.description }}<br>
+      <b>DB Connection String:</b> {{ table.project.db_uri }}<hr>
+
+      <h2>Fields</h2>
+      [<a href="/projects/tables/{{ table.id }}/fields/create">Add a field</a>]<br>
+      <ul>
+
+      <div>
+      <table>
+        <tr>
+          <th>Action</th>
+          <th>Field Name</th>
+          <th>Label</th>
+          <th>Input Type</th>
+          <th>Req'd</th>
+          <th>List</th>
+          <th>Add</th>
+          <th>Edit</th>
+          <th>View</th>
+          <th>Default value</th>
+        </tr>
+      {% for field in table.fields %}
+        <tr>
+          <td>
+            [<a href="/projects/tables/fields/update/{{ field.id }}">Edit</a>]
+            [<a href="/projects/tables/fields/del/{{ field.id }}">Delete</a>]
+          </td>
+          <td>{{ field.name }}</td>
+          <td>{{ field.label }}</td>
+          <td>{{ field.input_type }}</td>
+          <td>{{ field.required }}</td>
+          <td>{{ field.list_page }}</td>
+          <td>{{ field.add_page }}</td>
+          <td>{{ field.edit_page }}</td>
+          <td>{{ field.view_page }}</td>
+          <td>{{ field.default_val }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+      </div>
+
+
+  </div>
+{% endblock %}

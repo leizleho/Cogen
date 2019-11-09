@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% from "_render_field.html" import render_field %}
+
+{% block content %}
+  <div>
+    <h1>Delete Table</h1>
+    <p class="danger">D A N G E R!<br>
+    You are deleting table id {{ table.id }} ({{ table.name }})<br>
+    {% if table.fields: %}
+    and one or more fields:
+      {% for field in table.fields %}
+          field # {{ field.id }} ({{ field.name }})<br>
+      {% endfor %}
+    {% endif %}
+    </p>
+
+    <form action="/projects/tables/del/{{ table.id }}" method="POST">
+      <div>
+        <input type="submit" value="CONFIRM DELETION">
+      </div>
+    </form>
+
+  </div>
+{% endblock %}
