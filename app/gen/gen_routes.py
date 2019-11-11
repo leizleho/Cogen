@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, session
 from app.models import db, Project, Field
 from app.gen.coder import write_code
+# from app.printvar import printvar
 
 # Blueprint Config
 gen_bp = Blueprint('gen_bp', __name__,
@@ -11,25 +12,34 @@ gen_bp = Blueprint('gen_bp', __name__,
 
 
 @gen_bp.route('/<int:project_id>')
-def generate_codes(project_id):
-    # name, conn, schema
-    project = Project.query.get(project_id)
-    name = project.name
-    conn = project.db_uri
-    schema = create_schema(project)
+def generate_code(project_id):
+    config = create_config(project_id)
 
-    # get list of tables
+    return "Todo"
+
+
+def create_config(project_id):
+    project = Project.query.get(project_id)
+    schema = create_schema(project)
     tables = [table for table in schema]
+
+    config = {}
+    config["project_name"] = project.name
+    config["conn"] = project.db_uri
+    config["tables"] = tables
+
     add_fields = edit_fields = view_fields = []
 
     # tschema = table schema
     for table in tables:
         tschema = schema[table]
-        add_fields = [field for field in tschema if tschema[field]['add']]
-        edit_fields = [field for field in tschema if tschema[field]['edit']]
-        view_fields = [field for field in tschema if tschema[field]['view']]
-
-    return "Todo"
+        config[table] = {
+            "tschema": tschema,
+            "add_fields": [field for field in tschema if tschema[field]['add']],
+            "edit_fields": [field for field in tschema if tschema[field]['edit']],
+            "view_fields": [field for field in tschema if tschema[field]['view']]
+        }
+    return config
 
 
 # ----------------Helper functions--------------#
