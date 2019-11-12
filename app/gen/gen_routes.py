@@ -16,6 +16,11 @@ gen_bp = Blueprint('gen_bp', __name__,
 @gen_bp.route('/<int:project_id>')
 def generate_code(project_id):
     config = create_config(project_id)
+    for table in config["tables"]:
+        gen_add_fields(config['project_name'], table, config[table])
+        gen_edit_fields(config['project_name'], table, config[table])
+
+    gen_source_files(config['project_name'], config["tables"])
 
     return "Todo"
 
@@ -77,7 +82,7 @@ def gen_edit_fields(project_name, table, tconfig):
 
 # ----------------Helper functions--------------#
 
-def gen_sourcefiles(project_name, tables):
+def gen_source_files(project_name, tables):
     """Generate other files from source templates"""
     for k, v in source.items():
         filenames = v.split()
