@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, session
 from app.models import db, Project, Field
 from app.gen.coder import write_code
+from app.utils import camel_case
 # from app.printvar import printvar
 
 # Blueprint Config
@@ -22,11 +23,13 @@ def create_config(project_id):
     project = Project.query.get(project_id)
     schema = create_schema(project)
     tables = [table for table in schema]
+    tables_camelcase = [camel_case(table) for table in schema]
 
     config = {}
     config["project_name"] = project.name
     config["conn"] = project.db_uri
     config["tables"] = tables
+    config["tables_camelcase"] = tables_camelcase
 
     add_fields = edit_fields = view_fields = []
 
