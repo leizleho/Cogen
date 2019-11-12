@@ -51,6 +51,18 @@ def create_config(project_id):
     return config
 
 
+# ----------------models.py Generator--------------#
+
+def gen_models(config):
+    src_path = "source/app"
+    src_file = "models.txt"
+    kwargs = config
+    output_obj = {"output_path": f"{config['project_name']}/app",
+                  "output_file": "models.py"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+
 # ----------------HTML Templates Generator--------------#
 
 def gen_add_fields(project_name, table, tconfig):
