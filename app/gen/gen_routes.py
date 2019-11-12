@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, session
 from app.models import db, Project, Field
 from app.gen.coder import write_code
+from app.gen.source_dict import source
 from app.utils import camel_case
 # from app.printvar import printvar
 
@@ -44,8 +45,8 @@ def create_config(project_id):
         }
     return config
 
-# ----------------HTML Templates Generator--------------#
 
+# ----------------HTML Templates Generator--------------#
 
 def gen_add_fields(project_name, table, tconfig):
     """Generate template for create.html page"""
@@ -72,6 +73,29 @@ def gen_edit_fields(project_name, table, tconfig):
     return None
 
 # ----------------End of HTML Templates Generator--------------#
+
+
+# ----------------Helper functions--------------#
+
+def gen_sourcefiles(project_name, tables):
+    """Generate other files from source templates"""
+    for k, v in source.items():
+        filenames = v.split()
+        src_path = k.split('_')[0]
+        src_file = filenames[0]
+        output_file = filenames[1]
+        output_path = src_path.replace("source", project_name)
+        output_obj = {
+            "output_path": output_path,
+            "output_file": output_file
+        }
+        kwargs = {
+            "tables": tables
+        }
+
+        write_code(src_path, src_file, kwargs, output_obj)
+
+    return None
 
 
 # ----------------Helper functions--------------#
