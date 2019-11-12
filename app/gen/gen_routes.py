@@ -44,11 +44,28 @@ def create_config(project_id):
         }
     return config
 
+# ----------------HTML Templates Generator--------------#
+
+
+def gen_add_fields(project_name, table, tconfig):
+    """Generate template for create.html page"""
+    src_path = "source/app/module/templates"
+    src_file = "create.html"
+    kwargs = {}
+    kwargs["tschema"] = tconfig["tschema"]
+    kwargs["add_fields"] = tconfig["add_fields"]
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
+                  "output_file": f"{table}_create.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+# ----------------End of HTML Templates Generator--------------#
+
 
 # ----------------Helper functions--------------#
 
 def create_schema(prj_model):
-    """Create schema for a given project.
+    """Create schema of each table for a given project.
     prj_model is equal to Project.query.get(id)
     """
     schema = {}
