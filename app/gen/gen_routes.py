@@ -16,11 +16,16 @@ gen_bp = Blueprint('gen_bp', __name__,
 @gen_bp.route('/<int:project_id>')
 def generate_code(project_id):
     config = create_config(project_id)
-    for table in config["tables"]:
-        gen_add_fields(config['project_name'], table, config[table])
-        gen_edit_fields(config['project_name'], table, config[table])
+    project_name = config['project_name']
 
-    gen_source_files(config['project_name'], config["tables"])
+    for (index, table) in enumerate(config["tables"]):
+        gen_add_fields(project_name, table, config[table])
+        gen_edit_fields(project_name, table, config[table])
+        gen_routes(project_name, config['tables_camelcase'][index], table,
+                   config[table]['tschema'])
+
+    gen_source_files(project_name, config["tables"])
+    gen_models(config)
 
     return "Todo"
 
@@ -29,7 +34,7 @@ def create_config(project_id):
     project = Project.query.get(project_id)
     schema = create_schema(project)
     tables = [table for table in schema]
-    tables_camelcase = [camel_case(table) for table in schema]
+    tables_camelcase = [camel_case(table) for table in tables]
 
     config = {}
     config["project_name"] = project.name
@@ -63,6 +68,22 @@ def gen_models(config):
     return None
 
 
+# ----------------routes Generator--------------#
+
+def gen_routes(project_name, model_name, table, table_schema):
+    src_path = "source/app/module"
+    src_file = "routes.txt"
+    kwargs = {}
+    kwargs['project_name'] = project_name
+    kwargs['model_name'] = model_name
+    kwargs['table'] = table
+    kwargs['table_schema'] = table_schema
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
+                  "output_file": f"{table}_routes.py"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+
 # ----------------HTML Templates Generator--------------#
 
 def gen_add_fields(project_name, table, tconfig):
@@ -92,7 +113,7 @@ def gen_edit_fields(project_name, table, tconfig):
 # ----------------End of HTML Templates Generator--------------#
 
 
-# ----------------Helper functions--------------#
+# ----------------Generate other files from source templates--------------#
 
 def gen_source_files(project_name, tables):
     """Generate other files from source templates"""
