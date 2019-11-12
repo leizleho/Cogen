@@ -59,6 +59,18 @@ def gen_add_fields(project_name, table, tconfig):
     write_code(src_path, src_file, kwargs, output_obj)
     return None
 
+
+def gen_edit_fields(project_name, table, tconfig):
+    src_path = "source/app/module/templates"
+    src_file = "update.html"
+    kwargs = {}
+    kwargs["tschema"] = tconfig["tschema"]
+    kwargs["edit_fields"] = tconfig["edit_fields"]
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
+                  "output_file": f"{table}_update.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
 # ----------------End of HTML Templates Generator--------------#
 
 
