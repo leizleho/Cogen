@@ -158,14 +158,14 @@ def create_field(table_id):
         add_page = request.form.get('add_page') != None
         edit_page = request.form.get('edit_page') != None
         view_page = request.form.get('view_page') != None
-        string_len = request.form['string_len']
         default_val = request.form['default_val']
+        kwargs = request.form['kwargs']
 
         new_field = Field(table_id=table_id, name=name, label=label,
                           placeholder=placeholder, input_type=input_type,
                           required=required, list_page=list_page, add_page=add_page,
                           edit_page=edit_page, view_page=view_page,
-                          string_len=string_len, default_val=default_val)
+                          default_val=default_val, kwargs=kwargs)
         db.session.add(new_field)
         db.session.commit()
         return redirect(f"/projects/tables/{table_id}")
@@ -188,8 +188,8 @@ def update_field(field_id):
         field.add_page = request.form.get('add_page') != None
         field.edit_page = request.form.get('edit_page') != None
         field.view_page = request.form.get('view_page') != None
-        field.string_len = request.form['string_len']
         field.default_val = request.form['default_val']
+        field.kwargs = request.form['kwargs']
 
         db.session.commit()
         return redirect(f"/projects/tables/{field.table_id}")
@@ -203,8 +203,8 @@ def update_field(field_id):
     field_form.add_page.data = field.add_page
     field_form.edit_page.data = field.edit_page
     field_form.view_page.data = field.view_page
-    field_form.string_len.data = field.string_len
     field_form.default_val.data = field.default_val
+    field_form.kwargs.data = field.kwargs
 
     return render_template('field_update.html',
                            title='Update Field', field_id=field.id, form=field_form)

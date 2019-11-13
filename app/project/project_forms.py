@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 
@@ -25,7 +25,20 @@ class FieldForm(FlaskForm):
                         InputRequired("Label is required")])
     placeholder = StringField('Placeholder', validators=[Length(
         max=30, message="Placeholder should not exceed 100.")])
-    input_type = StringField('Input type')
+    input_type = SelectField('Input type', choices=[('String', 'text'),
+                                                    ('Boolean', 'checkbox'),
+                                                    ('DateTime', 'datetime'),
+                                                    ('Email', 'email'),
+                                                    ('File', 'file'),
+                                                    ('String', 'image'),
+                                                    ('Hidden', 'hidden'),
+                                                    ('Password', 'password'),
+                                                    ('Integer', 'number'),
+                                                    ('Radio', 'radio'),
+                                                    ('Select', 'select'),
+                                                    ('Text', 'textarea'),
+                                                    ('Url', 'url')
+                                                    ])
     required = BooleanField(u'Required', default='checked',
                             render_kw={'checked': True})
     list_page = BooleanField('List',
@@ -35,5 +48,5 @@ class FieldForm(FlaskForm):
                              false_values=(False, 'f', 0))
     view_page = BooleanField('View',
                              false_values=(False, 'f', 0))
-    string_len = IntegerField('Max char')
     default_val = StringField('Default value')
+    kwargs = TextAreaField('Keyword arguments')

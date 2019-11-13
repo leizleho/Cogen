@@ -72,17 +72,14 @@ class Field(db.Model):
     name = db.Column(db.String(30), nullable=False)
     label = db.Column(db.String(100), nullable=False)
     placeholder = db.Column(db.String(100))
-    input_type = db.Column(db.String(25))
+    input_type = db.Column(db.String(30))
     required = db.Column(db.Boolean, default=False)
     list_page = db.Column(db.Boolean, default=False)
     add_page = db.Column(db.Boolean, default=False)
     edit_page = db.Column(db.Boolean, default=False)
     view_page = db.Column(db.Boolean, default=False)
-    string_len = db.Column(db.Integer)
     default_val = db.Column(db.String(200))
-    choices_from_tblname = db.Column(db.String(30))
-    choices_from_tblfield = db.Column(db.String(30))
-    choices = db.Column(db.Text)
+    kwargs = db.Column(db.Text)
 
     # Relationship to tables
     table = db.relationship('Table',
@@ -127,7 +124,7 @@ def connect_to_db(app):
     # Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/testdb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_ECHO'] = False
     db.app = app
     db.init_app(app)
 
