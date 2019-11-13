@@ -178,6 +178,7 @@ def create_schema(prj_model):
                 "add": field.add_page,
                 "edit": field.edit_page,
                 "view": field.view_page,
-                "default_val": field.default_val
+                "default_val": field.default_val,
+                "kwargs": field.kwargs
             }
     return schema
