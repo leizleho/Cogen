@@ -60,22 +60,22 @@ def update_project(project_id):
                            title='Projects', id=project_id, form=form)
 
 # delete project
-# @project_bp.route('/del/<int:project_id>', methods=['GET', 'POST'])
-# def delete_project(project_id):
-#     project = Project.query.get(project_id)
-#     table = Table.query.get(project.tables.id)
-#     fields = Field.query.filter(Field.table_id == table.id).all()
+@project_bp.route('/del/<int:project_id>', methods=['GET', 'POST'])
+def delete_project(project_id):
+    project = Project.query.get(project_id)
+    tables = Table.query.filter(Table.project_id == project.id).all()
 
-#     if request.method == 'GET':
-#         return render_template('table_delete.html', table=table)
+    if request.method == 'GET':
+        return render_template('project_delete.html', project=project)
 
-#     if request.method == 'POST':
-#         project_id = table.project.id
-#         fields = Field.query.filter(Field.table_id == table.id).delete()
-#         db.session.commit()
-#         db.session.delete(table)
-#         db.session.commit()
-#         return redirect(f"/projects/{project_id}")
+    if request.method == 'POST':
+        for table in tables:
+            fields = Field.query.filter(Field.table_id == table.id).delete()
+
+        tables = Table.query.filter(Table.project_id == project.id).delete()
+        db.session.delete(project)
+        db.session.commit()
+        return redirect("/projects")
 
 
 # show_project_details
