@@ -19,15 +19,19 @@ def generate_code(project_id):
     project_name = config['project_name']
 
     for (index, table) in enumerate(config["tables"]):
+        model_name = config['tables_camelcase'][index]
+        gen_mod_inifile(project_name, table)
         gen_add_fields(project_name, table, config[table])
         gen_edit_fields(project_name, table, config[table])
-        gen_routes(project_name, config['tables_camelcase'][index], table,
-                   config[table]['tschema'])
+        gen_routes(project_name, model_name, table, config[table]['tschema'])
+        gen_wtforms(project_name, model_name, table, config[table]['tschema'])
+        # gen_view_fields(project_name, table, config[table])
+        # gen_list_fields(project_name, table, config[table])
 
     gen_source_files(project_name, config["tables"])
     gen_models(config)
 
-    return "Todo"
+    return "Code generation is complete!"
 
 
 def create_config(project_id):
@@ -57,7 +61,6 @@ def create_config(project_id):
 
 
 # ----------------models.py Generator--------------#
-
 def gen_models(config):
     src_path = "source/app"
     src_file = "models.txt"
@@ -69,7 +72,6 @@ def gen_models(config):
 
 
 # ----------------routes Generator--------------#
-
 def gen_routes(project_name, model_name, table, table_schema):
     src_path = "source/app/module"
     src_file = "routes.txt"
@@ -84,8 +86,20 @@ def gen_routes(project_name, model_name, table, table_schema):
     return None
 
 
-# ----------------HTML Templates Generator--------------#
+def gen_wtforms(project_name, model_name, table, table_schema):
+    src_path = "source/app/module"
+    src_file = "forms.txt"
+    kwargs = {}
+    kwargs['model_name'] = model_name
+    kwargs['table'] = table
+    kwargs['table_schema'] = table_schema
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
+                  "output_file": f"{table}_form.py"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
 
+
+# ----------------HTML Templates Generator--------------#
 def gen_add_fields(project_name, table, tconfig):
     """Generate template for create.html page"""
     src_path = "source/app/module/templates"
@@ -113,8 +127,18 @@ def gen_edit_fields(project_name, table, tconfig):
 # ----------------End of HTML Templates Generator--------------#
 
 
-# ----------------Generate other files from source templates--------------#
+# ----------------__init__.py Generator for every module--------------#
+def gen_mod_inifile(project_name, table):
+    src_path = "source/app/module"
+    src_file = "__init__.txt"
+    kwargs = {}
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
+                  "output_file": "__init__.py"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
 
+
+# ----------------Generate other files from source templates--------------#
 def gen_source_files(project_name, tables):
     """Generate other files from source templates"""
     for k, v in source.items():
@@ -136,8 +160,7 @@ def gen_source_files(project_name, tables):
     return None
 
 
-# ----------------Helper functions--------------#
-
+# ----------------Config functions--------------#
 def create_schema(prj_model):
     """Create schema of each table for a given project.
     prj_model is equal to Project.query.get(id)
