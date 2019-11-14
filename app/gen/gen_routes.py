@@ -20,13 +20,15 @@ def generate_code(project_id):
 
     for (index, table) in enumerate(config["tables"]):
         model_name = config['tables_camelcase'][index]
+        tconfig = config[table]
         gen_mod_inifile(project_name, table)
-        gen_add_fields(project_name, table, config[table])
-        gen_edit_fields(project_name, table, config[table])
-        gen_routes(project_name, model_name, table, config[table]['tschema'])
-        gen_wtforms(project_name, model_name, table, config[table]['tschema'])
-        gen_view_fields(project_name, table, config[table])
-        gen_list_fields(project_name, table, config[table])
+        gen_add_fields(project_name, table, tconfig)
+        gen_edit_fields(project_name, table, tconfig)
+        gen_routes(project_name, model_name, table, tconfig['tschema'])
+        gen_wtforms(project_name, model_name, table, tconfig['tschema'])
+        gen_view_fields(project_name, table, tconfig)
+        gen_list_fields(project_name, table, tconfig)
+        gen_delete_record(project_name, table, tconfig)
 
     gen_source_files(project_name, config["tables"])
     gen_models(config)
@@ -152,6 +154,20 @@ def gen_list_fields(project_name, table, tconfig):
                   "output_file": f"{table}.html"}
     write_code(src_path, src_file, kwargs, output_obj)
     return None
+
+
+def gen_delete_record(project_name, table, tconfig):
+    src_path = "source/app/module/templates"
+    src_file = "delete.html"
+    kwargs = {}
+    kwargs["table"] = table
+    kwargs["tschema"] = tconfig["tschema"]
+    kwargs["view_fields"] = tconfig["view_fields"]
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
+                  "output_file": f"{table}_delete.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
 
 # ----------------End of HTML Templates Generator--------------#
 
