@@ -1,0 +1,19 @@
+{{ '{% extends "layout.html" %}' }}
+{{ '{% from "_render_field.html" import render_field %}' }}
+
+{% set tschema = kwargs["tschema"] -%}
+{% set add_fields = kwargs["add_fields"] -%}
+{{ '{% block content %}' }}
+  <div>
+    <h1>{{ '{{ title }}' }}</h1>
+    <form action="/{{ kwargs['table'] }}/create" method="POST">
+    {{ "{{ form.csrf_token }}" }}
+    {%- for field in add_fields %}
+      {{ "{{ render_field(form." ~ field ~ ") }}<br>" }}
+    {%- endfor %}
+      <div>
+        <input type="submit" value="Create {{ kwargs['table'] }}">
+      </div>
+    </form>
+  </div>
+{{ '{% endblock %}' }}

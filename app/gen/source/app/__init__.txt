@@ -1,0 +1,15 @@
+from flask import Flask
+from app.mod_main import main_routes
+{% for table in kwargs['tables'] -%}
+    {{ "from app.mod_" ~ table ~ " import " ~ table ~ "_routes" }}
+{% endfor -%}
+
+app = Flask(__name__)
+
+# temporary secret key
+app.secret_key = "ABC"
+
+app.register_blueprint(main_routes.main_bp)
+{% for table in kwargs['tables'] -%}
+  {{ "app.register_blueprint(" ~ table ~ "_routes." ~ table ~ "_bp)" }}
+{% endfor %}

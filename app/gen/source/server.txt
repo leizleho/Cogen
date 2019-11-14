@@ -1,0 +1,6 @@
+from app import app
+from app.models import connect_to_db
+
+connect_to_db(app)
+app.debug = True
+app.run(host='0.0.0.0', port=5005)

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{ "{% include 'meta.html' %}" }}
+    <link rel="stylesheet" type="text/css" href="{{ "{{ url_for('static', filename='css/style.css') }}" }}">
+    <link rel="stylesheet" type="text/css" href="{{ "{{ url_for('.static', filename='css/style.css') }}" }}">
+  </head>
+  <body>
+  {% raw %}
+    <!-- Show navbar -->
+    <div class="navbar">
+    {% if "user_id" not in session %}
+        {% include "navbar_default.html" %}
+    {% else %}
+        {% include "navbar_loggedin.html" %}
+    {% endif %}
+    </div>
+
+    <!-- Show flashed messages -->
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- Show page content -->
+    <div class="container">
+    {% block content %}{% endblock %}
+    </div>
+
+    <!-- Scripts -->
+    {% include 'scripts.html' %}
+    {% block more_scripts %}{% endblock %}
+  {% endraw %}
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{{ '{% extends "layout.html" %}' }}
+{{ '{% from "_render_field.html" import render_field %}' }}
+
+{% set tschema = kwargs["tschema"] -%}
+{% set edit_fields = kwargs["edit_fields"] -%}
+
+{{ '{% block content %}' }}
+  <div>
+    <h1>{{ '{{ title }}' }}</h1>
+    <form action="/{{ kwargs['table'] }}/update/{{ '{{ id }}' }}" method="POST">
+    {{ "{{ form.csrf_token }}" }}
+    {%- for field in edit_fields %}
+      {{ "{{ render_field(form." ~ field ~ ") }}<br>" }}
+    {%- endfor %}
+      <div>
+        <input type="submit" value="Update {{ kwargs['table'] }}">
+      </div>
+    </form>
+  </div>
+{{ '{% endblock %}' }}

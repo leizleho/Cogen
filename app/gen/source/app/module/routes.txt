@@ -1,0 +1,92 @@
+{% set project_name = kwargs['project_name'] -%}
+{% set model_name = kwargs['model_name'] -%}
+{% set table = kwargs['table'] -%}
+{% set table_schema = kwargs['table_schema'] -%}
+"""Routes for {{ table }}"""
+from flask import Blueprint, render_template, request, flash, redirect, session
+from app.models import connect_to_db, db, {{ model_name }}
+from app.mod_{{ table }}.{{ table }}_form import {{ model_name }}Form
+
+# Blueprint Config
+{%- set bp = table ~ '_bp' %}
+{{ bp }} = Blueprint('{{ bp }}', __name__,
+                       template_folder='templates',
+                       static_folder='static',
+                       url_prefix='/{{ table }}')
+
+#################### ROUTES FOR {{ table.upper() }} ######################
+@{{ bp }}.route('/', methods=['GET'])
+def show_{{ table }}():
+    {{ table }} = {{ model_name }}.query.all()
+
+    return render_template('{{ table }}.html',
+                           title='{{ model_name }}',
+                           {{ table }}={{ table }})
+
+
+@{{ bp }}.route('/create', methods=['GET', 'POST'])
+def create_{{ table }}():
+    {{ table }}_form = {{ model_name }}Form()
+    if {{ table }}_form.validate_on_submit():
+        # Get form data
+        user_id = session["user_id"] # if user_session is True
+
+        {%- for field in table_schema %}
+        {{ field }} = request.form["{{ field }}"]
+        {%- endfor %}
+
+        new_{{ table }} = {{ model_name }}(
+            {%- for field in table_schema %}
+                    {{ field }}={{ field }}
+                    {%- if not loop.last %}, {% endif -%}
+            {% endfor %})
+
+        db.session.add(new_{{ table }})
+        db.session.commit()
+        flash(f"A {{ model_name }} ____ has been created.")
+        return redirect(f"/{{ table }}/{new_{{ table }}.id}")
+
+    return render_template('{{ table }}_create.html', title="Create {{ model_name }}", mod_name="mod_{{ table }}", form={{ table }}_form)
+
+
+@{{ bp }}.route('/update/<int:{{ table }}_id>', methods=['GET', 'POST'])
+def update_{{ table }}({{ table }}_id):
+    {{ table }} = {{ model_name }}.query.get({{ table }}_id)
+    {{ table }}_form = {{ model_name }}Form()
+
+    if {{ table }}_form.validate_on_submit():
+        {%- for field in table_schema %}
+        {{ table ~ "." ~ field }} = request.form["{{ field }}"]
+        {%- endfor %}
+
+        db.session.commit()
+        return redirect(f"/{{ table }}/{{ "{" ~ table ~ "_id}" }}")
+
+    {% for field in table_schema -%}
+    {{ table ~ "_form." ~ field ~ ".data" }} = {{ table ~ "." ~ field }}
+    {% endfor -%}
+
+    return render_template('{{ table }}_update.html',
+                           title='{{ model_name }}', id={{ table }}_id, mod_name="mod_{{ table }}", form={{ table }}_form)
+
+
+@{{ bp }}.route('/<int:{{ table }}_id>', methods=['GET'])
+def show_{{ table }}_details({{ table }}_id):
+    {{ table }} = {{ model_name }}.query.get({{ table }}_id)
+    return render_template("{{ table }}_details.html", title="{{ model_name }}", {{ table }}={{ table }})
+
+
+
+@{{ bp }}.route('/del/<int:{{ table }}_id>', methods=['GET', 'POST'])
+def delete_field({{ table }}_id):
+    {{ table }} = {{ model_name }}.query.get({{ table }}_id)
+
+    if request.method == 'GET':
+        return render_template('{{ table }}_delete.html',
+                               title='Delete {{ model_name }}', id={{ table }}_id, {{ table }}={{ table }})
+
+    if request.method == 'POST':
+        db.session.delete({{ table }})
+        db.session.commit()
+        return redirect("/{{ table }}")
+

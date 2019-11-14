@@ -1,0 +1,9 @@
+{% macro input_text(name, value='', size=20) -%}
+   {{ kwargs['label'] }}: <input type="text" name="{{ name }}" value="{{ value|e }}" size="{{ size }}"><br>
+{%- endmacro %}
+
+{% macro input_textarea(name, value='') -%}
+  {{ kwargs['label'] }}: <textarea name="{{ name }}" value="{{ value|e }}" rows="4" cols="50"></textarea><br>
+{%- endmacro %}
+
+

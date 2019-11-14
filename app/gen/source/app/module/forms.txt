@@ -1,0 +1,11 @@
+{% set model_name = kwargs['model_name'] -%}
+{% set table_schema = kwargs['table_schema'] -%}
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField
+from wtforms.validators import InputRequired, Length
+
+
+class {{ model_name }}Form(FlaskForm):
+    {%- for field in table_schema %}
+    {{ field }} = StringField('{{ table_schema[field]['label']}}')
+    {%- endfor %}
