@@ -25,8 +25,8 @@ def generate_code(project_id):
         gen_edit_fields(project_name, table, config[table])
         gen_routes(project_name, model_name, table, config[table]['tschema'])
         gen_wtforms(project_name, model_name, table, config[table]['tschema'])
-        # gen_view_fields(project_name, table, config[table])
-        # gen_list_fields(project_name, table, config[table])
+        gen_view_fields(project_name, table, config[table])
+        gen_list_fields(project_name, table, config[table])
 
     gen_source_files(project_name, config["tables"])
     gen_models(config)
@@ -55,7 +55,8 @@ def create_config(project_id):
             "tschema": tschema,
             "add_fields": [field for field in tschema if tschema[field]['add']],
             "edit_fields": [field for field in tschema if tschema[field]['edit']],
-            "view_fields": [field for field in tschema if tschema[field]['view']]
+            "view_fields": [field for field in tschema if tschema[field]['view']],
+            "list_fields": [field for field in tschema if tschema[field]['list']]
         }
     return config
 
@@ -105,6 +106,7 @@ def gen_add_fields(project_name, table, tconfig):
     src_path = "source/app/module/templates"
     src_file = "create.html"
     kwargs = {}
+    kwargs["table"] = table
     kwargs["tschema"] = tconfig["tschema"]
     kwargs["add_fields"] = tconfig["add_fields"]
     output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
@@ -117,10 +119,37 @@ def gen_edit_fields(project_name, table, tconfig):
     src_path = "source/app/module/templates"
     src_file = "update.html"
     kwargs = {}
+    kwargs["table"] = table
     kwargs["tschema"] = tconfig["tschema"]
     kwargs["edit_fields"] = tconfig["edit_fields"]
     output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
                   "output_file": f"{table}_update.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+
+def gen_view_fields(project_name, table, tconfig):
+    src_path = "source/app/module/templates"
+    src_file = "details.html"
+    kwargs = {}
+    kwargs["table"] = table
+    kwargs["tschema"] = tconfig["tschema"]
+    kwargs["view_fields"] = tconfig["view_fields"]
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
+                  "output_file": f"{table}_details.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+
+def gen_list_fields(project_name, table, tconfig):
+    src_path = "source/app/module/templates"
+    src_file = "list.html"
+    kwargs = {}
+    kwargs["table"] = table
+    kwargs["tschema"] = tconfig["tschema"]
+    kwargs["list_fields"] = tconfig["list_fields"]
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
+                  "output_file": f"{table}.html"}
     write_code(src_path, src_file, kwargs, output_obj)
     return None
 
