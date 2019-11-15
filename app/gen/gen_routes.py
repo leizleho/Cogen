@@ -22,6 +22,7 @@ def generate_code(project_id):
         model_name = config['tables_camelcase'][index]
         tconfig = config[table]
         gen_mod_inifile(project_name, table)
+        gen_mod_css(project_name, table)
         gen_add_fields(project_name, table, tconfig)
         gen_edit_fields(project_name, table, tconfig)
         gen_routes(project_name, model_name, table, tconfig['tschema'])
@@ -167,8 +168,6 @@ def gen_delete_record(project_name, table, tconfig):
                   "output_file": f"{table}_delete.html"}
     write_code(src_path, src_file, kwargs, output_obj)
     return None
-
-
 # ----------------End of HTML Templates Generator--------------#
 
 
@@ -183,12 +182,23 @@ def gen_mod_inifile(project_name, table):
     return None
 
 
+# ----------------style.css Generator for every module--------------#
+def gen_mod_css(project_name, table):
+    src_path = "source/app/module/static/css"
+    src_file = "style.css"
+    kwargs = {}
+    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
+                  "output_file": "style.css"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+
 # ----------------Generate other files from source templates--------------#
 def gen_source_files(project_name, tables):
     """Generate other files from source templates"""
     for k, v in source.items():
         filenames = v.split()
-        src_path = k.split('_')[0]
+        src_path = k.split('__')[0]
         src_file = filenames[0]
         output_file = filenames[1]
         output_path = src_path.replace("source", project_name)
