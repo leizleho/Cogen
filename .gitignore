@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 **/__pycache__/
 notes.txt
+builds/

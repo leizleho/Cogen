@@ -12,5 +12,4 @@ def home():
     """Homepage route."""
     return render_template('index.html',
                            title='App',
-                           template='home',
-                           body='Home')
+                           welcome='Welcome to __')
