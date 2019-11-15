@@ -3,12 +3,19 @@
   <h1 class="mt-5">Projects</h1>
 
   <a href="/projects/create">Create New Project</a>
-  <ul>
+  <div class="card-deck">
   {% for project in projects %}
-    <li>
-      <b><a href="/projects/{{ project.id }}">{{ project.name }}</a></b>
-      {{ project.description }}
-    </li>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{ project.name }}</h5>
+        <p class="card-text">{{ project.description }}</p>
+      </div>
+      <div class="card-footer">
+        <a href="/projects/{{ project.id }}">View</a> |
+        <a href="/projects/update/{{ project.id }}">Edit</a> |
+        <a href="/projects/del/{{ project.id }}">Delete</a>
+      </div>
+    </div>
   {% endfor %}
-  </ul>
+  </div>
 {% endblock %}
