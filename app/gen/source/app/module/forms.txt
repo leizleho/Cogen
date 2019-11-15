@@ -1,11 +1,22 @@
 {% set model_name = kwargs['model_name'] -%}
-{% set table_schema = kwargs['table_schema'] -%}
+{% set tschema = kwargs['table_schema'] -%}
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 
 class {{ model_name }}Form(FlaskForm):
-    {%- for field in table_schema %}
-    {{ field }} = StringField('{{ table_schema[field]['label']}}')
+    {%- for field in tschema %}
+    {% set intype = tschema[field]['input_type'] -%}
+    {% set label = tschema[field]['label'] -%}
+
+    {% if intype == 'String' -%}
+    {{ field }} = StringField('{{ label }}')
+    {% elif intype == 'Integer' -%}
+    {{ field }} = IntegerField('{{ label }}')
+    {% elif intype == 'Text' %}
+    {{ field }} = TextAreaField('{{ label }}')
+    {% else %}
+    {{ field }} = StringField('{{ label }}')
+    {% endif %}
     {%- endfor %}
