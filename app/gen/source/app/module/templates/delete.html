@@ -1,12 +1,12 @@
 {{ '{% extends "layout.html" %}' }}
 {% set table = kwargs['table'] -%}
-{% set view_fields = kwargs["view_fields"] -%}
+{% set details_fields = kwargs["details_fields"] -%}
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
   <div>
     <h1>{{ '{{ title }}' }}</h1>
     <h3 class="danger">Danger! You are deleting {{ '{{ ' ~ table ~ '.id }}' }}</h3>
-    {%- for field in view_fields %}
+    {%- for field in details_fields %}
       <b>{{ tschema[field]['label'] }}:</b> {{ '{{ ' ~ table ~ '.' ~ field ~ ' }}' }}<br>
     {%- endfor %}
     <form action="/{{ table }}/del/{{ '{{ id }}' }}" method="POST">
