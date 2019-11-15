@@ -1,6 +1,6 @@
 {{ '{% extends "layout.html" %}' }}
 {% set table = kwargs['table'] -%}
-{% set view_fields = kwargs["view_fields"] -%}
+{% set details_fields = kwargs["details_fields"] -%}
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
   <div>
@@ -8,7 +8,7 @@
       [<a href="/{{ table }}/update/{{ '{{ ' ~ table ~ '.id }}' }}">Update</a>]
       [<a href="/{{ table }}/del/{{ '{{ ' ~ table ~ '.id }}' }}">Delete</a>]<br>
       <br>
-      {%- for field in view_fields %}
+      {%- for field in details_fields %}
         <b>{{ tschema[field]['label'] }}:</b> {{ '{{ ' ~ table ~ '.' ~ field ~ ' }}' }}<br>
       {%- endfor %}
   </div>
