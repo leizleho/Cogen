@@ -2,16 +2,13 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
-  <div>
-    <h1>Create Table</h1>
+  <h1 class="mt-5">Create Table</h1>
 
-    <form action="/projects/{{ project_id }}/tables/create" method="POST">
-      {{ form.csrf_token }}
-      {{ render_field(form.name)}}<br>
-      <div>
-        <input type="submit" value="Create Table">
-      </div>
-    </form>
-
-  </div>
+  <form action="/projects/{{ project_id }}/tables/create" method="POST">
+    {{ form.csrf_token }}
+    {{ render_field(form.name)}}<br>
+    <div>
+      <input type="submit" value="Create Table">
+    </div>
+  </form>
 {% endblock %}

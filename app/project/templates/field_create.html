@@ -2,26 +2,23 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
-  <div>
-    <h1>Create a Field</h1>
+  <h1 class="mt-5">Create a Field</h1>
 
-    <form action="/projects/tables/{{ table_id }}/fields/create" method="POST">
-      {{ form.csrf_token }}
-      {{ render_field(form.name) }}<br>
-      {{ render_field(form.label) }}<br>
-      {{ render_field(form.placeholder) }}<br>
-      {{ render_field(form.input_type) }}<br>
-      {{ render_field(form.required) }}<br>
-      {{ render_field(form.list_page) }}<br>
-      {{ render_field(form.add_page) }}<br>
-      {{ render_field(form.edit_page) }}<br>
-      {{ render_field(form.view_page) }}<br>
-      {{ render_field(form.default_val) }}<br>
-      {{ render_field(form.kwargs) }}<br>
-      <div>
-        <input type="submit" value="Create Field">
-      </div>
-    </form>
-
-  </div>
+  <form action="/projects/tables/{{ table_id }}/fields/create" method="POST">
+    {{ form.csrf_token }}
+    {{ render_field(form.name) }}<br>
+    {{ render_field(form.label) }}<br>
+    {{ render_field(form.placeholder) }}<br>
+    {{ render_field(form.input_type) }}<br>
+    {{ render_field(form.required) }}<br>
+    {{ render_field(form.list_page) }}<br>
+    {{ render_field(form.add_page) }}<br>
+    {{ render_field(form.edit_page) }}<br>
+    {{ render_field(form.view_page) }}<br>
+    {{ render_field(form.default_val) }}<br>
+    {{ render_field(form.kwargs) }}<br>
+    <div>
+      <input type="submit" value="Create Field">
+    </div>
+  </form>
 {% endblock %}

@@ -2,18 +2,15 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
-  <div>
-    <h1>Update Project</h1>
+  <h1 class="mt-5">Update Project</h1>
 
-    <form action="/projects/update/{{ id }}" method="POST">
-      {{ form.csrf_token }}
-      {{ render_field(form.name)}}<br>
-      {{ render_field(form.description)}}<br>
-      {{ render_field(form.db_uri)}}<br>
-      <div>
-        <input type="submit" value="Update Project">
-      </div>
-
-    </form>
-  </div>
+  <form action="/projects/update/{{ id }}" method="POST">
+    {{ form.csrf_token }}
+    {{ render_field(form.name)}}<br>
+    {{ render_field(form.description)}}<br>
+    {{ render_field(form.db_uri)}}<br>
+    <div>
+      <input type="submit" value="Update Project">
+    </div>
+  </form>
 {% endblock %}

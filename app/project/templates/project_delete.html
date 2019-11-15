@@ -1,30 +1,27 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <div>
-    <h1>Delete Project</h1>
-    <p class="danger">D A N G E R!<br>
-    You are deleting project id {{ project.id }} ({{ project.name }})<br>
-    with one or more tables and fields under this project!<br>
+  <h1 class="mt-5">Delete Project</h1>
+  <p class="danger">D A N G E R!<br>
+  You are deleting project id {{ project.id }} ({{ project.name }})<br>
+  with one or more tables and fields under this project!<br>
 
-    {% if project.tables: %}
-          TABLES:<BR>
-      {% for table in project.tables %}
-          ---table # {{ table.id }} ({{ table.name }})<br>
-          {% if table.fields %}
-              {% for field in table.fields %}
-                  ------field # {{ field.id }} ({{ field.name }})<br>
-              {% endfor %}
-          {% endif %}
-      {% endfor %}
-    {% endif %}
-    </p>
+  {% if project.tables: %}
+        TABLES:<BR>
+    {% for table in project.tables %}
+        ---table # {{ table.id }} ({{ table.name }})<br>
+        {% if table.fields %}
+            {% for field in table.fields %}
+                ------field # {{ field.id }} ({{ field.name }})<br>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+  {% endif %}
+  </p>
 
-    <form action="/projects/del/{{ project.id }}" method="POST">
-      <div>
-        <input type="submit" value="CONFIRM DELETION">
-      </div>
-    </form>
-
-  </div>
+  <form action="/projects/del/{{ project.id }}" method="POST">
+    <div>
+      <input type="submit" value="CONFIRM DELETION">
+    </div>
+  </form>
 {% endblock %}
