@@ -14,5 +14,7 @@ source = {
     "source/app/mod_main___18": "__init__.txt __init__.py",
     "source/app/mod_main___15": "main_routes.txt main_routes.py",
     "source/app/mod_main/static/css___16": "style.css style.css",
-    "source/app/mod_main/templates___17": "index.html index.html"
+    "source/app/mod_main/templates___17": "index.html index.html",
+    "source/app/mod_main/templates___18": "login.html login.html",
+    "source/app/mod_main/templates___19": "register.html register.html"
 }

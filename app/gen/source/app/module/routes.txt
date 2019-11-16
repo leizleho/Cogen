@@ -19,7 +19,7 @@ from app.mod_{{ table }}.{{ table }}_form import {{ model_name }}Form
 def show_{{ table }}():
     {{ table }} = {{ model_name }}.query.all()
 
-    return render_template('{{ table }}.html',
+    return render_template('{{ table }}_list.html',
                            title='{{ model_name }}',
                            {{ table }}={{ table }})
 
@@ -37,9 +37,9 @@ def create_{{ table }}():
 
         new_{{ table }} = {{ model_name }}(
             {%- for field in table_schema %}
-                    {{ field }}={{ field }}
-                    {%- if not loop.last %}, {% endif -%}
-            {% endfor %})
+                    {{ field }}={{ field }},
+            {%- endfor %}
+                    user_id = session["user_id"])
 
         db.session.add(new_{{ table }})
         db.session.commit()

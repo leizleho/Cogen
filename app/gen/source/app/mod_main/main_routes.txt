@@ -1,5 +1,8 @@
+{% raw -%}
 """Routes for main pages."""
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, flash, redirect, session
+from flask import current_app as app
+from app.models import connect_to_db, db, User
 
 # Blueprint Configuration
 main_bp = Blueprint('main_bp', __name__,
@@ -13,3 +16,61 @@ def home():
     return render_template('index.html',
                            title='App',
                            welcome='Welcome to __')
+
+@main_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    """User Registration"""
+    if request.method == 'GET':
+        return render_template('register.html',
+                              title='Register')
+
+    if request.method == 'POST':
+        # Get form variables
+        fname = request.form["fname"]
+        lname = request.form["lname"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        new_user = User(fname=fname, lname=lname, email=email, password=password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash(f"User {fname} {lname} is added.")
+        return redirect(f"/")
+
+
+@main_bp.route('/login', methods=['GET', 'POST'])
+def login():
+    """User Login"""
+    if request.method == 'GET':
+        return render_template('login.html', title='Login')
+
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            flash("No such user")
+            return redirect("/login")
+
+        if user.password != password:
+            flash("Incorrect password")
+            return redirect("/login")
+
+        session["user_id"] = user.id
+
+        flash("Logged in")
+        return redirect(f"/")
+
+@main_bp.route('/logout')
+def logout():
+    """Log out."""
+
+    session.clear()
+    flash("Logged Out.")
+    return redirect("/")
+
+{% endraw -%}
