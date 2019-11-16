@@ -3,12 +3,32 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class User(db.Model):
+    """User of Cogen App."""
+
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    fname = db.Column(db.String(30), nullable=True)
+    lname = db.Column(db.String(30), nullable=True)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    created_on  = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_on = db.Column(db.DateTime, default=db.func.current_timestamp(),
+                                        onupdate=db.func.current_timestamp())
+
+    def __repr__(self):
+        """User info"""
+        return f'<User id={self.id} email={self.email}>'
+
+
 {% for table in kwargs['tables_camelcase'] -%}
     class {{ table ~ "(db.Model):" }}
     {% set tname = kwargs['tables'][loop.index0] -%}
     __tablename__ = {{ "'" ~ tname ~ "'" }}
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index=True)
     {% for field in kwargs[tname]['tschema'] -%}
         {%- set fieldprops = kwargs[tname]['tschema'][field] -%}
         {%- if fieldprops['input_type'] == "Integer" -%}
@@ -21,6 +41,14 @@ db = SQLAlchemy()
         {{ field ~ " = db.Column(db.String(50), nullable=True)" }}
         {%- endif %}
     {% endfor %}
+    created_on  = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_on = db.Column(db.DateTime, default=db.func.current_timestamp(),
+                                        onupdate=db.func.current_timestamp())
+    # Relationship to user
+    user = db.relationship('User',
+                           backref=db.backref('{{ table }}', order_by=id))
+
+
     def __repr__(self):
         """{{ table }} info"""
         return f'<{{ table }} id={self.id}>'
@@ -30,7 +58,6 @@ db = SQLAlchemy()
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
-    # Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/generatedapp'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = False
