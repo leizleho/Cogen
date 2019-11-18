@@ -1,4 +1,4 @@
-{% raw %}
+{% raw -%}
 {% macro render_field(field) %}
   {{ field.label }}
   {{ field(**kwargs)|safe }}
@@ -10,4 +10,4 @@
     </ul>
   {% endif %}
 {% endmacro %}
-{% endraw %}
+{% endraw -%}

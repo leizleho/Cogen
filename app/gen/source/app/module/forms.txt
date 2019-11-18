@@ -6,17 +6,16 @@ from wtforms.validators import InputRequired, Length
 
 
 class {{ model_name }}Form(FlaskForm):
-    {%- for field in tschema %}
+    {% for field in tschema -%}
     {% set intype = tschema[field]['input_type'] -%}
     {% set label = tschema[field]['label'] -%}
-
     {% if intype == 'String' -%}
     {{ field }} = StringField('{{ label }}')
     {% elif intype == 'Integer' -%}
     {{ field }} = IntegerField('{{ label }}')
-    {% elif intype == 'Text' %}
+    {% elif intype == 'Text' -%}
     {{ field }} = TextAreaField('{{ label }}')
-    {% else %}
+    {% else -%}
     {{ field }} = StringField('{{ label }}')
-    {% endif %}
-    {%- endfor %}
+    {% endif -%}
+    {% endfor -%}

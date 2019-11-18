@@ -1,13 +1,21 @@
 {% raw -%}
 """Routes for main pages."""
-from flask import Blueprint, render_template, request, flash, redirect, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from flask import current_app as app
+from flask_login import login_user, current_user, logout_user, login_required
+from app import login_manager
 from app.models import connect_to_db, db, User
+from app.mod_main.main_forms import LoginForm, RegistrationForm
+
 
 # Blueprint Configuration
 main_bp = Blueprint('main_bp', __name__,
                     template_folder='templates',
                     static_folder='static')
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 
 @main_bp.route('/')
@@ -15,62 +23,67 @@ def home():
     """Homepage route."""
     return render_template('index.html',
                            title='App',
-                           welcome='Welcome to __')
+                           welcome='Welcome!')
 
 @main_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    """User Registration"""
-    if request.method == 'GET':
-        return render_template('register.html',
-                              title='Register')
+    if current_user.is_authenticated:
+        return redirect('/')
 
-    if request.method == 'POST':
-        # Get form variables
-        fname = request.form["fname"]
-        lname = request.form["lname"]
-        email = request.form["email"]
-        password = request.form["password"]
-
-        new_user = User(fname=fname, lname=lname, email=email, password=password)
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        new_user = User(fname=form.fname.data,
+                    lname=form.lname.data,
+                    username=form.username.data,
+                    email=form.email.data)
+        new_user.set_password(form.password.data)
 
         db.session.add(new_user)
         db.session.commit()
 
-        flash(f"User {fname} {lname} is added.")
-        return redirect(f"/")
+        flash(f"User registration for {new_user.fname} {new_user.lname} is complete!")
+        return redirect("/")
+
+    return render_template('register.html', title='Register', form=form)
 
 
 @main_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    """User Login"""
-    if request.method == 'GET':
-        return render_template('login.html', title='Login')
+    if current_user.is_authenticated:
+        return redirect('/')
 
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
 
-        user = User.query.filter_by(email=email).first()
+        if user is not None and user.check_password(form.password.data):
+            # Log in the user
+            login_user(user)
+            flash('Logged in successfully.')
+            # If a user was trying to visit a page that requires a login
+            # flask saves that URL as 'next'.
+            next = request.args.get('next')
 
-        if not user:
-            flash("No such user")
-            return redirect("/login")
+            # Check if that next exists, otherwise go to home page
+            if next == None or not next[0] == '/':
+                next = url_for('main_bp.user_info', user_id=user.id)
+            return redirect(next)
+        else:
+            flash('Invalid email or password')
+            return redirect(url_for('main_bp.login'))
 
-        if user.password != password:
-            flash("Incorrect password")
-            return redirect("/login")
+    return render_template('login.html', title='Login', form=form)
 
-        session["user_id"] = user.id
-
-        flash("Logged in")
-        return redirect(f"/")
-
-@main_bp.route('/logout')
+@main_bp.route("/logout")
 def logout():
-    """Log out."""
+    logout_user()
+    return redirect(url_for('main_bp.home'))
 
-    session.clear()
-    flash("Logged Out.")
-    return redirect("/")
+@main_bp.route("/<int:user_id>")
+@login_required
+def user_info(user_id):
+    """Show info about user."""
+    user = User.query.get(user_id)
+    return render_template("user.html", title="User Info", user=user)
 
 {% endraw -%}

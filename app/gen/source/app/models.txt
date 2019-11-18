@@ -1,18 +1,25 @@
 """Models and database functions for this app."""
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
-class User(db.Model):
-    """User of Cogen App."""
+
+class User(db.Model, UserMixin):
+    """User model. Inherits UserMixin to get access to
+    is_authenticated(), is_active(), is_anonymous(), get_id() which we will
+    call in our app routes.
+    """
 
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(30), nullable=True)
     lname = db.Column(db.String(30), nullable=True)
-    email = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(64), index=True, unique=True)
+    email = db.Column(db.String(100), nullable=False, index=True, unique=True)
+    password_hash = db.Column(db.String(100), nullable=False)
     created_on  = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_on = db.Column(db.DateTime, default=db.func.current_timestamp(),
                                         onupdate=db.func.current_timestamp())
@@ -20,6 +27,12 @@ class User(db.Model):
     def __repr__(self):
         """User info"""
         return f'<User id={self.id} email={self.email}>'
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 {% for table in kwargs['tables_camelcase'] -%}
@@ -40,7 +53,7 @@ class User(db.Model):
         {%- else -%}
         {{ field ~ " = db.Column(db.String(50), nullable=True)" }}
         {%- endif %}
-    {% endfor %}
+    {% endfor -%}
     created_on  = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_on = db.Column(db.DateTime, default=db.func.current_timestamp(),
                                         onupdate=db.func.current_timestamp())
