@@ -5,7 +5,7 @@
 <div>
 <h1>{{ title }}</h1>
 
-<form method="POST">
+<form action="/users/register" method="POST">
     {# This hidden_tag is a CSRF security feature. #}
     {{ form.hidden_tag() }}
     {{ form.fname.label }} {{ form.fname() }}<br>

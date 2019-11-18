@@ -13,8 +13,10 @@ source = {
     "source/app/templates___13": "_render_field.html _render_field.html",
     "source/app/mod_main___18": "__init__.txt __init__.py",
     "source/app/mod_main___15": "main_routes.txt main_routes.py",
-    "source/app/mod_main/static/css___16": "style.css style.css",
-    "source/app/mod_main/templates___17": "index.html index.html",
-    "source/app/mod_main/templates___18": "login.html login.html",
-    "source/app/mod_main/templates___19": "register.html register.html"
+    "source/app/mod_main___16": "main_forms.txt main_forms.py",
+    "source/app/mod_main/static/css___17": "style.css style.css",
+    "source/app/mod_main/templates___18": "index.html index.html",
+    "source/app/mod_main/templates___19": "login.html login.html",
+    "source/app/mod_main/templates___20": "register.html register.html",
+    "source/app/mod_main/templates___21": "user.html user.html"
 }

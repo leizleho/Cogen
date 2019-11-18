@@ -4,6 +4,7 @@
 {% set table_schema = kwargs['table_schema'] -%}
 """Routes for {{ table }}"""
 from flask import Blueprint, render_template, request, flash, redirect, session
+from flask_login import current_user, login_required
 from app.models import connect_to_db, db, {{ model_name }}
 from app.mod_{{ table }}.{{ table }}_form import {{ model_name }}Form
 
@@ -16,6 +17,7 @@ from app.mod_{{ table }}.{{ table }}_form import {{ model_name }}Form
 
 #################### ROUTES FOR {{ table.upper() }} ######################
 @{{ bp }}.route('/', methods=['GET'])
+@login_required
 def show_{{ table }}():
     {{ table }} = {{ model_name }}.query.all()
 
@@ -25,11 +27,12 @@ def show_{{ table }}():
 
 
 @{{ bp }}.route('/create', methods=['GET', 'POST'])
+@login_required
 def create_{{ table }}():
     {{ table }}_form = {{ model_name }}Form()
     if {{ table }}_form.validate_on_submit():
         # Get form data
-        user_id = session["user_id"] # if user_session is True
+        user_id = current_user.id
 
         {%- for field in table_schema %}
         {{ field }} = request.form["{{ field }}"]
@@ -39,17 +42,18 @@ def create_{{ table }}():
             {%- for field in table_schema %}
                     {{ field }}={{ field }},
             {%- endfor %}
-                    user_id = session["user_id"])
+                    user_id = current_user.id)
 
         db.session.add(new_{{ table }})
         db.session.commit()
-        flash(f"A {{ model_name }} ____ has been created.")
+        flash(f"A {{ model_name }} has been created.")
         return redirect(f"/{{ table }}/{new_{{ table }}.id}")
 
     return render_template('{{ table }}_create.html', title="Create {{ model_name }}", mod_name="mod_{{ table }}", form={{ table }}_form)
 
 
 @{{ bp }}.route('/update/<int:{{ table }}_id>', methods=['GET', 'POST'])
+@login_required
 def update_{{ table }}({{ table }}_id):
     {{ table }} = {{ model_name }}.query.get({{ table }}_id)
     {{ table }}_form = {{ model_name }}Form()
@@ -71,6 +75,7 @@ def update_{{ table }}({{ table }}_id):
 
 
 @{{ bp }}.route('/<int:{{ table }}_id>', methods=['GET'])
+@login_required
 def show_{{ table }}_details({{ table }}_id):
     {{ table }} = {{ model_name }}.query.get({{ table }}_id)
     return render_template("{{ table }}_details.html", title="{{ model_name }}", {{ table }}={{ table }})
@@ -78,6 +83,7 @@ def show_{{ table }}_details({{ table }}_id):
 
 
 @{{ bp }}.route('/del/<int:{{ table }}_id>', methods=['GET', 'POST'])
+@login_required
 def delete_field({{ table }}_id):
     {{ table }} = {{ model_name }}.query.get({{ table }}_id)
 

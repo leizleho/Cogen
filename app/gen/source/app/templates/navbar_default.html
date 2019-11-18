@@ -2,8 +2,9 @@
   <div class="nav-wrapper">
     <div class="left-nav">
     {%- raw %}
-      <a class="navlink" href="/">HOME</a>
-      <a class="navlink" href="#">LOGIN</a>
+      <a class="navlink" href="{{ url_for('main_bp.home') }}">HOME</a>
+      <a class="navlink" href="{{ url_for('main_bp.register') }}">REGISTER</a>
+      <a class="navlink" href="{{ url_for('main_bp.login') }}">LOGIN</a>
     {%- endraw %}
     </div>
   </div>

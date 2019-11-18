@@ -1,15 +1,25 @@
 from flask import Flask
-from app.mod_main import main_routes
-{% for table in kwargs['tables'] -%}
-    {{ "from app.mod_" ~ table ~ " import " ~ table ~ "_routes" }}
-{% endfor -%}
+from flask_login import LoginManager
 
 app = Flask(__name__)
 
 # temporary secret key
 app.secret_key = "ABC"
 
-app.register_blueprint(main_routes.main_bp)
+
+# Flask-Login configs
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "main_bp.login"
+
+# import blueprints after initializing login_manager
+from app.mod_main.main_routes import main_bp
 {% for table in kwargs['tables'] -%}
-  {{ "app.register_blueprint(" ~ table ~ "_routes." ~ table ~ "_bp)" }}
+    {{ "from app.mod_" ~ table ~ "." ~ table ~ "_routes import " ~ table ~ "_bp" }}
+{% endfor -%}
+
+# Register blueprints with the app
+app.register_blueprint(main_bp)
+{% for table in kwargs['tables'] -%}
+  {{ "app.register_blueprint(" ~ table ~ "_bp)" }}
 {% endfor %}

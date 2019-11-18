@@ -1,40 +1,20 @@
 {{ '{% extends "layout.html" %}' }}
+{{ '{% from "_render_field.html" import render_field %}' }}
+
 {{ '{% block content %}' }}
 <div>
 <h1>{{ '{{ title }}' }}</h1>
-<form action="/register" method="POST">
-  <div>
-    <label>
-      First Name
-      <input type="text" name="fname">
-    </label>
-  </div>
-
-  <div>
-    <label>
-      Last Name
-      <input type="text" name="lname">
-    </label>
-  </div>
-
-  <div>
-    <label>
-        Email
-        <input type="email" name="email">
-    </label>
-  </div>
-
-  <div>
-    <label>
-      Password
-      <input type="password" name="password">
-    </label>
-  </div>
-
-  <div>
-    <input type="submit" value="Register">
-  </div>
-
-</form>
+{% raw %}
+  <form action="/register" method="POST">
+    {{ form.csrf_token }}
+    {{ render_field(form.fname) }}<br>
+    {{ render_field(form.lname) }}<br>
+    {{ render_field(form.username) }}<br>
+    {{ render_field(form.email) }}<br>
+    {{ render_field(form.password) }}<br>
+    {{ render_field(form.pass_confirm) }}<br>
+    {{ form.submit() }}
+  </form>
+{% endraw %}
 </div>
 {{ '{% endblock %}' }}
