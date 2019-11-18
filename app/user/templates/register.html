@@ -5,41 +5,18 @@
 <div>
 <h1>{{ title }}</h1>
 
-<form action="/users/register" method="POST">
-  <div>
-    <label>
-      First Name
-      <input type="text" name="fname">
-    </label>
-  </div>
-
-  <div>
-    <label>
-      Last Name
-      <input type="text" name="lname">
-    </label>
-  </div>
-
-  <div>
-    <label>
-        Email
-        <input type="email" name="email">
-    </label>
-  </div>
-
-  <div>
-    <label>
-      Password
-      <input type="password" name="password">
-    </label>
-  </div>
-
-
-  <div>
-    <input type="submit" value="Register">
-  </div>
-
+<form method="POST">
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+    {{ form.fname.label }} {{ form.fname() }}<br>
+    {{ form.lname.label }} {{ form.lname() }}<br>
+    {{ form.email.label }} {{ form.email() }}<br>
+    {{ form.username.label }} {{ form.username() }}<br>
+    {{ form.password.label }} {{ form.password() }}<br>
+    {{ form.pass_confirm.label }} {{ form.pass_confirm() }}<br>
+    {{ form.submit() }}
 </form>
+
 </div>
 
 {% endblock %}

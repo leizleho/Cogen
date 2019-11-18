@@ -1,23 +1,35 @@
 """Models and database functions for this app."""
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
-    """User of Cogen App."""
+class User(db.Model, UserMixin):
+    """User model. Inherits UserMixin to get access to
+    is_authenticated(), is_active(), is_anonymous(), get_id() which we will
+    call in our app routes.
+    """
 
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(30), nullable=True)
     lname = db.Column(db.String(30), nullable=True)
-    email = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(64), index=True, unique=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
 
     def __repr__(self):
         """User info"""
-        return f'<User id={self.id} email={self.email}>'
+        return f'<User id={self.id} username={self.username} email={self.email}>'
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 class Project(db.Model):
@@ -120,11 +132,9 @@ class Field(db.Model):
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
-
     # Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/testdb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = False
     db.app = app
     db.init_app(app)
 
@@ -132,6 +142,5 @@ def connect_to_db(app):
 if __name__ == "__main__":
     from flask import Flask
     app = Flask(__name__)
-
     connect_to_db(app)
     print("Connected to DB.")

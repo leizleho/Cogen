@@ -3,23 +3,11 @@
 <div>
   <h1 class="h1-header">{{ body }}</h1>
   <form action="/users/login" method="POST">
-
-    <div>
-      <label>Email:
-          <input type="email" name="email" required>
-      </label>
-    </div>
-
-    <div>
-      <label>Password:
-          <input type="password" name="password" required>
-      </label>
-    </div>
-
-    <div>
-      <input type="submit" value="Log In">
-    </div>
-
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+    {{ form.email.label }} {{ form.email() }}
+    {{ form.password.label }} {{ form.password() }}
+    {{ form.submit() }}
   </form>
 </div>
 
