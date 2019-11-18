@@ -1,5 +1,6 @@
 """Routes for projects"""
 from flask import Blueprint, render_template, request, flash, redirect, session
+from flask_login import current_user, login_required
 from app.models import connect_to_db, db, User, Project, Table, Field
 from app.project.project_forms import ProjectForm, TableForm, FieldForm
 
@@ -11,6 +12,7 @@ project_bp = Blueprint('project_bp', __name__,
 
 #################### ROUTES FOR PROJECTS ######################
 @project_bp.route('/', methods=['GET'])
+@login_required
 def show_projects():
     user_id = session["user_id"]
     projects = Project.query.filter_by(user_id=user_id).all()
@@ -21,11 +23,12 @@ def show_projects():
 
 
 @project_bp.route('/create', methods=['GET', 'POST'])
+@login_required
 def create_project():
     project_form = ProjectForm()
     if project_form.validate_on_submit():
         # Get form data
-        user_id = session["user_id"]
+        user_id = current_user.id
         name = request.form["name"]
         description = request.form["description"]
         db_uri = request.form["db_uri"]
@@ -42,6 +45,7 @@ def create_project():
 
 
 @project_bp.route('/update/<int:project_id>', methods=['GET', 'POST'])
+@login_required
 def update_project(project_id):
     project = Project.query.get(project_id)
     form = ProjectForm()
@@ -61,6 +65,7 @@ def update_project(project_id):
 
 # delete project
 @project_bp.route('/del/<int:project_id>', methods=['GET', 'POST'])
+@login_required
 def delete_project(project_id):
     project = Project.query.get(project_id)
     tables = Table.query.filter(Table.project_id == project.id).all()
@@ -80,6 +85,7 @@ def delete_project(project_id):
 
 # show_project_details
 @project_bp.route('/<int:project_id>', methods=['GET'])
+@login_required
 def show_project_details(project_id):
     project = Project.query.get(project_id)
     return render_template("project_details.html", title="Project Info", project=project)
@@ -89,6 +95,7 @@ def show_project_details(project_id):
 
 # Create Table
 @project_bp.route('/<int:project_id>/tables/create', methods=['GET', 'POST'])
+@login_required
 def create_table(project_id):
     table_form = TableForm()
 
@@ -103,6 +110,7 @@ def create_table(project_id):
 
 # Update a table
 @project_bp.route('/tables/update/<int:table_id>', methods=['GET', 'POST'])
+@login_required
 def update_table(table_id):
     table = Table.query.get(table_id)
     table_form = TableForm()
@@ -119,6 +127,7 @@ def update_table(table_id):
 
 # Delete a table
 @project_bp.route('/tables/del/<int:table_id>', methods=['GET', 'POST'])
+@login_required
 def delete_table(table_id):
     table = Table.query.get(table_id)
     fields = Field.query.filter(Field.table_id == table.id).all()
@@ -137,6 +146,7 @@ def delete_table(table_id):
 
 # Show table details
 @project_bp.route('/tables/<int:table_id>', methods=['GET'])
+@login_required
 def show_table_details(table_id):
     table = Table.query.get(table_id)
     return render_template("table_details.html", title="Table Info", table=table)
@@ -145,6 +155,7 @@ def show_table_details(table_id):
 #################### ROUTES FOR FIELDS ######################
 # Create a Field
 @project_bp.route('/tables/<int:table_id>/fields/create', methods=['GET', 'POST'])
+@login_required
 def create_field(table_id):
     field_form = FieldForm()
 
@@ -174,6 +185,7 @@ def create_field(table_id):
 
 # Update a Field
 @project_bp.route('/tables/fields/update/<int:field_id>', methods=['GET', 'POST'])
+@login_required
 def update_field(field_id):
     field = Field.query.get(field_id)
     field_form = FieldForm()
@@ -212,6 +224,7 @@ def update_field(field_id):
 
 # Delete a field
 @project_bp.route('/tables/fields/del/<int:field_id>', methods=['GET', 'POST'])
+@login_required
 def delete_field(field_id):
     field = Field.query.get(field_id)
 

@@ -1,7 +1,10 @@
 """Routes for user pages (Register/Login/Logout/Profile)."""
-from flask import Blueprint, render_template, request, flash, redirect, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from flask import current_app as app
+from flask_login import login_user, current_user, logout_user, login_required
+from app import login_manager
 from app.models import connect_to_db, db, User
+from app.user.user_forms import LoginForm, RegistrationForm
 
 
 # Blueprint Configuration
@@ -11,77 +14,68 @@ user_bp = Blueprint('user_bp', __name__,
                     url_prefix='/users')
 
 
-@user_bp.route('/register')
-def register_form():
-    """User Registration page"""
-
-    return render_template('register.html',
-                           title='User Registration',
-                           template='register',
-                           body="User Registration")
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 
-@user_bp.route('/register', methods=['POST'])
+@user_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    """Process registration."""
-    # Get form variables
-    fname = request.form["fname"]
-    lname = request.form["lname"]
-    email = request.form["email"]
-    password = request.form["password"]
+    if current_user.is_authenticated:
+        return redirect('/')
 
-    new_user = User(fname=fname, lname=lname, email=email, password=password)
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        new_user = User(fname=form.fname.data,
+                        lname=form.lname.data,
+                        username=form.username.data,
+                        email=form.email.data)
+        new_user.set_password(form.password.data)
 
-    db.session.add(new_user)
-    db.session.commit()
+        db.session.add(new_user)
+        db.session.commit()
+        flash('User registration is complete!')
+        return redirect(url_for('user_bp.login'))
 
-    flash(f"User {fname} {lname} is added.")
-    return redirect(f"/users/{new_user.id}")
-
-
-@user_bp.route('/login')
-def login_form():
-    """User Login page"""
-
-    return render_template('login.html',
-                           title='User Login',
-                           template='login',
-                           body="User Login")
+    return render_template('register.html', form=form, title='User Registration')
 
 
-@user_bp.route('/login', methods=['POST'])
+@user_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    """Process login."""
-    # Get form variables
-    email = request.form['email']
-    password = request.form['password']
+    if current_user.is_authenticated:
+        return redirect('/')
 
-    user = User.query.filter_by(email=email).first()
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
 
-    if not user:
-        flash("No such user")
-        return redirect("/users/login")
+        if user is not None and user.check_password(form.password.data):
+            # Log in the user
+            login_user(user)
+            flash('Logged in successfully.')
+            # If a user was trying to visit a page that requires a login
+            # flask saves that URL as 'next'.
+            next = request.args.get('next')
 
-    if user.password != password:
-        flash("Incorrect password")
-        return redirect("/users/login")
+            # Check if that next exists, otherwise go to home page
+            if next == None or not next[0] == '/':
+                next = url_for('user_bp.user_info', user_id=user.id)
+            return redirect(next)
+        else:
+            flash('Invalid email or password')
+            return redirect(url_for('user_bp.login'))
 
-    session["user_id"] = user.id
-
-    flash("Logged in")
-    return redirect(f"/users/{user.id}")
+    return render_template('login.html', title='Login', form=form)
 
 
-@user_bp.route('/logout')
+@user_bp.route("/logout")
 def logout():
-    """Log out."""
-
-    session.clear()
-    flash("Logged Out.")
-    return redirect("/")
+    logout_user()
+    return redirect(url_for('main_bp.home'))
 
 
 @user_bp.route("/<int:user_id>")
+@login_required
 def user_info(user_id):
     """Show info about user."""
     user = User.query.options(db.joinedload(

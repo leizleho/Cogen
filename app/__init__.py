@@ -1,15 +1,25 @@
 from flask import Flask
-from app.user import user_routes
-from app.main import main_routes
-from app.project import project_routes
-from app.gen import gen_routes
-
+from flask_login import LoginManager
 app = Flask(__name__)
 
 # temporary secret key
 app.secret_key = "ABC"
 
-app.register_blueprint(main_routes.main_bp)
-app.register_blueprint(user_routes.user_bp)
-app.register_blueprint(project_routes.project_bp)
-app.register_blueprint(gen_routes.gen_bp)
+
+# Flask-Login configs
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "user_bp.login"
+
+
+# import blueprints after initializing login_manager
+from app.user.user_routes import user_bp
+from app.main.main_routes import main_bp
+from app.project.project_routes import project_bp
+from app.gen.gen_routes import gen_bp
+
+# Register blueprints with the app
+app.register_blueprint(main_bp)
+app.register_blueprint(user_bp)
+app.register_blueprint(project_bp)
+app.register_blueprint(gen_bp)
