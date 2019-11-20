@@ -1,30 +1,79 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1 class="mt-5">Project Info</h1>
-  [<a href="/projects/update/{{ project.id }}">Update</a>]
-  [<a href="/projects/del/{{ project.id }}">Delete</a>]<br>
-  <br>
-  <b>Project #:</b> {{ project.id }} <br>
-  <b>Project Name:</b> {{ project.name }} <br>
-  <b>Project Description:</b> {{ project.description }}<br>
-  <b>DB Connection String:</b> {{ project.db_uri }}<hr>
-
-  <h2>Tables</h2>
-  [<a href="/projects/{{ project.id }}/tables/create">Add a table</a>]<br>
-  <ul>
-  {% for table in project.tables %}
-    <li>
-      [<a href="/projects/tables/update/{{ table.id }}">Update</a>]
-      [<a href="/projects/tables/del/{{ table.id }}">Delete</a>]
-      <b><a href="/projects/tables/{{ table.id }}">{{ table.name }}</a></b>
-    </li>
-  {% endfor %}
-  </ul>
-
+<div class="container bg-light py-1">
+  <h1 class="mt-5">{{ project.name }}</h1>
+  <h5>{{ project.description }}</h5>
+  <b>DB Connection String:</b> {{ project.db_uri }}<br>&nbsp;
   <form action="/gen/{{ project.id }}" method="GET">
-    <div>
-      <input type="submit" value="Generate Code">
-    </div>
+    <a href="/projects/update/{{ project.id }}" class="btn btn-secondary btn-sm" role="button">
+    <i class="fas fa-edit"></i> Update</a>&nbsp;&nbsp;
+    <a href="/projects/del/{{ project.id }}" class="btn btn-secondary btn-sm" role="button">
+    <i class="fas fa-trash-alt"></i> Delete</a>&nbsp;&nbsp;
+    <button type="submit" class="btn btn-secondary btn-sm">
+      <i class="fas fa-cogs"></i> Generate Code
+    </button>
   </form>
+  <br>
+</div>
+<h3 class="mt-5 mb-3">Tables
+  <a class="text-secondary" href="/projects/{{ project.id }}/tables/create">
+    <i class="far fa-plus-square"></i>
+  </a>
+</h3>
+
+  {% for table in project.tables %}
+    <div class="card">
+      <div class="card-body">
+      <h5 class="card-title"><a class="text-secondary" href="/projects/tables/{{ table.id }}">{{ table.name }}</a>&nbsp;&nbsp;
+      <a href="/projects/tables/update/{{ table.id }}" class="btn btn-secondary btn-sm" role="button">
+      Update</a>
+      <a href="/projects/tables/del/{{ table.id }}" class="btn btn-secondary btn-sm" role="button">
+      Delete</a>
+      <a class="btn btn-secondary btn-sm" href="/projects/tables/{{ table.id }}/fields/create">Add a field</a>
+      <a class="btn btn-secondary btn-sm" href="/projects/tables/{{ table.id }}/fields/create">Advanced Settings</a>
+      </h5>
+        <div class="table-responsive card-text">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Field Name</th>
+                <th>Label</th>
+                <th>Input Type</th>
+                <th>Req'd</th>
+                <th>List</th>
+                <th>Add</th>
+                <th>Edit</th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for field in table.fields %}
+                <tr>
+                  <td>
+                    <a class="text-secondary" href="/projects/tables/fields/update/{{ field.id }}">
+                      <i class="fas fa-edit"></i>
+                    </a>&nbsp;&nbsp;
+                    <a class="text-secondary" href="/projects/tables/fields/del/{{ field.id }}">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+                  <td>{{ field.name }}</td>
+                  <td>{{ field.label }}</td>
+                  <td>{{ field.input_type }}</td>
+                  <td>{{ field.required }}</td>
+                  <td>{{ field.list_page }}</td>
+                  <td>{{ field.add_page }}</td>
+                  <td>{{ field.edit_page }}</td>
+                  <td>{{ field.view_page }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          </div>
+      </div>
+    </div>
+    <br>&nbsp;
+  {% endfor %}
 {% endblock %}

@@ -1,8 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h1 class="mt-5">Projects</h1>
-
-  <a href="/projects/create">Create New Project</a>
+  <h1 class="mt-5">Projects
+  <a class="text-secondary" href="/projects/create">
+    <i class="far fa-plus-square"></i>
+  </a>
+  </h1>
   <div class="card-deck">
   {% for project in projects %}
     <div class="card" style="width: 18rem;">
