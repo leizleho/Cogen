@@ -102,6 +102,28 @@ class Field(db.Model):
 
         return f'<Field field_id={self.id} field_name={self.name} table_id={self.table_id}>'
 
+
+class PageTemplate(db.Model):
+    """Page Templates for tables"""
+    __tablename__ = 'page_templates'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    table_id = db.Column(
+        db.Integer, db.ForeignKey('tables.id'), index=True)
+    page = db.Column(db.String(30), nullable=False)
+    template = db.Column(db.String(30), nullable=True)
+    kwargs = db.Column(db.String(30), nullable=True)
+
+    # Relationship to tables
+    table = db.relationship('Table',
+                            backref=db.backref('page_templates', order_by=id))
+
+    def __repr__(self):
+        """Field info"""
+
+        return f'<PageTemplate template={self.template} table_id={self.table_id}>'
+
+
 # Additional Features if time allows
 # class Relationship(db.Model):
 #     """Table Relationships"""
@@ -133,6 +155,7 @@ class Field(db.Model):
 def connect_to_db(app):
     """Connect the database to our Flask app."""
     # Configure to use our PostgreSQL database
+
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/testdb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
