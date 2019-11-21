@@ -20,3 +20,8 @@ source = {
     "source/app/mod_main/templates___20": "register.html register.html",
     "source/app/mod_main/templates___21": "user.html user.html"
 }
+
+
+wtf = {
+    ''
+}

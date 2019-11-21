@@ -1,10 +1,14 @@
 from flask import Flask
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
+
 app = Flask(__name__)
 
 # temporary secret key
 app.secret_key = "ABC"
 
+# initialize bootstrap
+bootstrap = Bootstrap(app)
 
 # Flask-Login configs
 login_manager = LoginManager()

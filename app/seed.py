@@ -48,28 +48,28 @@ def tables_data():
 
 def fields_data():
     Field.query.delete()
-    f1 = Field(id=1, table_id=1, name='photo', label='Photo', placeholder='Photo', input_type='File',
+    f1 = Field(id=1, table_id=1, name='photo', label='Photo', placeholder='Photo', input_type='image',
                required=True, list_page=False, add_page=True, edit_page=True, view_page=True)
 
-    f2 = Field(id=2, table_id=1, name='caption', label='Caption', placeholder='Caption', input_type='String',
+    f2 = Field(id=2, table_id=1, name='caption', label='Caption', placeholder='Caption', input_type='text',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f3 = Field(id=3, table_id=1, name='date_taken', label='Date', placeholder='Date', input_type='DateTime',
+    f3 = Field(id=3, table_id=1, name='date_taken', label='Date', placeholder='Date', input_type='datetime',
                required=False, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f4 = Field(id=4, table_id=1, name='location', label='Location', placeholder='Location', input_type='String',
+    f4 = Field(id=4, table_id=1, name='location', label='Location', placeholder='Location', input_type='text',
                required=False, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f5 = Field(id=5, table_id=2, name='name', label='Album Name', placeholder='Album Name', input_type='String',
+    f5 = Field(id=5, table_id=2, name='name', label='Album Name', placeholder='Album Name', input_type='text',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f6 = Field(id=6, table_id=2, name='description', label='Description', placeholder='Description', input_type='String',
+    f6 = Field(id=6, table_id=2, name='description', label='Description', placeholder='Description', input_type='text',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f7 = Field(id=7, table_id=3, name='album_id', label='Album', placeholder='Album', input_type='Integer',
+    f7 = Field(id=7, table_id=3, name='album_id', label='Album', placeholder='Album', input_type='number',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f8 = Field(id=8, table_id=3, name='photo_id', label='Photo', placeholder='Photo', input_type='Integer',
+    f8 = Field(id=8, table_id=3, name='photo_id', label='Photo', placeholder='Photo', input_type='number',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
     db.session.add_all([f1, f2, f3, f4, f5, f6, f7, f8])

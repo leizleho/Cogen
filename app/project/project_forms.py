@@ -25,20 +25,19 @@ class FieldForm(FlaskForm):
                         InputRequired("Label is required")])
     placeholder = StringField('Placeholder', validators=[Length(
         max=30, message="Placeholder should not exceed 100.")])
-    input_type = SelectField('Input type', choices=[('String', 'text'),
-                                                    ('Boolean', 'checkbox'),
-                                                    ('DateTime', 'datetime'),
-                                                    ('Email', 'email'),
-                                                    ('File', 'file'),
-                                                    ('String', 'image'),
-                                                    ('Hidden', 'hidden'),
-                                                    ('Password', 'password'),
-                                                    ('Integer', 'number'),
-                                                    ('Radio', 'radio'),
-                                                    ('Select', 'select'),
-                                                    ('Text', 'textarea'),
-                                                    ('Url', 'url')
-                                                    ])
+    input_type = SelectField('Input type', choices=[('text', 'String'),
+                                                    ('checkbox', 'Boolean'),
+                                                    ('datetime', 'DateTime'),
+                                                    ('email', 'Email'),
+                                                    ('file', 'File'),
+                                                    ('hidden', 'Hidden'),
+                                                    ('image', 'Image'),
+                                                    ('number', 'Integer'),
+                                                    ('password', 'Password'),
+                                                    ('radio', 'Radio'),
+                                                    ('select', 'Select'),
+                                                    ('textarea', 'Text'),
+                                                    ('url', 'Url')])
     required = BooleanField(u'Required', default='checked',
                             render_kw={'checked': True})
     list_page = BooleanField('List',

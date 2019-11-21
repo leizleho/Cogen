@@ -1,0 +1,16 @@
+{{ '{% extends "layout.html" %}' }}
+{% set table = kwargs['table'] -%}
+{% set details_fields = kwargs["details_fields"] -%}
+{% set tschema = kwargs["tschema"] -%}
+{{ '{% block content %}' }}
+  <div>
+      <h1>{{ '{{ title }}' }}</h1>
+      <h4>Default Template</h4>
+      [<a href="/{{ table }}/update/{{ '{{ ' ~ table ~ '.id }}' }}">Update</a>]
+      [<a href="/{{ table }}/del/{{ '{{ ' ~ table ~ '.id }}' }}">Delete</a>]<br>
+      <br>
+      {%- for field in details_fields %}
+        <b>{{ tschema[field]['label'] }}:</b> {{ '{{ ' ~ table ~ '.' ~ field ~ ' }}' }}<br>
+      {%- endfor %}
+  </div>
+{{ '{% endblock %}' }}

@@ -1,46 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="h-100">
   <head>
-    {% raw %}
     {% include 'meta.html' %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/style.css') }}">
-    {% endraw %}
     <script src="https://kit.fontawesome.com/37327d2d38.js" crossorigin="anonymous"></script>
   </head>
   <body class="d-flex flex-column h-100">
-  {% raw %}
-    <!-- Show navbar -->
+  <!-- Show navbar -->
     {% if "user_id" not in session %}
         {% include "navbar_default.html" %}
     {% else %}
         {% include "navbar_loggedin.html" %}
     {% endif %}
 
-    <!-- Show flashed messages -->
+
+  <!-- Show flashed messages -->
     {% with messages = get_flashed_messages() %}
         {% for message in messages %}
             <div class="flash">{{ message }}</div>
         {% endfor %}
     {% endwith %}
 
-    <!-- Show page content -->
+  <!-- Show page content -->
   <main role="main" class="flex-shrink-0">
     <div class="container">
     {% block content %}{% endblock %}
     </div>
   </main>
-
     <!-- Scripts -->
     {% include 'scripts.html' %}
     {% block more_scripts %}{% endblock %}
-  {% endraw %}
   </body>
 <footer class="footer mt-auto py-3">
   <div class="container text-center">
-    <span class="text-muted">&copy; 2019 Cogen</span>
+    <span class="text-muted">&copy; 2019 Cogen </span>
   </div>
 </footer>
 </html>

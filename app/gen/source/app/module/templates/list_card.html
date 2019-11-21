@@ -1,0 +1,31 @@
+{{ '{% extends "layout.html" %}' }}
+{% set table = kwargs['table'] -%}
+{% set list_fields = kwargs["list_fields"] -%}
+{% set tschema = kwargs["tschema"] -%}
+{{ '{% block content %}' }}
+  <div>
+    <h1>{{ '{{ title }}' }}</h1>
+    <h4>Card Template</h4>
+    <a href="/{{ table }}/create">Create New  {{ table }}</a>
+      <table>
+        <tr>
+          <th>View</th>
+          <th>Update</th>
+          <th>Delete</th>
+          {%- for field in list_fields %}
+              <th>{{ tschema[field]['label'] }}</th>
+          {%- endfor %}
+        </tr>
+        {{ '{% for row in ' ~ table ~ ' %}' }}
+        <tr>
+          <td><a href="/{{ table }}/{{ '{{ row.id }}' }}">View</a></td>
+          <td><a href="/{{ table }}/update/{{ '{{ row.id }}' }}">Update</a></td>
+          <td><a href="/{{ table }}/del/{{ '{{ row.id }}' }}">Delete</a></td>
+          {%- for field in list_fields %}
+              <td>{{ '{{ row.' ~ field ~ ' }}' }}</td>
+          {%- endfor %}
+        </tr>
+        {{ '{% endfor %}' }}
+      </table>
+  </div>
+{{ '{% endblock %}' }}

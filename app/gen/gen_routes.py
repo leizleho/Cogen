@@ -60,6 +60,7 @@ def create_config(project_id):
             "details_fields": [field for field in tschema if tschema[field]['view']],
             "list_fields": [field for field in tschema if tschema[field]['list']],
             "delete_fields": [field for field in tschema if tschema[field]['view']],
+
         }
     return config
 
@@ -151,6 +152,10 @@ def gen_routes(project_name, model_name, table, table_schema):
 
 
 def gen_wtforms(project_name, model_name, table, table_schema):
+
+    # for field in create_fields
+    #      tschema[field][input_type]
+
     src_path = "source/app/module"
     src_file = "forms.txt"
     kwargs = {}

@@ -1,6 +1,10 @@
-<nav class="navigation-loggedin">
-  <div>
-    <div>
+<nav class="navbar navbar-expand-md navbar-light bg-info">
+  <a class="navbar-brand" href="#">@</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav mr-auto">
     {%- raw %}
       <a class="navlink" href="{{ url_for('main_bp.home') }}">HOME</a>
       {% include 'user_links.html' %}

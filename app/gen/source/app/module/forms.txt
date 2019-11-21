@@ -1,7 +1,7 @@
 {% set model_name = kwargs['model_name'] -%}
 {% set tschema = kwargs['table_schema'] -%}
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField, TextAreaField
+from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField, FileField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 
@@ -9,13 +9,21 @@ class {{ model_name }}Form(FlaskForm):
     {% for field in tschema -%}
     {% set intype = tschema[field]['input_type'] -%}
     {% set label = tschema[field]['label'] -%}
-    {% if intype == 'String' -%}
+
+    {% if intype == 'text' -%}
     {{ field }} = StringField('{{ label }}')
-    {% elif intype == 'Integer' -%}
+    {% elif intype == 'number' -%}
     {{ field }} = IntegerField('{{ label }}')
-    {% elif intype == 'Text' -%}
+    {% elif intype == 'textarea' -%}
     {{ field }} = TextAreaField('{{ label }}')
+    {% elif intype == 'image' -%}
+    {{ field }} = FileField('{{ label }}')
+    {% elif intype == 'email' -%}
+    {{ field }} = EmailField('{{ label }}')
+    {% elif intype == 'file' -%}
+    {{ field }} = FileField('{{ label }}')
     {% else -%}
     {{ field }} = StringField('{{ label }}')
     {% endif -%}
+
     {% endfor -%}

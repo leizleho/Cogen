@@ -1,0 +1,4 @@
+{% for table in kwargs['tables'] -%}
+  {% set url = "{{ url_for('" ~ table ~ "_bp.show_" ~ table ~ "') }}" -%}
+  <a class="navlink" href="{{ url }}">{{ table.upper() }}</a>
+{% endfor -%}

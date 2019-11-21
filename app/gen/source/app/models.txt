@@ -44,11 +44,11 @@ class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index=True)
     {% for field in kwargs[tname]['tschema'] -%}
         {%- set fieldprops = kwargs[tname]['tschema'][field] -%}
-        {%- if fieldprops['input_type'] == "Integer" -%}
+        {%- if fieldprops['input_type'] == "number" -%}
         {{ field ~ " = db.Column(db.Integer, nullable=True)" }}
-        {%- elif fieldprops['input_type'] == "Boolen" -%}
+        {%- elif fieldprops['input_type'] == "checkbox" -%}
         {{ field ~ " = db.Column(db.Boolean, nullable=True, default=False)" }}
-        {%- elif fieldprops['input_type'] == "Text" -%}
+        {%- elif fieldprops['input_type'] == "textarea" -%}
         {{ field ~ " = db.Column(db.Text, nullable=True)" }}
         {%- else -%}
         {{ field ~ " = db.Column(db.String(50), nullable=True)" }}
