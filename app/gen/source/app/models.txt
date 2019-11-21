@@ -61,10 +61,11 @@ class User(db.Model, UserMixin):
     user = db.relationship('User',
                            backref=db.backref('{{ table }}', order_by=id))
 
-
     def __repr__(self):
         """{{ table }} info"""
         return f'<{{ table }} id={self.id}>'
+
+
 {% endfor %}
 
 {% raw %}
