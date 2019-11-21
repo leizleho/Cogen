@@ -4,7 +4,7 @@ from app.models import db, Project, Field
 from app.gen.coder import write_code
 from app.gen.source_dict import source
 from app.utils import camel_case
-# from app.printvar import printvar
+from app.printvar import printvar
 
 
 # Blueprint Config
@@ -23,14 +23,16 @@ def generate_code(project_id):
         """Call generator functions for every table(module)"""
         model_name = config['tables_camelcase'][index]
         tconfig = config[table]
+        templates = config['templates'][table]
         gen_mod_inifile(project_name, table)
         gen_mod_css(project_name, table)
-        gen_mod_templates(project_name, table, tconfig)
+        gen_mod_templates(project_name, table, tconfig, templates)
         gen_routes(project_name, model_name, table, tconfig['tschema'])
         gen_wtforms(project_name, model_name, table, tconfig['tschema'])
 
     gen_source_files(project_name, config["tables"])
     gen_models(config)
+    gen_user_links(project_name, config["tables"])
 
     return render_template('generator.html')
 
@@ -40,13 +42,13 @@ def create_config(project_id):
     project = Project.query.get(project_id)
     schema = create_schema(project)
     tables = [table for table in schema]
-    tables_camelcase = [camel_case(table) for table in tables]
 
     config = {}
     config["project_name"] = project.name
     config["conn"] = project.db_uri
     config["tables"] = tables
-    config["tables_camelcase"] = tables_camelcase
+    config["tables_camelcase"] = [camel_case(table) for table in tables]
+    config["templates"] = get_templates(project)
 
     # tschema = table schema
     for table in tables:
@@ -83,7 +85,43 @@ def create_schema(prj_model):
                 "default_val": field.default_val,
                 "kwargs": field.kwargs
             }
+
     return schema
+
+
+# ----------------HTML Templates--------------#
+def get_templates(prj_model):
+    """Get the html templates of each table for a given project.
+    prj_model is equal to Project.query.get(id)
+    """
+    templates = {}
+    for table in prj_model.tables:
+        templates[table.name] = {}
+        if table.page_templates:
+            tpl = table.page_templates
+            templates[table.name] = {
+                # templates.get(f"{file}_kwargs")
+                'list': tpl.list_page if tpl.list_page else 'default',
+                'list_kwargs': tpl.list_kwargs,
+                'create': tpl.add_page if tpl.add_page else 'default',
+                'create_kwargs': tpl.add_kwargs,
+                'update': tpl.edit_page if tpl.edit_page else 'default',
+                'update_kwargs': tpl.edit_kwargs,
+                'details': tpl.view_page if tpl.view_page else 'default',
+                'details_kwargs': tpl.view_kwargs,
+                'delete': tpl.delete_page if tpl.delete_page else 'default',
+                'delete_kwargs': tpl.delete_kwargs
+            }
+        else:
+            templates[table.name] = {
+                'list': 'default',
+                'create': 'default',
+                'update': 'default',
+                'details': 'default',
+                'delete': 'default'
+            }
+
+    return templates
 
 
 # ----------------models.py Generator--------------#
@@ -126,7 +164,7 @@ def gen_wtforms(project_name, model_name, table, table_schema):
 
 
 # ----------------HTML Templates Generator--------------#
-def gen_mod_templates(project_name, table, tconfig):
+def gen_mod_templates(project_name, table, tconfig, templates):
     src_path = "source/app/module/templates"
     files = ['create', 'update', 'details', 'list', 'delete']
     kwargs = {}
@@ -134,11 +172,13 @@ def gen_mod_templates(project_name, table, tconfig):
     kwargs["tschema"] = tconfig["tschema"]
 
     for file in files:
-        src_file = f"{file}.html"
+        src_file = f"{file}_{templates[file]}.html"
+        output_file = f"{table}_{file}.html"
         fields = f"{file}_fields"
         output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
-                      "output_file": f"{table}_{src_file}"}
+                      "output_file": output_file}
         kwargs[fields] = tconfig[fields]
+        kwargs[f"{file}_kwargs"] = templates.get(f"{file}_kwargs")
         write_code(src_path, src_file, kwargs, output_obj)
 
     return None
@@ -186,3 +226,15 @@ def gen_source_files(project_name, tables):
         write_code(src_path, src_file, kwargs, output_obj)
 
     return None
+
+
+def gen_user_links(project_name, tables):
+    src_path = "source/app/templates"
+    src_file = "user_links.html"
+    kwargs = {}
+    kwargs['tables'] = tables
+    output_obj = {"output_path": f"{project_name}/app/templates",
+                  "output_file": "user_links.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+    pass
