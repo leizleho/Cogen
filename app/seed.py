@@ -1,6 +1,15 @@
 from models import db, connect_to_db, User, Project, Table, Field, PageTemplate
 
 
+def seed_data():
+    db.create_all()
+    users_data()
+    projects_data()
+    tables_data()
+    fields_data()
+    template_data()
+
+
 def users_data():
     """Create some sample data."""
     User.query.delete()
@@ -69,7 +78,12 @@ def fields_data():
 
 def template_data():
     PageTemplate.query.delete()
-    m1 = PageTemplate(id=1, table_id=1, page='list', template='card')
+    m1 = PageTemplate(id=1, table_id=1, list_page='card',
+                      list_kwargs='title=caption,img=photo',
+                      add_page='default',
+                      edit_page='default',
+                      view_page='default',
+                      delete_page='default')
     db.session.add(m1)
     db.session.commit()
 
