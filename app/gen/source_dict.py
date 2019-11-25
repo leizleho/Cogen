@@ -18,10 +18,25 @@ source = {
     "source/app/mod_main/templates___18": "index.html index.html",
     "source/app/mod_main/templates___19": "login.html login.html",
     "source/app/mod_main/templates___20": "register.html register.html",
-    "source/app/mod_main/templates___21": "user.html user.html"
+    "source/app/mod_main/templates___21": "user.html user.html",
+    "source/app/static/css___22": "fontawesome-all.css fontawesome-all.css",
+    "source/app/utils___22": "image_handler.txt image_handler.py",
+    "source/app/utils___23": "__init__.txt __init__.py",
 }
 
 
 wtf = {
-    ''
+    'text': 'StringField',
+    'checkbox': 'BooleanField',
+    'datetime': 'DateTimeField',
+    'email': 'EmailField',
+    'file': 'FileField',
+    'hidden': 'HiddenField',
+    'image': 'StringField',
+    'number': 'IntegerField',
+    'password': 'PasswordField',
+    'radio': 'RadioField',
+    'select': 'SelectField',
+    'textarea': 'TextAreaField',
+    'url': 'String'
 }
