@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1 class="mt-5">Delete Project</h1>
-  <p class="danger">D A N G E R!<br>
-  You are deleting project id {{ project.id }} ({{ project.name }})<br>
-  with one or more tables and fields under this project!<br>
+  <h3 class="mt-5">Delete Project</h3>
+  <div class="alert alert-danger" role="alert">
+  You are deleting project id {{ project.id }} ({{ project.name }})
+  with one or more tables and fields under this project!
+  </div>
 
   {% if project.tables: %}
         TABLES:<BR>
@@ -20,8 +21,8 @@
   </p>
 
   <form action="/projects/del/{{ project.id }}" method="POST">
-    <div>
-      <input type="submit" value="CONFIRM DELETION">
+    <div class="form-group">
+      <input class="btn btn-secondary" type="submit" value="CONFIRM DELETION">
     </div>
   </form>
 {% endblock %}

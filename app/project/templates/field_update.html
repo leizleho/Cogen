@@ -2,23 +2,52 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
-  <h1 class="mt-5">Update a Field</h1>
-
+  <h3 class="mt-5">Update a Field</h3>
+  <div class="alert alert-info" role="alert">
+    Notes: "id" is automatically added as a primary key of the table.
+  </div>
   <form action="/projects/tables/fields/update/{{ field_id }}" method="POST">
     {{ form.csrf_token }}
-    {{ render_field(form.name) }}<br>
-    {{ render_field(form.label) }}<br>
-    {{ render_field(form.placeholder) }}<br>
-    {{ render_field(form.input_type) }}<br>
-    {{ render_field(form.required) }}<br>
-    {{ render_field(form.list_page) }}<br>
-    {{ render_field(form.add_page) }}<br>
-    {{ render_field(form.edit_page) }}<br>
-    {{ render_field(form.view_page) }}<br>
-    {{ render_field(form.default_val) }}<br>
-    {{ render_field(form.kwargs) }}<br>
-    <div>
-      <input type="submit" value="Update Field">
+    <div class="form-group">
+      {{ render_field(form.name) }}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.label) }}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.placeholder) }}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.input_type) }}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.required) }}
+    </div>
+    <label class="control-label">
+      Select the pages where you want this field to show
+    </label>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+      {{ render_field(form.list_page) }}
+      </div>
+      <div class="form-check form-check-inline">
+        {{ render_field(form.add_page) }}
+      </div>
+      <div class="form-check form-check-inline">
+      {{ render_field(form.edit_page) }}
+      </div>
+      <div class="form-check form-check-inline">
+      {{ render_field(form.view_page) }}
+      </div>
+    </div>
+    <div class="form-group">
+    {{ render_field(form.default_val) }}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.kwargs) }}
+    </div>
+    <div class="form-group">
+      {{ form.submit(class="btn btn-secondary") }}
     </div>
   </form>
 {% endblock %}

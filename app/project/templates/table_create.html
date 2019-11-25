@@ -2,13 +2,17 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
-  <h1 class="mt-5">Create Table</h1>
+  <h3 class="mt-5">Create Table</h3>
+  <div class="alert alert-info" role="alert">
+    Notes: "users" table is automatically created for you. It will be used for
+    login, logout and other user activity.
+  </div>
 
   <form action="/projects/{{ project_id }}/tables/create" method="POST">
     {{ form.csrf_token }}
     {{ render_field(form.name)}}<br>
-    <div>
-      <input type="submit" value="Create Table">
+    <div class="form-group">
+      {{ form.submit(label="Create Table",class="btn btn-secondary") }}
     </div>
   </form>
 {% endblock %}

@@ -2,13 +2,13 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
-  <h1 class="mt-5">Delete Field</h1>
-
-  <h3 class="danger">Danger! You are deleting field {{ field.id }} {{ field.name }}</h3>
-
+  <h3 class="mt-5">Delete Field</h3>
+  <div class="alert alert-danger" role="alert">
+    Danger! You are deleting field "{{ field.name }}"
+  </div>
   <form action="/projects/tables/fields/del/{{ field.id }}" method="POST">
-    <div>
-      <input type="submit" value="CONFIRM DELETION">
+    <div class="form-group">
+      <input class="btn btn-secondary" type="submit" value="CONFIRM DELETION">
     </div>
   </form>
 {% endblock %}
