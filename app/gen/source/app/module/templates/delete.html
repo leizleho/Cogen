@@ -10,8 +10,8 @@
       <b>{{ tschema[field]['label'] }}:</b> {{ '{{ ' ~ table ~ '.' ~ field ~ ' }}' }}<br>
     {%- endfor %}
     <form action="/{{ table }}/del/{{ '{{ id }}' }}" method="POST">
-      <div>
-        <input type="submit" value="CONFIRM DELETION">
+      <div class="form-group">
+        <input class="btn btn-danger" type="submit" value="CONFIRM DELETION">
       </div>
     </form>
 

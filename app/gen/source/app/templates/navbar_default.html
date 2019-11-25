@@ -1,15 +1,21 @@
 <nav class="navbar navbar-expand-md navbar-light bg-info">
-  <a class="navbar-brand" href="#">@</a>
+  <a class="navbar-brand" href="#"><i class="fas fa-file-image"></i></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto">
     {%- raw %}
-      <a class="navlink" href="{{ url_for('main_bp.home') }}">HOME</a>
-      <a class="navlink" href="{{ url_for('main_bp.register') }}">REGISTER</a>
-      <a class="navlink" href="{{ url_for('main_bp.login') }}">LOGIN</a>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{{ url_for('main_bp.home') }}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{{ url_for('main_bp.register') }}">Register</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{{ url_for('main_bp.login') }}">Login</a>
+    </li>
     {%- endraw %}
-    </div>
+    </ul>
   </div>
 </nav>

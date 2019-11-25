@@ -5,15 +5,16 @@
 {% set create_fields = kwargs["create_fields"] -%}
 {{ '{% block content %}' }}
   <div>
-    <h1>{{ '{{ title }}' }}</h1>
-    <h4>Default Template</h4>
+    <h3>{{ '{{ title }}' }}</h3>
     <form action="/{{ kwargs['table'] }}/create" method="POST">
     {{ "{{ form.csrf_token }}" }}
     {%- for field in create_fields %}
-      {{ "{{ render_field(form." ~ field ~ ") }}<br>" }}
+      <div class="form-group">
+      {{ "{{ render_field(form." ~ field ~ ") }}" }}
+      </div>
     {%- endfor %}
-      <div>
-        <input type="submit" value="Create {{ kwargs['table'] }}">
+      <div class="form-group">
+        <input class="btn btn-info" type="submit" value="Create {{ kwargs['table'].replace("_", " ").title() }}">
       </div>
     </form>
   </div>
