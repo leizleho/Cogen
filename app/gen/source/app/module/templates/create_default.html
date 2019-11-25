@@ -3,10 +3,17 @@
 
 {% set tschema = kwargs["tschema"] -%}
 {% set create_fields = kwargs["create_fields"] -%}
+{% set image_fields = kwargs['image_fields'] -%}
+{% if image_fields -%}
+{% set enctype = 'enctype="multipart/form-data"' -%}
+{% else -%}
+{% set enctype = '' -%}
+{% endif -%}
+
 {{ '{% block content %}' }}
   <div>
     <h3>{{ '{{ title }}' }}</h3>
-    <form action="/{{ kwargs['table'] }}/create" method="POST">
+    <form action="/{{ kwargs['table'] }}/create" method="POST" {{ enctype }}>
     {{ "{{ form.csrf_token }}" }}
     {%- for field in create_fields %}
       <div class="form-group">

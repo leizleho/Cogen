@@ -22,6 +22,7 @@ source = {
     "source/app/static/css___22": "fontawesome-all.css fontawesome-all.css",
     "source/app/utils___22": "image_handler.txt image_handler.py",
     "source/app/utils___23": "__init__.txt __init__.py",
+    "source/app/static/img___17": "dummy.txt dummy.txt",
 }
 
 

@@ -190,6 +190,7 @@ def gen_mod_templates(project_name, table, tconfig, templates):
     kwargs = {}
     kwargs["table"] = table
     kwargs["tschema"] = tconfig["tschema"]
+    kwargs['image_fields'] = tconfig['image_fields']
 
     for file in files:
         src_file = f"{file}_{templates[file]}.html"

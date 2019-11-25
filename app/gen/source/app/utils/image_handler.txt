@@ -13,7 +13,7 @@ def save_image(image, img_prefix):
     storage_filename = str(img_prefix) + filename
 
     filepath = os.path.join(current_app.root_path,
-                            'static\img', storage_filename)
+                            'static','img', storage_filename)
 
     # Thumbnail size.
     output_size = (200, 200)
