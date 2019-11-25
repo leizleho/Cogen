@@ -2,10 +2,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, session
 from app.models import db, Project, Field
 from app.gen.coder import write_code
-from app.gen.source_dict import source
+from app.gen.source_dict import source, wtf
 from app.utils import camel_case
 from app.printvar import printvar
-
 
 # Blueprint Config
 gen_bp = Blueprint('gen_bp', __name__,
@@ -27,13 +26,12 @@ def generate_code(project_id):
         gen_mod_inifile(project_name, table)
         gen_mod_css(project_name, table)
         gen_mod_templates(project_name, table, tconfig, templates)
-        gen_routes(project_name, model_name, table, tconfig['tschema'])
-        gen_wtforms(project_name, model_name, table, tconfig['tschema'])
+        gen_routes(project_name, model_name, table, tconfig)
+        gen_wtforms(project_name, model_name, table, tconfig)
 
     gen_source_files(project_name, config["tables"])
     gen_models(config)
     gen_user_links(project_name, config["tables"])
-
     return render_template('generator.html')
 
 
@@ -53,14 +51,17 @@ def create_config(project_id):
     # tschema = table schema
     for table in tables:
         tschema = schema[table]
+        input_types = set([tschema[field]['input_type'] for field in tschema])
         config[table] = {
             "tschema": tschema,
+            "input_types": input_types,
+            "wtf_formfields": ', '.join(set([wtf[input_type] for input_type in input_types])),
+            "image_fields": [field for field in tschema if tschema[field]['input_type'] == 'image'],
             "create_fields": [field for field in tschema if tschema[field]['add']],
             "update_fields": [field for field in tschema if tschema[field]['edit']],
             "details_fields": [field for field in tschema if tschema[field]['view']],
             "list_fields": [field for field in tschema if tschema[field]['list']],
-            "delete_fields": [field for field in tschema if tschema[field]['view']],
-
+            "delete_fields": [field for field in tschema if tschema[field]['view']]
         }
     return config
 
@@ -137,31 +138,30 @@ def gen_models(config):
 
 
 # ----------------routes Generator--------------#
-def gen_routes(project_name, model_name, table, table_schema):
+def gen_routes(project_name, model_name, table, tconfig):
     src_path = "source/app/module"
     src_file = "routes.txt"
     kwargs = {}
     kwargs['project_name'] = project_name
     kwargs['model_name'] = model_name
     kwargs['table'] = table
-    kwargs['table_schema'] = table_schema
+    kwargs['table_schema'] = tconfig['tschema']
+    kwargs['image_fields'] = tconfig['image_fields']
     output_obj = {"output_path": f"{project_name}/app/mod_{table}",
                   "output_file": f"{table}_routes.py"}
     write_code(src_path, src_file, kwargs, output_obj)
     return None
 
 
-def gen_wtforms(project_name, model_name, table, table_schema):
-
-    # for field in create_fields
-    #      tschema[field][input_type]
-
+def gen_wtforms(project_name, model_name, table, tconfig):
     src_path = "source/app/module"
     src_file = "forms.txt"
     kwargs = {}
     kwargs['model_name'] = model_name
     kwargs['table'] = table
-    kwargs['table_schema'] = table_schema
+    kwargs['table_schema'] = tconfig['tschema']
+    kwargs['input_types'] = tconfig['input_types']
+    kwargs['wtf_formfields'] = tconfig['wtf_formfields']
     output_obj = {"output_path": f"{project_name}/app/mod_{table}",
                   "output_file": f"{table}_form.py"}
     write_code(src_path, src_file, kwargs, output_obj)
@@ -242,4 +242,3 @@ def gen_user_links(project_name, tables):
                   "output_file": "user_links.html"}
     write_code(src_path, src_file, kwargs, output_obj)
     return None
-    pass
