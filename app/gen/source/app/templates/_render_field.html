@@ -1,0 +1,24 @@
+{% raw %}
+{% macro render_field(field) %}
+  {% if field.widget.input_type == 'checkbox' %}
+    <div class="checkbox">
+      <label>
+        {{field()|safe}} {{field.label.text|safe}}
+      </label>
+    </div>
+  {%- else %}
+  {{ field.label(class="control-label")|safe }}
+        {% if field.type == 'FileField' %}
+          {{field(**kwargs)|safe}}
+        {% else %}
+          {{ field(class="form-control", **kwargs)|safe }}
+          {% endif %}
+  {%- endif %}
+
+  {% if field.errors %}
+    {% for error in field.errors %}
+      <p style="color:red;">{{ error }}</p>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+{% endraw -%}
