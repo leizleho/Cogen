@@ -4,8 +4,7 @@
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
   <div>
-      <h1>{{ '{{ title }}' }}</h1>
-      <h4>Default Template</h4>
+      <h3>{{ '{{ title }}' }}</h3>
       [<a href="/{{ table }}/update/{{ '{{ ' ~ table ~ '.id }}' }}">Update</a>]
       [<a href="/{{ table }}/del/{{ '{{ ' ~ table ~ '.id }}' }}">Delete</a>]<br>
       <br>

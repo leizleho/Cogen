@@ -7,9 +7,13 @@
   {% raw %}
   <form action="/login" method="POST">
     {{ form.csrf_token }}
-    {{ render_field(form.email) }}<br>
-    {{ render_field(form.password) }}<br>
-    {{ form.submit() }}
+    <div class="form-group">
+    {{ render_field(form.email) }}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.password) }}
+    </div>
+    {{ form.submit(class="btn btn-info") }}
   </form>
   {% endraw %}
 </div>

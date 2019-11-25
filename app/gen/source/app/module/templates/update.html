@@ -12,8 +12,8 @@
     {%- for field in update_fields %}
       {{ "{{ render_field(form." ~ field ~ ") }}<br>" }}
     {%- endfor %}
-      <div>
-        <input type="submit" value="Update {{ kwargs['table'] }}">
+      <div class="form-group">
+        <input class="btn btn-info" type="submit" value="Update {{ kwargs['table'].replace("_", " ").title() }}">
       </div>
     </form>
   </div>

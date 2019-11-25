@@ -14,11 +14,11 @@ def users_data():
     """Create some sample data."""
     User.query.delete()
 
-    u1 = User(id=1, fname='Leizle', lname='Ho', username='leizleho',
+    u1 = User(fname='Leizle', lname='Ho', username='leizleho',
               email='leizleho@yahoo.com')
     u1.set_password('12345')
 
-    u2 = User(id=2, fname='Rain', lname='Ulan', username='rain',
+    u2 = User(fname='Rain', lname='Ulan', username='rain',
               email='rain.ulan@gmail.com')
     u2.set_password('12345')
     db.session.add_all([u1, u2])
@@ -27,11 +27,11 @@ def users_data():
 
 def projects_data():
     Project.query.delete()
-    p1 = Project(id=1, user_id=1, name='tgallery', description='Gallery of Travel Photos',
+    p1 = Project(user_id=1, name='tgallery', description='Gallery of Travel Photos',
                  db_uri="postgresql://postgres@localhost:5433/testdb")
-    p2 = Project(id=2, user_id=1, name='jobapptracker', description='Job Application Tracker',
+    p2 = Project(user_id=1, name='jobapptracker', description='Job Application Tracker',
                  db_uri="postgresql://postgres@localhost:5433/testdb2")
-    p3 = Project(id=3, user_id=1, name='rfq', description='Web Dev Services - Request for Quote',
+    p3 = Project(user_id=1, name='rfq', description='Web Dev Services - Request for Quote',
                  db_uri="postgresql://postgres@localhost:5433/testdb3")
     db.session.add_all([p1, p2, p3])
     db.session.commit()
@@ -39,37 +39,37 @@ def projects_data():
 
 def tables_data():
     Table.query.delete()
-    t1 = Table(id=1, project_id=1, name='photos')
-    t2 = Table(id=2, project_id=1, name='albums')
-    t3 = Table(id=3, project_id=1, name='album_contents')
+    t1 = Table(project_id=1, name='photos')
+    t2 = Table(project_id=1, name='albums')
+    t3 = Table(project_id=1, name='album_contents')
     db.session.add_all([t1, t2, t3])
     db.session.commit()
 
 
 def fields_data():
     Field.query.delete()
-    f1 = Field(id=1, table_id=1, name='photo', label='Photo', placeholder='Photo', input_type='image',
+    f1 = Field(table_id=1, name='photo', label='Photo', placeholder='Photo', input_type='image',
                required=True, list_page=False, add_page=True, edit_page=True, view_page=True)
 
-    f2 = Field(id=2, table_id=1, name='caption', label='Caption', placeholder='Caption', input_type='text',
+    f2 = Field(table_id=1, name='caption', label='Caption', placeholder='Caption', input_type='text',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f3 = Field(id=3, table_id=1, name='date_taken', label='Date', placeholder='Date', input_type='datetime',
+    f3 = Field(table_id=1, name='date_taken', label='Date', placeholder='Date', input_type='datetime',
                required=False, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f4 = Field(id=4, table_id=1, name='location', label='Location', placeholder='Location', input_type='text',
+    f4 = Field(table_id=1, name='location', label='Location', placeholder='Location', input_type='text',
                required=False, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f5 = Field(id=5, table_id=2, name='name', label='Album Name', placeholder='Album Name', input_type='text',
+    f5 = Field(table_id=2, name='name', label='Album Name', placeholder='Album Name', input_type='text',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f6 = Field(id=6, table_id=2, name='description', label='Description', placeholder='Description', input_type='text',
+    f6 = Field(table_id=2, name='description', label='Description', placeholder='Description', input_type='text',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f7 = Field(id=7, table_id=3, name='album_id', label='Album', placeholder='Album', input_type='number',
+    f7 = Field(table_id=3, name='album_id', label='Album', placeholder='Album', input_type='number',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
-    f8 = Field(id=8, table_id=3, name='photo_id', label='Photo', placeholder='Photo', input_type='number',
+    f8 = Field(table_id=3, name='photo_id', label='Photo', placeholder='Photo', input_type='number',
                required=True, list_page=True, add_page=True, edit_page=True, view_page=True)
 
     db.session.add_all([f1, f2, f3, f4, f5, f6, f7, f8])
@@ -78,7 +78,7 @@ def fields_data():
 
 def template_data():
     PageTemplate.query.delete()
-    m1 = PageTemplate(id=1, table_id=1, list_page='card',
+    m1 = PageTemplate(table_id=1, list_page='card',
                       list_kwargs='title=caption,img=photo',
                       add_page='default',
                       edit_page='default',
