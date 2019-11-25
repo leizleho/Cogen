@@ -1,9 +1,12 @@
 {% set model_name = kwargs['model_name'] -%}
 {% set tschema = kwargs['table_schema'] -%}
+{% set input_types = kwargs['input_types'] -%}
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, BooleanField, SelectField, FileField, TextAreaField
+from wtforms import {{ kwargs['wtf_formfields'] }}
 from wtforms.validators import InputRequired, Length
-
+{% if 'image' in input_types -%}
+    from flask_wtf.file import FileField, FileAllowed
+{% endif %}
 
 class {{ model_name }}Form(FlaskForm):
     {% for field in tschema -%}
