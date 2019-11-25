@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% from "_render_field.html" import render_field %}
+{% block content %}
+<div>
+  <h1 class="h1-header">{{ title }}</h1>
+  <form action="/users/login" method="POST">
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ form.submit() }}
+  </form>
+</div>
+
+{% endblock %}
