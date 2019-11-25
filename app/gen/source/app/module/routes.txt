@@ -1,13 +1,17 @@
 {% set project_name = kwargs['project_name'] -%}
 {% set model_name = kwargs['model_name'] -%}
 {% set table = kwargs['table'] -%}
+{% set title = table.replace("_", " ").title() %}
 {% set table_schema = kwargs['table_schema'] -%}
+{% set image_fields = kwargs['image_fields'] -%}
 """Routes for {{ table }}"""
 from flask import Blueprint, render_template, request, flash, redirect, session
 from flask_login import current_user, login_required
 from app.models import connect_to_db, db, {{ model_name }}
 from app.mod_{{ table }}.{{ table }}_form import {{ model_name }}Form
-
+{% if image_fields -%}
+  from app.utils.image_handler import save_image
+{% endif %}
 # Blueprint Config
 {%- set bp = table ~ '_bp' %}
 {{ bp }} = Blueprint('{{ bp }}', __name__,
@@ -22,63 +26,74 @@ def show_{{ table }}():
     {{ table }} = {{ model_name }}.query.all()
 
     return render_template('{{ table }}_list.html',
-                           title='{{ model_name }}',
+                           title='{{ title }}',
                            {{ table }}={{ table }})
 
 
 @{{ bp }}.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_{{ table }}():
-    {{ table }}_form = {{ model_name }}Form()
-    if {{ table }}_form.validate_on_submit():
+    form = {{ model_name }}Form()
+    if form.validate_on_submit():
         # Get form data
-        user_id = current_user.id
 
         {%- for field in table_schema %}
-        {{ field }} = request.form["{{ field }}"]
+        {%- if field in image_fields %}
+        {%- set img_prefix = table %}
+        image_data = request.files[form.{{ field }}.name]
+        {{ field }} = save_image(image_data, '{{ img_prefix }}')
+        {%- else %}
+        {{ field }} = form.{{ field }}.data
+        {%- endif %}
         {%- endfor %}
 
         new_{{ table }} = {{ model_name }}(
             {%- for field in table_schema %}
-                    {{ field }}={{ field }},
+                {{ field }}={{ field }},
             {%- endfor %}
-                    user_id = current_user.id)
+                user_id = current_user.id)
 
         db.session.add(new_{{ table }})
         db.session.commit()
         flash(f"A {{ model_name }} has been created.")
         return redirect(f"/{{ table }}/{new_{{ table }}.id}")
 
-    return render_template('{{ table }}_create.html', title="Create {{ model_name }}", mod_name="mod_{{ table }}", form={{ table }}_form)
+    return render_template('{{ table }}_create.html', title="Create {{ title }}", mod_name="mod_{{ table }}", form=form)
 
 
 @{{ bp }}.route('/update/<int:{{ table }}_id>', methods=['GET', 'POST'])
 @login_required
 def update_{{ table }}({{ table }}_id):
     {{ table }} = {{ model_name }}.query.get({{ table }}_id)
-    {{ table }}_form = {{ model_name }}Form()
+    form = {{ model_name }}Form()
 
-    if {{ table }}_form.validate_on_submit():
+    if form.validate_on_submit():
         {%- for field in table_schema %}
-        {{ table ~ "." ~ field }} = request.form["{{ field }}"]
+        {%- if field in image_fields %}
+        {%- set img_prefix = table %}
+        image_data = request.files[form.{{ field }}.name]
+        {{ table ~ "." ~ field }} = save_image(image_data, '{{ img_prefix }}')
+        {%- else %}
+        {{ table ~ "." ~ field }} = form.{{ field }}.data
+        {%- endif %}
         {%- endfor %}
 
         db.session.commit()
         return redirect(f"/{{ table }}/{{ "{" ~ table ~ "_id}" }}")
 
     {% for field in table_schema -%}
-    {{ table ~ "_form." ~ field ~ ".data" }} = {{ table ~ "." ~ field }}
+        form.{{ field }}.data = {{ table ~ "." ~ field }}
     {% endfor -%}
 
     return render_template('{{ table }}_update.html',
-                           title='{{ model_name }}', id={{ table }}_id, mod_name="mod_{{ table }}", form={{ table }}_form)
+                           title='{{ title }}', id={{ table }}_id, mod_name="mod_{{ table }}", form=form)
 
 
 @{{ bp }}.route('/<int:{{ table }}_id>', methods=['GET'])
 @login_required
 def show_{{ table }}_details({{ table }}_id):
     {{ table }} = {{ model_name }}.query.get({{ table }}_id)
-    return render_template("{{ table }}_details.html", title="{{ model_name }}", {{ table }}={{ table }})
+    return render_template("{{ table }}_details.html", title="{{ title }}", {{ table }}={{ table }})
 
 
 
@@ -89,7 +104,7 @@ def delete_field({{ table }}_id):
 
     if request.method == 'GET':
         return render_template('{{ table }}_delete.html',
-                               title='Delete {{ model_name }}', id={{ table }}_id, {{ table }}={{ table }})
+                               title='Delete {{ title }}', id={{ table }}_id, {{ table }}={{ table }})
 
     if request.method == 'POST':
         db.session.delete({{ table }})
