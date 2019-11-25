@@ -5,6 +5,8 @@ from app.gen.coder import write_code
 from app.gen.source_dict import source, wtf
 from app.utils import camel_case
 from app.printvar import printvar
+import subprocess
+import os
 
 # Blueprint Config
 gen_bp = Blueprint('gen_bp', __name__,
@@ -32,7 +34,18 @@ def generate_code(project_id):
     gen_source_files(project_name, config["tables"])
     gen_models(config)
     gen_user_links(project_name, config["tables"])
+    # run_app()
     return render_template('generator.html')
+
+
+def run_app():
+    # run_app(app_name):
+    # app_dir = os.path.dirname(__file__)
+    app_dir_parent = os.path.abspath(os.path.join(__file__, "../../.."))
+    app_dir = os.path.join(app_dir_parent, "builds/adam")
+    #  printvar('app_dir', app_dir)
+    # app_dir = get_app_dir(app_name)
+    subprocess.run(['python3', 'server.py'], cwd=app_dir)
 
 
 def create_config(project_id):
@@ -63,6 +76,7 @@ def create_config(project_id):
             "list_fields": [field for field in tschema if tschema[field]['list']],
             "delete_fields": [field for field in tschema if tschema[field]['view']]
         }
+    printvar('config', config)
     return config
 
 
@@ -159,6 +173,7 @@ def gen_wtforms(project_name, model_name, table, tconfig):
     kwargs = {}
     kwargs['model_name'] = model_name
     kwargs['table'] = table
+    # kwargs['table_schema'] = table_schema
     kwargs['table_schema'] = tconfig['tschema']
     kwargs['input_types'] = tconfig['input_types']
     kwargs['wtf_formfields'] = tconfig['wtf_formfields']

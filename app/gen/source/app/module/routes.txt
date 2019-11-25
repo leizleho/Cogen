@@ -40,8 +40,7 @@ def create_{{ table }}():
         {%- for field in table_schema %}
         {%- if field in image_fields %}
         {%- set img_prefix = table %}
-        image_data = request.files[form.{{ field }}.name]
-        {{ field }} = save_image(image_data, '{{ img_prefix }}')
+        {{ field }} = save_image(form.{{ field }}.data, '{{ img_prefix }}')
         {%- else %}
         {{ field }} = form.{{ field }}.data
         {%- endif %}
@@ -71,8 +70,7 @@ def update_{{ table }}({{ table }}_id):
         {%- for field in table_schema %}
         {%- if field in image_fields %}
         {%- set img_prefix = table %}
-        image_data = request.files[form.{{ field }}.name]
-        {{ table ~ "." ~ field }} = save_image(image_data, '{{ img_prefix }}')
+        {{ table ~ "." ~ field }} = save_image(form.{{ field }}.data, '{{ img_prefix }}')
         {%- else %}
         {{ table ~ "." ~ field }} = form.{{ field }}.data
         {%- endif %}
