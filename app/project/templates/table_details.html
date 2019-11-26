@@ -1,54 +1,67 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1 class="mt-5">Table Info</h1>
+<div class="container bg-light py-1">
+  <h1 class="mt-5"><a href="/projects/{{ table.project.id }}" class="text-secondary">{{ table.project.name }}</a></h1>
+  <h5>{{ table.project.description }}</h5>
+  <b>DB Connection String:</b> {{ table.project.db_uri }}<br>&nbsp;
+  <form action="/gen/{{ table.project.id }}" method="GET">
+    <a href="/projects/update/{{ table.project.id }}" class="btn btn-secondary btn-sm" role="button">
+    <i class="fas fa-edit"></i> Update</a>&nbsp;&nbsp;
+    <a href="/projects/del/{{ table.project.id }}" class="btn btn-secondary btn-sm" role="button">
+    <i class="fas fa-trash-alt"></i> Delete</a>&nbsp;&nbsp;
+    <button type="submit" class="btn btn-secondary btn-sm">
+      <i class="fas fa-cogs"></i> Generate Code
+    </button>
+  </form>
+  <br>
+</div>
 
-  [<a href="/projects/tables/update/{{ table.id }}">Update</a>]
-  [<a href="/projects/tables/del/{{ table.id }}">Delete</a>]<br>
+  <h3 class="mt-5 mb-3">Table Name: {{ table.name }}</h3>
   <b>Table #</b> {{ table.id }}<br>
-  <b>Table Name:</b> {{ table.name }}<br>
-  <hr>
-  <b>Project #:</b> {{ table.project.id }} <br>
-  <b>Project Name:</b> {{ table.project.name }} <br>
-  <b>Project Description:</b> {{ table.project.description }}<br>
-  <b>DB Connection String:</b> {{ table.project.db_uri }}<hr>
-
-  <h2>Fields</h2>
-  [<a href="/projects/tables/{{ table.id }}/fields/create">Add a field</a>]<br>
-
-  <table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Action</th>
-      <th>Field Name</th>
-      <th>Label</th>
-      <th>Input Type</th>
-      <th>Req'd</th>
-      <th>List</th>
-      <th>Add</th>
-      <th>Edit</th>
-      <th>View</th>
-      <th>Default value</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for field in table.fields %}
-    <tr>
-      <td>
-        [<a href="/projects/tables/fields/update/{{ field.id }}">Edit</a>]
-        [<a href="/projects/tables/fields/del/{{ field.id }}">Delete</a>]
-      </td>
-      <td>{{ field.name }}</td>
-      <td>{{ field.label }}</td>
-      <td>{{ field.input_type }}</td>
-      <td>{{ field.required }}</td>
-      <td>{{ field.list_page }}</td>
-      <td>{{ field.add_page }}</td>
-      <td>{{ field.edit_page }}</td>
-      <td>{{ field.view_page }}</td>
-      <td>{{ field.default_val }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-  </table>
+  <b>Table Name:</b> {{ table.name }}
+  <div class="px-2 py-2">
+    <a href="/projects/tables/update/{{ table.id }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;
+    <a href="/projects/tables/del/{{ table.id }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>
+  </div>
+  <h3 class="mt-5 mb-3">Fields
+  <a href="/projects/tables/{{ table.id }}/fields/create"><i class="far fa-plus-square"></i></a>
+  </h3>
+  <div class="table-responsive card-text">
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Field Name</th>
+        <th>Label</th>
+        <th>Input Type</th>
+        <th>Req'd</th>
+        <th>List</th>
+        <th>Add</th>
+        <th>Edit</th>
+        <th>View</th>
+        <th>Default value</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for field in table.fields %}
+      <tr>
+        <td>
+          <a class="text-secondary" href="/projects/tables/fields/update/{{ field.id }}"><i class="fas fa-edit"></i></a>
+          &nbsp;&nbsp;<a class="text-secondary" href="/projects/tables/fields/del/{{ field.id }}"><i class="fas fa-trash"></i></a>
+        </td>
+        <td>{{ field.name }}</td>
+        <td>{{ field.label }}</td>
+        <td>{{ field.input_type }}</td>
+        <td>{{ field.required }}</td>
+        <td>{{ field.list_page }}</td>
+        <td>{{ field.add_page }}</td>
+        <td>{{ field.edit_page }}</td>
+        <td>{{ field.view_page }}</td>
+        <td>{{ field.default_val }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+  </div>
 {% endblock %}
