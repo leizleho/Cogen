@@ -4,6 +4,8 @@
 <div class="container bg-light py-1">
   <h1 class="mt-5">{{ project.name }}</h1>
   <h5>{{ project.description }}</h5>
+  <b>Logo:</b> {{ project.logo }}<br>
+  <b>Brand:</b> {{ project.brand }}<br>
   <b>DB Connection String:</b> {{ project.db_uri }}<br>&nbsp;
   <form action="/gen/{{ project.id }}" method="GET">
     <a href="/projects/update/{{ project.id }}" class="btn btn-secondary btn-sm" role="button">

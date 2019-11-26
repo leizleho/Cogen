@@ -25,23 +25,26 @@ def show_projects():
 @project_bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_project():
-    project_form = ProjectForm()
-    if project_form.validate_on_submit():
+    form = ProjectForm()
+    if form.validate_on_submit():
         # Get form data
         user_id = current_user.id
-        name = request.form["name"]
-        description = request.form["description"]
-        db_uri = request.form["db_uri"]
+        name = form.name.data
+        description = form.description.data
+        brand = form.brand.data
+        logo = form.logo.data
+        db_uri = form.db_uri.data
 
         new_project = Project(user_id=user_id, name=name,
-                              description=description, db_uri=db_uri)
+                              description=description, brand=brand,
+                              logo=logo, db_uri=db_uri)
 
         db.session.add(new_project)
         db.session.commit()
         flash(f"Project {name} has been created.")
         return redirect(f"/projects/{new_project.id}")
 
-    return render_template('project_create.html', title="Create Project", form=project_form)
+    return render_template('project_create.html', title="Create Project", form=form)
 
 
 @project_bp.route('/update/<int:project_id>', methods=['GET', 'POST'])
@@ -51,9 +54,11 @@ def update_project(project_id):
     form = ProjectForm()
 
     if form.validate_on_submit():
-        project.name = request.form['name']
-        project.description = request.form['description']
-        project.db_uri = request.form['db_uri']
+        project.name = form.name.data
+        project.description = form.description.data
+        project.brand = form.brand.data
+        project.logo = form.logo.data
+        project.db_uri = form.db_uri.data
         db.session.commit()
         return redirect(f"/projects/{project_id}")
 
