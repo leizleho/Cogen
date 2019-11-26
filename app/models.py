@@ -41,6 +41,8 @@ class Project(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index=True)
     name = db.Column(db.String(20), nullable=False)
     description = db.Column(db.String(200))
+    brand = db.Column(db.String(30))
+    logo = db.Column(db.String(120))
     db_uri = db.Column(db.String(200))
 
     # Relationship to user
@@ -131,28 +133,25 @@ class PageTemplate(db.Model):
         return f'<PageTemplate table_id={self.table_id} list={self.list_page}>'
 
 
-# Additional Features if time allows
-# class Relationship(db.Model):
-#     """Table Relationships"""
+class Relationship(db.Model):
+    """Table Relationships"""
 
-#     __tablename__ = "relationships"
+    __tablename__ = "relationships"
 
-#     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     project_id = db.Column(
-#         db.Integer, db.ForeignKey('projects.id'), index=True)
-#     parent_table = db.Column(db.String(30))
-#     parent_key = db.Column(db.String(30))
-#     child_table = db.Column(db.String(30))
-#     child_key = db.Column(db.String(30))
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    table_id = db.Column(db.Integer, db.ForeignKey('tables.id'), index=True)
+    rel_type = db.Column(db.String(15))
+    rel_table = db.Column(db.String(30))
+    rel_table_name = db.Column(db.String(30))
 
-#     # Relationship to projects
-#     project = db.relationship('Project',
-#                               backref=db.backref('relationships', order_by=id))
+    # Relationship to projects
+    table = db.relationship('Table',
+                            backref=db.backref('relationships', order_by=id))
 
-#     def __repr__(self):
-#         """Field info"""
+    def __repr__(self):
+        """Relationships info"""
 
-#         return f'<Relationship relationship_id={self.id}  project_id={self.project_id}>'
+        return f'<Relationship relationship_id={self.id}  rel_type={self.rel_type}>'
 
 
 ##############################################################################
