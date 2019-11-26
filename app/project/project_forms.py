@@ -54,3 +54,18 @@ class FieldForm(FlaskForm):
     default_val = StringField('Default value')
     kwargs = TextAreaField('Keyword arguments')
     submit = SubmitField('Submit')
+
+
+class PageTemplateForm(FlaskForm):
+    table_id = IntegerField('Table')
+    list_page = StringField('List Page Template')
+    list_kwargs = TextAreaField('Keyword arguments')
+    add_page = StringField('Add Page Template')
+    add_kwargs = TextAreaField('Keyword arguments')
+    edit_page = StringField('Edit Page Template')
+    edit_kwargs = TextAreaField('Keyword arguments')
+    view_page = StringField('View Page Template')
+    view_kwargs = TextAreaField('Keyword arguments')
+    delete_page = StringField('Delete Page Template')
+    delete_kwargs = TextAreaField('Keyword arguments')
+    submit = SubmitField('Submit')

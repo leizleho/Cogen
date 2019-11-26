@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% from "_render_field.html" import render_field %}
+
+{% block content %}
+  <h3 class="mt-5">Update Page Templates</h3>
+  <form action="/projects/tables/{{ table_id }}/templates/update/{{ template_id }}" method="POST">
+    {{ form.csrf_token }}
+    <div class="form-group">
+    {{ render_field(form.list_page)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.list_kwargs)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.add_page)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.add_kwargs)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.edit_page)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.edit_kwargs)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.view_page)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.view_kwargs)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.delete_page)}}
+    </div>
+    <div class="form-group">
+    {{ render_field(form.delete_kwargs)}}
+    </div>
+    <div class="form-group">
+      {{ form.submit(label="Update Templates",class="btn btn-secondary") }}
+    </div>
+  </form>
+{% endblock %}

@@ -1,8 +1,8 @@
 """Routes for projects"""
 from flask import Blueprint, render_template, request, flash, redirect, session
 from flask_login import current_user, login_required
-from app.models import connect_to_db, db, User, Project, Table, Field
-from app.project.project_forms import ProjectForm, TableForm, FieldForm
+from app.models import connect_to_db, db, User, Project, Table, Field, PageTemplate
+from app.project.project_forms import ProjectForm, TableForm, FieldForm, PageTemplateForm
 
 # Blueprint Config
 project_bp = Blueprint('project_bp', __name__,
@@ -238,11 +238,70 @@ def delete_field(field_id):
         db.session.commit()
         return redirect(f"/projects/tables/{table_id}")
 
+# Add templates
+@project_bp.route('/tables/<int:table_id>/templates/add', methods=['GET', 'POST'])
+@login_required
+def add_template(table_id):
+    form = PageTemplateForm()
+    if form.validate_on_submit():
+        list_page = form.list_page.data
+        list_kwargs = form.list_kwargs.data
+        add_page = form.add_page.data
+        add_kwargs = form.add_kwargs.data
+        edit_page = form.edit_page.data
+        edit_kwargs = form.edit_kwargs.data
+        view_page = form.view_page.data
+        view_kwargs = form.view_kwargs.data
+        delete_page = form.delete_page.data
+        delete_kwargs = form.delete_kwargs.data
 
-# # get data for generation
-# @project_bp.route('/<int:project_id>/gendata', methods=['GET'])
-# def get_genaration_data(project_id):
-#     project = Project.query.get(project_id)
-#     project_config = create_config(project)
+        new_templates = PageTemplate(table_id=table_id, list_page=list_page,
+                                     list_kwargs=list_kwargs,
+                                     add_page=add_page,
+                                     add_kwargs=add_kwargs,
+                                     edit_page=edit_page,
+                                     edit_kwargs=edit_kwargs,
+                                     view_page=view_page,
+                                     view_kwargs=view_kwargs,
+                                     delete_page=delete_page,
+                                     delete_kwargs=delete_kwargs)
+        db.session.add(new_templates)
+        db.session.commit()
+        return redirect(f"/projects/{table_id}")
 
-#     return render_template("project_details.html", title="Project Info", project=project, project_config=project_config)
+    return render_template('page_template_create.html', title='Add Templates', table_id=table_id, form=form)
+
+
+# Update a table
+@project_bp.route('/tables/<int:table_id>/templates/update/<int:template_id>', methods=['GET', 'POST'])
+@login_required
+def update_template(table_id, template_id):
+    templates = PageTemplate.query.get(template_id)
+    form = PageTemplateForm()
+
+    if form.validate_on_submit():
+        templates.list_page = form.list_page.data
+        templates.list_kwargs = form.list_kwargs.data
+        templates.add_page = form.add_page.data
+        templates.add_kwargs = form.add_kwargs.data
+        templates.edit_page = form.edit_page.data
+        templates.edit_kwargs = form.edit_kwargs.data
+        templates.view_page = form.view_page.data
+        templates.view_kwargs = form.view_kwargs.data
+        templates.delete_page = form.delete_page.data
+        templates.delete_kwargs = form.delete_kwargs.data
+        db.session.commit()
+        return redirect(f"/tables/{table_id}/templates")
+
+    form.list_page.data = templates.list_page
+    form.list_kwargs.data = templates.list_kwargs
+    form.add_page.data = templates.add_page
+    form.add_kwargs.data = templates.add_kwargs
+    form.edit_page.data = templates.edit_page
+    form.edit_kwargs.data = templates.edit_kwargs
+    form.view_page.data = templates.view_page
+    form.view_kwargs.data = templates.view_kwargs
+    form.delete_page.data = templates.delete_page
+    form.delete_kwargs.data = templates.delete_kwargs
+    return render_template('page_template_update.html',
+                           title='Tables', table_id=table_id, template_id=template_id, form=form)
