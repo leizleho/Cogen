@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, PasswordField, IntegerField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, Length
+from flask_login import current_user, login_required
 from flask_wtf.file import FileField, FileAllowed
 
 
@@ -44,8 +45,7 @@ class FieldForm(FlaskForm):
                                                     ('select', 'Select'),
                                                     ('textarea', 'Text'),
                                                     ('url', 'Url')])
-    required = BooleanField(u'Required', default='checked',
-                            render_kw={'checked': True})
+    required = BooleanField(u'Required', default='checked')
     list_page = BooleanField('List', default='checked',
                              false_values=(False, 'f', 0))
     add_page = BooleanField('Add', default='checked',
@@ -83,6 +83,6 @@ class RelationshipForm(FlaskForm):
                            ('one_to_many', 'One to Many')])
     rel_name = StringField('Name')
     parent_table = StringField('Parent Table')
-    child_table = SelectField('Add relationship to', choices=[], coerce=str)
+    child_table = SelectField('Add relationship to', choices=[], coerce='str')
 
     submit = SubmitField('Submit')

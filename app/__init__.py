@@ -21,9 +21,11 @@ from app.user.user_routes import user_bp
 from app.main.main_routes import main_bp
 from app.project.project_routes import project_bp
 from app.gen.gen_routes import gen_bp
+# from app.api import api_bp
 
 # Register blueprints with the app
 app.register_blueprint(main_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(project_bp)
 app.register_blueprint(gen_bp)
+# app.register_blueprint(api_bp)
