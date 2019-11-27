@@ -33,7 +33,7 @@
       <a href="/projects/tables/del/{{ table.id }}" class="btn btn-secondary btn-sm" role="button">
       Delete</a>
       <a class="btn btn-secondary btn-sm" href="/projects/tables/{{ table.id }}/fields/create">Add a field</a>
-      <a class="btn btn-secondary btn-sm" href="/projects/tables/{{ table.id }}/fields/create">Advanced Settings</a>
+      <a class="btn btn-secondary btn-sm" href="/projects/{{ project.id }}/tables/{{ table.id }}/relationships/create">Relationships</a>
       </h5>
         <div class="table-responsive card-text">
           <table class="table table-sm">
@@ -48,6 +48,7 @@
                 <th>Add</th>
                 <th>Edit</th>
                 <th>View</th>
+                <th>ForeignKey</th>
               </tr>
             </thead>
             <tbody>
@@ -69,6 +70,7 @@
                   <td>{{ field.add_page }}</td>
                   <td>{{ field.edit_page }}</td>
                   <td>{{ field.view_page }}</td>
+                  <td>{{ field.foreign_key }}</td>
                 </tr>
             {% endfor %}
             </tbody>

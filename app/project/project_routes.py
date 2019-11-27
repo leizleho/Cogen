@@ -1,8 +1,8 @@
 """Routes for projects"""
 from flask import Blueprint, render_template, request, flash, redirect, session
 from flask_login import current_user, login_required
-from app.models import connect_to_db, db, User, Project, Table, Field, PageTemplate
-from app.project.project_forms import ProjectForm, TableForm, FieldForm, PageTemplateForm
+from app.models import connect_to_db, db, User, Project, Table, Field, PageTemplate, Relationship
+from app.project.project_forms import ProjectForm, TableForm, FieldForm, PageTemplateForm, RelationshipForm
 
 # Blueprint Config
 project_bp = Blueprint('project_bp', __name__,
@@ -175,13 +175,15 @@ def create_field(table_id):
         edit_page = request.form.get('edit_page') != None
         view_page = request.form.get('view_page') != None
         default_val = request.form['default_val']
+        foreign_key = request.form['foreign_key']
         kwargs = request.form['kwargs']
 
         new_field = Field(table_id=table_id, name=name, label=label,
                           placeholder=placeholder, input_type=input_type,
                           required=required, list_page=list_page, add_page=add_page,
                           edit_page=edit_page, view_page=view_page,
-                          default_val=default_val, kwargs=kwargs)
+                          default_val=default_val, foreign_key=foreign_key,
+                          kwargs=kwargs)
         db.session.add(new_field)
         db.session.commit()
         return redirect(f"/projects/tables/{table_id}")
@@ -206,6 +208,7 @@ def update_field(field_id):
         field.edit_page = request.form.get('edit_page') != None
         field.view_page = request.form.get('view_page') != None
         field.default_val = request.form['default_val']
+        field.foreign_key = request.form['foreign_key']
         field.kwargs = request.form['kwargs']
 
         db.session.commit()
@@ -221,6 +224,7 @@ def update_field(field_id):
     field_form.edit_page.data = field.edit_page
     field_form.view_page.data = field.view_page
     field_form.default_val.data = field.default_val
+    field_form.foreign_key.data = field.foreign_key
     field_form.kwargs.data = field.kwargs
 
     return render_template('field_update.html',
@@ -310,3 +314,34 @@ def update_template(table_id, template_id):
     form.delete_kwargs.data = templates.delete_kwargs
     return render_template('page_template_update.html',
                            title='Tables', table_id=table_id, template_id=template_id, form=form)
+
+
+# Create Relationships
+@project_bp.route('/<int:project_id>/tables/<int:table_id>/relationships/create', methods=['GET', 'POST'])
+@login_required
+def create_relationship(project_id, table_id):
+    form = RelationshipForm()
+    parent_tbl = Table.query.get(table_id)
+
+    tables = Table.query.filter(
+        Table.id != table_id, Table.project_id == project_id)
+    choices = []
+    for table in tables:
+        choices.append((table.name, table.name))
+
+    form.child_table.choices = choices
+
+    if form.validate_on_submit():
+        rel_type = form.rel_type.data
+        rel_name = form.rel_name.data
+        parent_table = parent_tbl.name
+        child_table = form.child_table.data
+
+        new_rel = Relationship(table_id=table_id, rel_type=rel_type,
+                               rel_name=rel_name, parent_table=parent_table,
+                               child_table=child_table, )
+        db.session.add(new_rel)
+        db.session.commit()
+        return redirect(f"/projects/{table_id}")
+
+    return render_template('relationship_create.html', title='Create Relationship', project_id=project_id, table_id=table_id, form=form)

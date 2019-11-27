@@ -55,6 +55,7 @@ class FieldForm(FlaskForm):
     view_page = BooleanField('View', default='checked',
                              false_values=(False, 'f', 0))
     default_val = StringField('Default value')
+    foreign_key = StringField('Foreign Key')
     kwargs = TextAreaField('Keyword arguments')
     submit = SubmitField('Submit')
 
@@ -71,4 +72,17 @@ class PageTemplateForm(FlaskForm):
     view_kwargs = TextAreaField('Keyword arguments')
     delete_page = StringField('Delete Page Template')
     delete_kwargs = TextAreaField('Keyword arguments')
+    submit = SubmitField('Submit')
+
+
+class RelationshipForm(FlaskForm):
+    table_id = IntegerField('Table ID')
+
+    rel_type = SelectField('Relationship type', choices=[
+                           ('one_to_one', 'One to One'),
+                           ('one_to_many', 'One to Many')])
+    rel_name = StringField('Name')
+    parent_table = StringField('Parent Table')
+    child_table = SelectField('Add relationship to', choices=[], coerce=str)
+
     submit = SubmitField('Submit')

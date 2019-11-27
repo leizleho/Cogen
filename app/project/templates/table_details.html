@@ -24,6 +24,12 @@
     <a href="/projects/tables/update/{{ table.id }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;
     <a href="/projects/tables/del/{{ table.id }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>
   </div>
+
+  <div class="px-2 py-2">
+  {% for rel in table.relationships %}
+    {{rel.rel_name}} | {{rel.rel_type}} |{{ rel.child_table }}<br>
+  {% endfor %}
+  </div>
   <h3 class="mt-5 mb-3">Fields
   <a href="/projects/tables/{{ table.id }}/fields/create"><i class="far fa-plus-square"></i></a>
   </h3>
@@ -40,7 +46,7 @@
         <th>Add</th>
         <th>Edit</th>
         <th>View</th>
-        <th>Default value</th>
+        <th>ForeignKey</th>
       </tr>
     </thead>
     <tbody>
@@ -58,7 +64,7 @@
         <td>{{ field.add_page }}</td>
         <td>{{ field.edit_page }}</td>
         <td>{{ field.view_page }}</td>
-        <td>{{ field.default_val }}</td>
+        <td>{{ field.foreign_key }}</td>
       </tr>
     {% endfor %}
     </tbody>

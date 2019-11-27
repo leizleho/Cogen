@@ -93,6 +93,7 @@ class Field(db.Model):
     edit_page = db.Column(db.Boolean, default=False)
     view_page = db.Column(db.Boolean, default=False)
     default_val = db.Column(db.String(200))
+    foreign_key = db.Column(db.String(65))
     kwargs = db.Column(db.Text)
 
     # Relationship to tables
@@ -141,8 +142,9 @@ class Relationship(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     table_id = db.Column(db.Integer, db.ForeignKey('tables.id'), index=True)
     rel_type = db.Column(db.String(15))
-    rel_table = db.Column(db.String(30))
-    rel_table_name = db.Column(db.String(30))
+    rel_name = db.Column(db.String(30))
+    parent_table = db.Column(db.String(30))
+    child_table = db.Column(db.String(30))
 
     # Relationship to projects
     table = db.relationship('Table',
