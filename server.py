@@ -1,9 +1,10 @@
 from app import app
-from app.models import connect_to_db, db
+from app.db import db, connect_to_db
+from app.ma import ma
 from flask_debugtoolbar import DebugToolbarExtension
 
 connect_to_db(app)
-# Use the DebugToolbar
+ma.init_app(app)
 app.debug = True
-DebugToolbarExtension(app)
+# DebugToolbarExtension(app)
 app.run()

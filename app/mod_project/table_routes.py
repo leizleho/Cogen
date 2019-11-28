@@ -1,8 +1,10 @@
 from flask import render_template, request, flash, redirect, session
-from app.models import db, Table, Field
-from app.project import project_bp
+from app.db import db
+from app.models.table import Table
+from app.models.field import Field
+from app.mod_project import project_bp
 from flask_login import current_user, login_required
-from app.project.forms import TableForm
+from app.mod_project.forms import TableForm
 
 #################### ROUTES FOR TABLES ######################
 # Create Table

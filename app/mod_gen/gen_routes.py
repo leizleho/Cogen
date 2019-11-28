@@ -1,18 +1,13 @@
 """Routes for the Code Generator"""
 from flask import Blueprint, render_template, request, flash, redirect, session
-from app.models import db, Project, Field
-from app.gen.coder import write_code
-from app.gen.source_dict import source, wtf
+from app.models.project import Project
+from app.mod_gen import gen_bp
+from app.mod_gen.coder import write_code
+from app.mod_gen.source_dict import source, wtf
 from app.utils import camel_case
 from app.printvar import printvar
 import subprocess
 import os
-
-# Blueprint Config
-gen_bp = Blueprint('gen_bp', __name__,
-                   template_folder='templates',
-                   static_folder='static',
-                   url_prefix='/gen')
 
 
 @gen_bp.route('/<int:project_id>')

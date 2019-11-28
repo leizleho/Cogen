@@ -1,8 +1,9 @@
 from flask import render_template, request, flash, redirect, session
-from app.models import db, PageTemplate
-from app.project import project_bp
+from app.db import db
+from app.models.pagetemplate import PageTemplate
+from app.mod_project import project_bp
 from flask_login import current_user, login_required
-from app.project.forms import PageTemplateForm
+from app.mod_project.forms import PageTemplateForm
 
 # Add templates
 @project_bp.route('/tables/<int:table_id>/templates/add', methods=['GET', 'POST'])

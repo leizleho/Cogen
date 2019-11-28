@@ -1,17 +1,13 @@
 """Routes for user pages (Register/Login/Logout/Profile)."""
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import render_template, request, flash, redirect, url_for, session
 from flask import current_app as app
+from app.mod_user import user_bp
 from flask_login import login_user, current_user, logout_user, login_required
 from app import login_manager
-from app.models import connect_to_db, db, User
-from app.user.user_forms import LoginForm, RegistrationForm
-
-
-# Blueprint Configuration
-user_bp = Blueprint('user_bp', __name__,
-                    template_folder='templates',
-                    static_folder='static',
-                    url_prefix='/users')
+# from app.models import connect_to_db, db, User
+from app.db import db
+from app.models.user import User
+from app.mod_user.user_forms import LoginForm, RegistrationForm
 
 
 @login_manager.user_loader

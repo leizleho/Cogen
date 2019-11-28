@@ -1,8 +1,9 @@
 from flask import render_template, request, flash, redirect, session
-from app.models import db, Field
-from app.project import project_bp
+from app.db import db
+from app.models.field import Field
+from app.mod_project import project_bp
 from flask_login import current_user, login_required
-from app.project.forms import FieldForm
+from app.mod_project.forms import FieldForm
 
 #################### ROUTES FOR FIELDS ######################
 # Create a Field

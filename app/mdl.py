@@ -1,9 +1,9 @@
 """Models and database functions for this app."""
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from typing import List
+from app.db import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
-db = SQLAlchemy()
 
 
 class User(db.Model, UserMixin):
@@ -54,6 +54,10 @@ class Project(db.Model):
 
         return f'<Project project_id={self.id} project_name={self.name} user_id={self.user_id}>'
 
+    @classmethod
+    def find_all(cls) -> List["Project"]:
+        return cls.query.all()
+
 
 class Table(db.Model):
     """Table info for each project."""
@@ -68,6 +72,26 @@ class Table(db.Model):
     # Relationship to project
     project = db.relationship('Project',
                               backref=db.backref('tables', order_by=id))
+
+    @classmethod
+    def find_by_name(cls, name: str) -> "Table":
+        return cls.query.filter_by(name=name).first()
+
+    @classmethod
+    def find_by_id(cls, id: int) -> "Table":
+        return cls.query.filter_by(id=id).first()
+
+    @classmethod
+    def find_all(cls) -> List["Table"]:
+        return cls.query.all()
+
+    def save_to_db(self) -> None:
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self) -> None:
+        db.session.delete(self)
+        db.session.commit()
 
     def __repr__(self):
         """Table info"""

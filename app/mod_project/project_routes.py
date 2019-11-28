@@ -1,9 +1,13 @@
 """Routes for projects"""
 from flask import render_template, request, flash, redirect, session
-from app.models import connect_to_db, db, User, Project, Table, Field
-from app.project import project_bp
+from app.db import db
+from app.models.user import User
+from app.models.project import Project
+from app.models.table import Table
+from app.models.field import Field
+from app.mod_project import project_bp
 from flask_login import current_user, login_required
-from app.project.forms import ProjectForm
+from app.mod_project.forms import ProjectForm
 
 #################### ROUTES FOR PROJECTS ######################
 @project_bp.route('/', methods=['GET'])

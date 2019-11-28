@@ -1,10 +1,6 @@
 """Routes for main pages."""
-from flask import Blueprint, render_template
-
-# Blueprint Configuration
-main_bp = Blueprint('main_bp', __name__,
-                    template_folder='templates',
-                    static_folder='static')
+from flask import render_template
+from app.mod_main import main_bp
 
 
 @main_bp.route('/')
