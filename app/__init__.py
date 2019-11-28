@@ -22,14 +22,14 @@ from app.mod_user import user_bp
 from app.mod_main import main_bp
 from app.mod_project import project_bp
 from app.mod_gen import gen_bp
-# from app.api import api_bp
+from app.api import api_bp
 
 # Register blueprints with the app
 app.register_blueprint(main_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(project_bp)
 app.register_blueprint(gen_bp)
-# app.register_blueprint(api_bp)
+app.register_blueprint(api_bp)
 
 # Endpoints for the API module
 # api.add_resource(Table, "/api/table/<string:name>")
