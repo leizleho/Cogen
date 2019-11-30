@@ -5,8 +5,8 @@ from flask_jwt_extended import JWTManager
 
 from app.mod_api.blacklist import BLACKLIST
 from app.mod_api.resources.user import UserRegister, UserLogin, User, TokenRefresh, UserLogout
+from app.mod_api.resources.project import Project, Projects
 # from app.api.resources.table import Table, Tables
-# from app.api.resources.project import Project, Projects
 
 app = Flask(__name__)
 
@@ -49,7 +49,8 @@ api.add_resource(User, "/api/user/<int:id>")
 api.add_resource(UserLogin, "/api/login")
 api.add_resource(TokenRefresh, "/api/refresh")
 api.add_resource(UserLogout, "/api/logout")
+api.add_resource(Projects, "/api/projects")
+api.add_resource(Project, "/api/project",
+                          "/api/project/<int:id>")
 # api.add_resource(Table, "/api/table/<string:name>")
 # api.add_resource(Tables, "/api/tables")
-# api.add_resource(Project, "/api/project/<string:name>")
-# api.add_resource(Projects, "/api/projects")
