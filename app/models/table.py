@@ -10,7 +10,7 @@ class Table(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     project_id = db.Column(
-        db.Integer, db.ForeignKey('projects.id'), index=True)
+        db.Integer, db.ForeignKey('projects.id'), nullable=False, index=True)
     name = db.Column(db.String(30), nullable=False)
 
     # Relationship to project
@@ -18,22 +18,22 @@ class Table(db.Model):
                               backref=db.backref('tables', order_by=id))
 
     @classmethod
-    def find_by_name(cls, name: str) -> "Table":
+    def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
 
     @classmethod
-    def find_by_id(cls, id: int) -> "Table":
-        return cls.query.filter_by(id=id).first()
+    def find_by_id(cls, id):
+        return cls.query.get(id)
 
     @classmethod
-    def find_all(cls) -> List["Table"]:
+    def find_all(cls):
         return cls.query.all()
 
-    def save_to_db(self) -> None:
+    def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self) -> None:
+    def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
 

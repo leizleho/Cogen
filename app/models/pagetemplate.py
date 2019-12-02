@@ -24,6 +24,22 @@ class PageTemplate(db.Model):
                                                uselist=False, order_by=id))
 
     def __repr__(self):
-        """Field info"""
+        """Page Templates info"""
 
         return f'<PageTemplate table_id={self.table_id} list={self.list_page}>'
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.get(id)
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
