@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, fresh_jwt_required
+from marshmallow import ValidationError
 from app.models.project import Project as ProjectModel
 from app.mod_api.schemas.project import ProjectSchema
 
@@ -15,18 +16,21 @@ class Project(Resource):
         if project:
             return project_schema.dump(project), 200
 
-        return {"message": "project_not_found"}, 404
+        return {"error": "project_not_found"}, 404
 
     @classmethod
     def post(cls):
         project_json = request.get_json()
 
-        project = project_schema.load(project_json)
+        try:
+            project = project_schema.load(project_json)
+        except ValidationError as err:
+            return err.messages
 
         try:
             project.save_to_db()
         except:
-            return {"message": "An error occured while saving the project"}, 500
+            return {"error": "An error occured while saving the project"}, 500
 
         return project_schema.dump(project), 201
 
@@ -37,7 +41,7 @@ class Project(Resource):
             project.delete_from_db()
             return {"message": "Project deleted"}, 200
 
-        return {"message": "Project not found"}, 404
+        return {"error": "Project not found"}, 404
 
     @classmethod
     def put(cls, id: int):
@@ -45,21 +49,17 @@ class Project(Resource):
         project = ProjectModel.find_by_id(id)
 
         if project:
-            project.user_id = project_json["user_id"]
-            project.name = project_json["name"]
-            project.description = project_json["description"]
-            project.brand = project_json["brand"]
-            project.logo = project_json["logo"]
-            project.db_uri = project_json["db_uri"]
+            for key, val in project_json.items():
+                setattr(project, key, val)
 
             try:
                 project.save_to_db()
             except:
-                return {"message": "An error occured while saving the project"}, 500
+                return {"error": "An error occured while saving the project"}, 500
 
             return project_schema.dump(project), 200
 
-        return {"message": "Project not found"}, 404
+        return {"error": "Project not found"}, 404
 
 
 class Projects(Resource):
