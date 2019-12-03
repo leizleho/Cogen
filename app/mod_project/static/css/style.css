@@ -1,3 +1,8 @@
 .danger {
   color: red;
 }
+
+/* Project list card style */
+.project-info {
+  min-height: 160px;
+}
