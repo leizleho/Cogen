@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h1 class="mt-5">Create Project</h1>
   <form action="/projects/create" method="POST">
     {{ form.csrf_token }}
@@ -25,4 +26,5 @@
       {{ form.submit(class="btn btn-secondary") }}
     </div>
   </form>
+</div>
 {% endblock %}

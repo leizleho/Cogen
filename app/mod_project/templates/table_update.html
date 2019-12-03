@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h3 class="mt-5">Update Table</h3>
 
   <form action="/projects/tables/update/{{ table_id }}" method="POST">
@@ -13,4 +14,5 @@
       {{ form.submit(label="Update Table",class="btn btn-secondary") }}
     </div>
   </form>
+</div>
 {% endblock %}

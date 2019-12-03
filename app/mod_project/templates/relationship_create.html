@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h3 class="mt-5">Create Relationship</h3>
   <div class="alert alert-info" role="alert">
     Example: <br>
@@ -30,4 +31,5 @@
       {{ form.submit(label="Create Table",class="btn btn-secondary") }}
     </div>
   </form>
+</div>
 {% endblock %}

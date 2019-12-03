@@ -2,7 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
-<div>
+<div class="container">
 <h1>{{ title }}</h1>
 <form action="/users/register" method="POST">
     {# This hidden_tag is a CSRF security feature. #}

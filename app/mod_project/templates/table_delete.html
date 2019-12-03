@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h1 class="mt-5">Delete Table</h1>
   <p class="danger">D A N G E R!<br>
   You are deleting table id {{ table.id }} ({{ table.name }})<br>
@@ -18,4 +19,5 @@
       <input type="submit" value="CONFIRM DELETION">
     </div>
   </form>
+</div>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div class="container">
   <h3 class="mt-5">Delete Project</h3>
   <div class="alert alert-danger" role="alert">
   You are deleting project id {{ project.id }} ({{ project.name }})
@@ -25,4 +26,5 @@
       <input class="btn btn-secondary" type="submit" value="CONFIRM DELETION">
     </div>
   </form>
+</div>
 {% endblock %}

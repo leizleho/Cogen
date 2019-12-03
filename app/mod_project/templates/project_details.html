@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container bg-light py-1">
+<div class="container py-1">
   <h1 class="mt-5">{{ project.name }}</h1>
   <h5>{{ project.description }}</h5>
   <b>Logo:</b> {{ project.logo }}<br>
@@ -17,7 +17,7 @@
     </button>
   </form>
   <br>
-</div>
+
 <h3 class="mt-5 mb-3">Tables
   <a class="text-secondary" href="/projects/{{ project.id }}/tables/create">
     <i class="far fa-plus-square"></i>
@@ -80,4 +80,5 @@
     </div>
     <br>&nbsp;
   {% endfor %}
+</div>
 {% endblock %}

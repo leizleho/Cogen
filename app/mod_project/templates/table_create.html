@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h3 class="mt-5">Create Table</h3>
   <div class="alert alert-info" role="alert">
     Notes: "users" table is automatically created for you. It will be used for
@@ -15,4 +16,5 @@
       {{ form.submit(label="Create Table",class="btn btn-secondary") }}
     </div>
   </form>
+</div>
 {% endblock %}

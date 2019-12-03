@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h3 class="mt-5">Delete Field</h3>
   <div class="alert alert-danger" role="alert">
     Danger! You are deleting field "{{ field.name }}"
@@ -11,4 +12,5 @@
       <input class="btn btn-secondary" type="submit" value="CONFIRM DELETION">
     </div>
   </form>
+</div>
 {% endblock %}

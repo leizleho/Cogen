@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h3 class="mt-5">Update a Field</h3>
   <div class="alert alert-info" role="alert">
     Notes: "id" is automatically added as a primary key of the table.
@@ -53,4 +54,5 @@
       {{ form.submit(class="btn btn-secondary") }}
     </div>
   </form>
+</div>
 {% endblock %}

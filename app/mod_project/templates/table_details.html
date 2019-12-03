@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container bg-light py-1">
+<div class="container py-1">
   <h1 class="mt-5"><a href="/projects/{{ table.project.id }}" class="text-secondary">{{ table.project.name }}</a></h1>
   <h5>{{ table.project.description }}</h5>
   <b>DB Connection String:</b> {{ table.project.db_uri }}<br>&nbsp;
@@ -15,7 +15,6 @@
     </button>
   </form>
   <br>
-</div>
 
   <h3 class="mt-5 mb-3">Table Name: {{ table.name }}</h3>
   <b>Table #</b> {{ table.id }}<br>
@@ -70,4 +69,5 @@
     </tbody>
     </table>
   </div>
+</div>
 {% endblock %}

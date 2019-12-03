@@ -2,6 +2,7 @@
 {% from "_render_field.html" import render_field %}
 
 {% block content %}
+<div class="container">
   <h3 class="mt-5">Page Templates</h3>
   <form action="/projects/tables/{{ table_id }}/templates/add" method="POST">
     {{ form.csrf_token }}
@@ -39,4 +40,5 @@
       {{ form.submit(label="Add Templates",class="btn btn-secondary") }}
     </div>
   </form>
+</div>
 {% endblock %}
