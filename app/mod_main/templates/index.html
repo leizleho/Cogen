@@ -1,8 +1,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
-<h1 class="mt-5">{{body}}</h1>
-Welcome to Cogen App!
-</div>
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Cogen</h1>
+      <p class="lead text-muted">Boost your programming productivity.
+      Intanstly create a flask web app that allows your user to create, read,
+      update and delete record.
+      </p>
+      <p>
+        <a href="/projects/create" class="btn btn-primary my-2">Create Project</a>
+        <a href="#" class="btn btn-secondary my-2">Learn More</a>
+      </p>
+    </div>
+  </section>
 {% endblock %}
