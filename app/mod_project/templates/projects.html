@@ -1,23 +1,29 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h1 class="mt-5">Projects
-  <a class="text-secondary" href="/projects/create">
-    <i class="far fa-plus-square"></i>
-  </a>
-  </h1>
-  <div class="card-deck">
-  {% for project in projects %}
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">{{ project.name }}</h5>
-        <p class="card-text">{{ project.description }}</p>
-      </div>
-      <div class="card-footer">
-        <a href="/projects/{{ project.id }}">View</a> |
-        <a href="/projects/update/{{ project.id }}">Edit</a> |
-        <a href="/projects/del/{{ project.id }}">Delete</a>
-      </div>
+<div class="container">
+    <h1 class="mt-5">Projects
+    <a class="text-secondary" href="/projects/create">
+      <i class="far fa-plus-square"></i>
+    </a>
+    </h1>
+    <div class="row">
+    {% for project in projects %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">{{ project.name }}</h5>
+                <p class="card-text">{{ project.description }}</p>
+              </div>
+              <div class="card-footer">
+                  <div class="btn-group">
+                    <a href="/projects/{{ project.id }}" class="btn btn-sm btn-outline-secondary">View</a>
+                    <a href="/projects/update/{{ project.id }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a href="/projects/del/{{ project.id }}" class="btn btn-sm btn-outline-secondary">Delete</a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    {% endfor %}
     </div>
-  {% endfor %}
-  </div>
+</div>
 {% endblock %}
