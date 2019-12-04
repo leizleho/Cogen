@@ -84,6 +84,6 @@ class RelationshipForm(FlaskForm):
                            ('one_to_many', 'One to Many')])
     rel_name = StringField('Name')
     parent_table = StringField('Parent Table')
-    child_table = SelectField('Add relationship to', choices=[], coerce='str')
+    child_table = SelectField('Add relationship to', choices=[])
 
     submit = SubmitField('Submit')
