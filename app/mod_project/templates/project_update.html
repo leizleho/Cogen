@@ -3,28 +3,37 @@
 
 {% block content %}
 <div class="container">
-  <h1 class="mt-5">Update Project</h1>
-  <form action="/projects/update/{{ id }}" method="POST">
-    {{ form.csrf_token }}
-    <div class="form-group">
-      {{ render_field(form.name)}}
-    </div>
-    <div class="form-group">
-      {{ render_field(form.description)}}
-    </div>
-    <div class="form-group">
-      {{ render_field(form.brand)}}
-    </div>
-    <div class="form-group">
-      {{ render_field(form.logo)}}
-    </div>
-    <div class="form-group">
-      {{ render_field(form.db_uri)}}
-      <small id="emailHelp" class="form-text text-muted">Example: postgresql://postgres@localhost:5432/testdb</small>
-    </div>
-    <div class="form-group">
-         {{ form.submit(class="btn btn-secondary") }}
-     </div>
-  </form>
+  <div class="mx-5">
+      <h1 class="mt-5">Update Project</h1>
+      <form action="/projects/update/{{ id }}" method="POST">
+        {{ form.csrf_token }}
+          <div class="form-row">
+              <div class="form-group col-md-6">
+              {{ render_field(form.name) }}
+              </div>
+              <div class="form-group col-md-6">
+              {{ render_field(form.brand) }}
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="custom-file">
+            {{ render_field(form.logo,class="custom-file-input") }}
+            <label class="custom-file-label" for="logo">Choose file...</label>
+            </div>
+          </div>
+          <div class="form-group">
+          {{ render_field(form.description) }}
+          </div>
+
+          <div class="form-group">
+            {{ render_field(form.db_uri) }}
+            <small id="emailHelp" class="form-text text-muted">Example: postgresql://postgres@localhost:5432/testdb</small>
+          </div>
+          <div class="form-group">
+            {{ form.submit(class="btn btn-secondary") }}
+          </div>
+
+      </form>
+  </div>
 </div>
 {% endblock %}

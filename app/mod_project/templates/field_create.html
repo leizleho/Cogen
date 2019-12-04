@@ -3,58 +3,71 @@
 
 {% block content %}
 <div class="container">
-  <h3 class="mt-5">Create a Field</h3>
-  <div class="alert alert-info" role="alert">
-    Notes: "id" is automatically added as a primary key of the table.
+  <div class="mx-5">
+    <h3 class="mt-5">Create a Field</h3>
+    <div class="alert bg-info" role="alert">
+      Notes: "id" is automatically added as a primary key of the table.
+    </div>
+
+    <form action="/projects/tables/{{ table_id }}/fields/create" method="POST">
+      {{ form.csrf_token }}
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          {{ render_field(form.name) }}
+        </div>
+        <div class="form-group col-md-4">
+        {{ render_field(form.label) }}
+        </div>
+        <div class="form-group col-md-4">
+        {{ render_field(form.placeholder) }}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          {{ render_field(form.input_type) }}
+        </div>
+
+        <div class="form-group col-md-6">
+          {{ render_field(form.default_val) }}
+        </div>
+      </div>
+
+      <div class="form-row my-2">
+        <div class="form-group col-md-2">
+          {{ render_field(form.required) }}
+        </div>
+        <div class="form-group">
+          <label class="control-label">
+            Select the pages where you want this field to show
+          </label>
+
+          <div class="form-check form-check-inline">
+            {{ render_field(form.list_page) }}
+          </div>
+          <div class="form-check form-check-inline">
+            {{ render_field(form.add_page) }}
+          </div>
+          <div class="form-check form-check-inline">
+            {{ render_field(form.edit_page) }}
+          </div>
+          <div class="form-check form-check-inline">
+            {{ render_field(form.view_page) }}
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group">
+      {{ render_field(form.foreign_key) }}
+      </div>
+      <div class="form-group">
+      {{ render_field(form.kwargs) }}
+      </div>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-secondary") }}
+      </div>
+    </form>
   </div>
-
-  <form action="/projects/tables/{{ table_id }}/fields/create" method="POST">
-    {{ form.csrf_token }}
-
-    <div class="form-group">
-      {{ render_field(form.name) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.label) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.placeholder) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.input_type) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.required) }}
-    </div>
-    <label class="control-label">
-      Select the pages where you want this field to show
-    </label>
-    <div class="form-group">
-      <div class="form-check form-check-inline">
-      {{ render_field(form.list_page) }}
-      </div>
-      <div class="form-check form-check-inline">
-        {{ render_field(form.add_page) }}
-      </div>
-      <div class="form-check form-check-inline">
-      {{ render_field(form.edit_page) }}
-      </div>
-      <div class="form-check form-check-inline">
-      {{ render_field(form.view_page) }}
-      </div>
-    </div>
-    <div class="form-group">
-    {{ render_field(form.default_val) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.foreign_key) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.kwargs) }}
-    </div>
-    <div class="form-group">
-      {{ form.submit(class="btn btn-secondary") }}
-    </div>
-  </form>
 </div>
 {% endblock %}

@@ -3,16 +3,18 @@
 
 {% block content %}
 <div class="container">
-  <h3 class="mt-5">Update Table</h3>
+  <div class-"mx-5">
+      <h3 class="mt-5">Update Table</h3>
 
-  <form action="/projects/tables/update/{{ table_id }}" method="POST">
-    {{ form.csrf_token }}
-    <div class="form-group">
-    {{ render_field(form.name)}}
-    </div>
-    <div class="form-group">
-      {{ form.submit(label="Update Table",class="btn btn-secondary") }}
-    </div>
-  </form>
+      <form action="/projects/tables/update/{{ table_id }}" method="POST">
+        {{ form.csrf_token }}
+        <div class="form-group">
+        {{ render_field(form.name)}}
+        </div>
+        <div class="form-group">
+          {{ form.submit(label="Update Table",class="btn btn-secondary") }}
+        </div>
+      </form>
+  </div>
 </div>
 {% endblock %}

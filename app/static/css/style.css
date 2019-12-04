@@ -8,10 +8,6 @@
   color: red;
 }
 
-.footer {
-  background-color: #f5f5f5;
-}
-
 .logo {
   width: 35px;
 }
@@ -41,4 +37,62 @@
 
 .jumbotron .container {
   max-width: 40rem;
+}
+
+.bg-dark {
+  background-color: rgba(11, 19, 43, 1) !important;
+}
+
+.bg-dark2 {
+  background-color: rgba(25, 35, 63, 1) !important;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.bg-dark3 {
+  background-color: rgba(32, 44, 81, 1) !important;
+  color: rgba(150, 245, 80, 0.85);
+}
+
+.bg-info {
+  background-color: rgba(16, 57, 54, 1) !important;
+  color: rgb(79, 167, 7);
+}
+
+.table-dark {
+  background-color: rgba(11, 19, 43, 1) !important;
+}
+
+.text-neon {
+  color: rgba(150, 245, 80, 0.85);
+}
+.text-neon2 {
+  color: rgba(150, 245, 80, 0.65);
+}
+
+.text-gold {
+  color: rgba(252, 191, 73, 0.95);
+}
+
+.text-gold2 {
+  color: rgba(252, 191, 73, 0.65);
+}
+.form-control {
+  background-color: rgba(32, 44, 81, 1) !important;
+  color: rgba(150, 245, 80, 0.85);
+  border: 1px solid #4a4d50;
+}
+
+.form-control:focus {
+  color: rgba(150, 245, 80, 0.85);
+}
+
+.custom-file-label {
+  color: rgba(150, 245, 80, 0.85);
+  background-color: rgba(32, 44, 81, 1);
+  border: 1px solid #4a4d50;
+}
+
+.custom-file-label::after {
+  color: #495057;
+  background-color: rgba(32, 44, 81, 1);
 }

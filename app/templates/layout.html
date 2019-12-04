@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/style.css') }}">
     <script src="https://kit.fontawesome.com/37327d2d38.js" crossorigin="anonymous"></script>
   </head>
-  <body class="d-flex flex-column h-100">
+  <body class="d-flex flex-column h-100 bg-dark2">
   <!-- Show navbar -->
   <header>
     {% if "user_id" not in session %}
@@ -34,7 +34,7 @@
     {% include 'scripts.html' %}
     {% block more_scripts %}{% endblock %}
   </body>
-<footer class="footer mt-auto py-3">
+<footer class="footer mt-auto py-3 bg-dark">
   <div class="container text-center">
     <span class="text-muted">&copy; 2019 Cogen </span>
   </div>

@@ -3,33 +3,35 @@
 
 {% block content %}
 <div class="container">
-  <h3 class="mt-5">Create Relationship</h3>
-  <div class="alert alert-info" role="alert">
-    Example: <br>
-    I need to add relationship to a table called artist. It has one-to-many relationship to a table "songs".
-    The form will be:<br>
-    Name = "songs"  (it is named songs(plural) because an artist can have many songs)<br>
-    Relationship type = "One to Many" <br>
-    Relationship to = songs <br>
-    Generated code:<br>
-    songs = db.relationship('Song', backref=db.backref('artist'))
+  <div class="mx-5">
+      <h3 class="mt-5">Create Relationship</h3>
+      <div class="alert bg-info" role="alert">
+        Example: <br>
+        I need to add relationship to a table called artist. It has one-to-many relationship to a table "songs".
+        The form will be:<br>
+        Name = "songs"  (it is named songs(plural) because an artist can have many songs)<br>
+        Relationship type = "One to Many" <br>
+        Relationship to = songs <br>
+        Generated code:<br>
+        songs = db.relationship('Song', backref=db.backref('artist'))
+      </div>
+
+      <form action="/projects/{{ project_id }}/tables/{{ table_id }}/relationships/create" method="POST">
+        {{ form.csrf_token }}
+
+        <div class="form-group">
+          {{ render_field(form.rel_name)}}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.rel_type)}}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.child_table)}}
+        </div>
+        <div class="form-group">
+          {{ form.submit(label="Create Table",class="btn btn-secondary") }}
+        </div>
+      </form>
   </div>
-
-  <form action="/projects/{{ project_id }}/tables/{{ table_id }}/relationships/create" method="POST">
-    {{ form.csrf_token }}
-
-    <div class="form-group">
-      {{ render_field(form.rel_name)}}
-    </div>
-    <div class="form-group">
-      {{ render_field(form.rel_type)}}
-    </div>
-    <div class="form-group">
-      {{ render_field(form.child_table)}}
-    </div>
-    <div class="form-group">
-      {{ form.submit(label="Create Table",class="btn btn-secondary") }}
-    </div>
-  </form>
 </div>
 {% endblock %}

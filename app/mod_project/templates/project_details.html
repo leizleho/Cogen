@@ -3,10 +3,12 @@
 {% block content %}
 <div class="container py-1">
   <h1 class="mt-5">{{ project.name }}</h1>
-  <h5>{{ project.description }}</h5>
+  <h5 class="text-gold">{{ project.description }}</h5>
+  <p class="text-neon">
   <b>Logo:</b> {{ project.logo }}<br>
   <b>Brand:</b> {{ project.brand }}<br>
-  <b>DB Connection String:</b> {{ project.db_uri }}<br>&nbsp;
+  <b>DB Connection String:</b> {{ project.db_uri }}
+  </p>
   <form action="/gen/{{ project.id }}" method="GET">
     <a href="/projects/update/{{ project.id }}" class="btn btn-secondary btn-sm" role="button">
     <i class="fas fa-edit"></i> Update</a>&nbsp;&nbsp;
@@ -25,7 +27,7 @@
 </h3>
 
   {% for table in project.tables %}
-    <div class="card">
+    <div class="card bg-dark">
       <div class="card-body">
       <h5 class="card-title"><a class="text-secondary" href="/projects/tables/{{ table.id }}">{{ table.name }}</a>&nbsp;&nbsp;
       <a href="/projects/tables/update/{{ table.id }}" class="btn btn-secondary btn-sm" role="button">
@@ -36,9 +38,9 @@
       <a class="btn btn-secondary btn-sm" href="/projects/{{ project.id }}/tables/{{ table.id }}/relationships/create">Relationships</a>
       </h5>
         <div class="table-responsive card-text">
-          <table class="table table-sm">
+          <table class="table table-sm table-dark">
             <thead>
-              <tr>
+              <tr class="text-gold2">
                 <th>Action</th>
                 <th>Field Name</th>
                 <th>Label</th>
@@ -53,7 +55,7 @@
             </thead>
             <tbody>
             {% for field in table.fields %}
-                <tr>
+                <tr class="text-neon2">
                   <td>
                     <a class="text-secondary" href="/projects/tables/fields/update/{{ field.id }}">
                       <i class="fas fa-edit"></i>

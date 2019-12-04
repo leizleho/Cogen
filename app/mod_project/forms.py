@@ -55,7 +55,8 @@ class FieldForm(FlaskForm):
     view_page = BooleanField('View', default='checked',
                              false_values=(False, 'f', 0))
     default_val = StringField('Default value')
-    foreign_key = StringField('Foreign Key')
+    foreign_key = StringField(
+        'Foreign Key (format: table_name.key_field, e.g. employees.id)')
     kwargs = TextAreaField('Keyword arguments')
     submit = SubmitField('Submit')
 

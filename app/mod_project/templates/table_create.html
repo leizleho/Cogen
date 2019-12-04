@@ -3,18 +3,20 @@
 
 {% block content %}
 <div class="container">
-  <h3 class="mt-5">Create Table</h3>
-  <div class="alert alert-info" role="alert">
-    Notes: "users" table is automatically created for you. It will be used for
-    login, logout and other user activity.
-  </div>
+  <div class="mx-5">
+      <h3 class="mt-5">Create Table</h3>
+      <div class="alert bg-info" role="alert">
+        Notes: "users" table is automatically created for you. It will be used for
+        login, logout and other user activity.
+      </div>
 
-  <form action="/projects/{{ project_id }}/tables/create" method="POST">
-    {{ form.csrf_token }}
-    {{ render_field(form.name)}}<br>
-    <div class="form-group">
-      {{ form.submit(label="Create Table",class="btn btn-secondary") }}
-    </div>
-  </form>
+      <form action="/projects/{{ project_id }}/tables/create" method="POST">
+        {{ form.csrf_token }}
+        {{ render_field(form.name)}}<br>
+        <div class="form-group">
+          {{ form.submit(label="Create Table",class="btn btn-secondary") }}
+        </div>
+      </form>
+  </div>
 </div>
 {% endblock %}
