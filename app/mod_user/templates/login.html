@@ -2,14 +2,24 @@
 {% from "_render_field.html" import render_field %}
 {% block content %}
 <div class="container">
-  <h1 class="h1-header">{{ title }}</h1>
-  <form action="/users/login" method="POST">
-    {# This hidden_tag is a CSRF security feature. #}
-    {{ form.hidden_tag() }}
-    {{ render_field(form.email) }}
-    {{ render_field(form.password) }}
-    {{ form.submit() }}
-  </form>
+  <div class="m-5">
+      <div class="col-md-6 offset-md-3 p-5 bg-dark">
+          <h1 class="text-center pb-3">{{ title }}</h1>
+          <form action="/users/login" method="POST">
+            {# This hidden_tag is a CSRF security feature. #}
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+              {{ render_field(form.email) }}
+            </div>
+            <div class="form-group">
+              {{ render_field(form.password) }}
+            </div>
+            <div class="form-group">
+              {{ form.submit(class="btn btn-secondary") }}
+            </div>
+          </form>
+      </div>
+  </div>
 </div>
 
 {% endblock %}

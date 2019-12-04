@@ -34,4 +34,8 @@ def create_relationship(project_id, table_id):
         db.session.commit()
         return redirect(f"/projects/{table_id}")
 
-    return render_template('relationship_create.html', title='Create Relationship', project_id=project_id, table_id=table_id, form=form)
+    return render_template('relationship_create.html',
+                           project_id=project_id,
+                           table_id=table_id,
+                           table_name=parent_tbl.name,
+                           form=form)

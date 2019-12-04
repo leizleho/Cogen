@@ -3,19 +3,38 @@
 
 {% block content %}
 <div class="container">
-<h1>{{ title }}</h1>
-<form action="/users/register" method="POST">
-    {# This hidden_tag is a CSRF security feature. #}
-    {{ form.hidden_tag() }}
-    {{ render_field(form.fname) }}<br>
-    {{ render_field(form.lname) }}<br>
-    {{ render_field(form.email) }}<br>
-    {{ render_field(form.username) }}<br>
-    {{ render_field(form.password) }}<br>
-    {{ render_field(form.pass_confirm) }}<br>
-    {{ form.submit() }}
-</form>
-
+  <div class="m-5">
+      <div class="col-md-6 offset-md-3 p-5 bg-dark">
+        <h1 class="text-center pb-3">{{ title }}</h1>
+        <form action="/users/register" method="POST">
+            {# This hidden_tag is a CSRF security feature. #}
+            {{ form.hidden_tag() }}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ render_field(form.fname) }}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ render_field(form.lname) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ render_field(form.email) }}
+            </div>
+            <div class="form-group">
+                {{ render_field(form.username) }}
+            </div>
+            <div class="form-group">
+                {{ render_field(form.password) }}
+            </div>
+            <div class="form-group">
+            {{ render_field(form.pass_confirm) }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-secondary") }}
+            </div>
+        </form>
+      </div>
+  </div>
 </div>
 
 {% endblock %}

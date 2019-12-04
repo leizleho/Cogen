@@ -4,33 +4,42 @@
 {% block content %}
 <div class="container">
   <div class="mx-5">
-      <h3 class="mt-5">Create Relationship</h3>
+      <h3 class="mt-5">Create Relationship for {{ table_name }}</h3>
       <div class="alert bg-info" role="alert">
         Example: <br>
-        I need to add relationship to a table called artist. It has one-to-many relationship to a table "songs".
+        Create relationship to a table called artist.<br>
+        It's a one-to-many relationship to a table "songs".
         The form will be:<br>
-        Name = "songs"  (it is named songs(plural) because an artist can have many songs)<br>
+        <strong>
+        Name = "songs"<br>
         Relationship type = "One to Many" <br>
-        Relationship to = songs <br>
+        Relationship to = "songs"
+        </strong>
+        <hr>
         Generated code:<br>
-        songs = db.relationship('Song', backref=db.backref('artist'))
+        songs = db.relationship('Song', backref=db.backref('artist'))<br>
+        (Notes: "songs" - in plural form because an artist can have many songs)
       </div>
 
       <form action="/projects/{{ project_id }}/tables/{{ table_id }}/relationships/create" method="POST">
         {{ form.csrf_token }}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+              {{ render_field(form.rel_name)}}
+            </div>
+            <div class="form-group col-md-4">
+              {{ render_field(form.rel_type)}}
+            </div>
+            <div class="form-group col-md-4">
+              {{ render_field(form.child_table)}}
+            </div>
+        </div>
 
-        <div class="form-group">
-          {{ render_field(form.rel_name)}}
-        </div>
-        <div class="form-group">
-          {{ render_field(form.rel_type)}}
-        </div>
-        <div class="form-group">
-          {{ render_field(form.child_table)}}
-        </div>
+
         <div class="form-group">
           {{ form.submit(label="Create Table",class="btn btn-secondary") }}
         </div>
+
       </form>
   </div>
 </div>
