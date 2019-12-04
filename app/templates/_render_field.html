@@ -6,12 +6,12 @@
       </label>
     </div>
   {%- else %}
+  {{ field.label(class="control-label")|safe }}
         {% if field.type == 'FileField' %}
           {{field(**kwargs)|safe}}
         {% else %}
-          {{ field.label(class="control-label")|safe }}
           {{ field(class="form-control", **kwargs)|safe }}
-          {% endif %}
+        {% endif %}
   {%- endif %}
 
   {% if field.errors %}
