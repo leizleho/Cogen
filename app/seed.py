@@ -1,4 +1,9 @@
-from models import db, connect_to_db, User, Project, Table, Field, PageTemplate
+from db import db, connect_to_db
+from models.user import User
+from models.project import Project
+from models.table import Table
+from models.field import Field
+from models.pagetemplate import PageTemplate
 
 
 def seed_data():
