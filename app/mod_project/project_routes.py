@@ -8,6 +8,7 @@ from app.models.field import Field
 from app.mod_project import project_bp
 from flask_login import current_user, login_required
 from app.mod_project.forms import ProjectForm
+from app.utils import save_image
 
 #################### ROUTES FOR PROJECTS ######################
 @project_bp.route('/', methods=['GET'])
@@ -31,7 +32,8 @@ def create_project():
         name = form.name.data
         description = form.description.data
         brand = form.brand.data
-        logo = form.logo.data
+        logo_file = request.files[form.logo.name]
+        logo = save_image(logo_file, 'app_') if logo_file else ''
         db_uri = form.db_uri.data
 
         new_project = Project(user_id=user_id, name=name,
@@ -56,7 +58,9 @@ def update_project(project_id):
         project.name = form.name.data
         project.description = form.description.data
         project.brand = form.brand.data
-        project.logo = form.logo.data
+        logo_file = request.files[form.logo.name]
+        if logo_file:
+            project.logo = save_image(logo_file, 'app_')
         project.db_uri = form.db_uri.data
         db.session.commit()
         return redirect(f"/projects/{project_id}")
