@@ -2,7 +2,7 @@ import os
 from jinja2 import Template, Environment, FileSystemLoader
 
 
-def write_code(tpl_path, tpl_file, kwargs, output_obj):
+def write_code(tpl_path, tpl_file, kwargs, output_obj, out_dir=None):
     """Function to generate code with the given params:
     tpl_path = directory path for the template file
     tpl_file = name of the template file
@@ -15,7 +15,9 @@ def write_code(tpl_path, tpl_file, kwargs, output_obj):
     output = template.render(kwargs=kwargs)
 
     # Create directory if directory does not exist
-    out_dir = f'./builds/{output_obj["output_path"]}'
+    if not out_dir:
+        out_dir = f'./builds/{output_obj["output_path"]}'
+
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
