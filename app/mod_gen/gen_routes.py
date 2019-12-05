@@ -1,17 +1,24 @@
 """Routes for the Code Generator"""
-from flask import Blueprint, render_template, request, flash, redirect, session
-from app.models.project import Project
+from flask import render_template
 from app.mod_gen import gen_bp
-from app.mod_gen.coder import write_code
-from app.mod_gen.source_dict import source, wtf
-from app.utils import camel_case
-from app.printvar import printvar
+from app.models.project import Project
+from app.mod_gen.gen_config import create_config
+import app.mod_gen.gen_files as gen
+from app.mod_gen.gen_uwsgi import gen_app_uwsgi, gen_db_uwsgi
 import subprocess
 import os
 
 
 @gen_bp.route('/<int:project_id>')
-def generate_code(project_id):
+def show_generationpage(project_id):
+    config = create_config(project_id, all=False)
+    return render_template('generator.html', project_id=project_id, config=config)
+
+
+@gen_bp.route('/generatecodes/<int:project_id>', methods=['GET'])
+def gen_codes(project_id):
+    """Function for generating all files"""
+
     config = create_config(project_id)
     project_name = config['project_name']
 
@@ -20,236 +27,37 @@ def generate_code(project_id):
         model_name = config['tables_camelcase'][index]
         tconfig = config[table]
         templates = config['templates'][table]
-        gen_mod_inifile(project_name, table)
-        gen_mod_css(project_name, table)
-        gen_mod_templates(project_name, table, tconfig, templates)
-        gen_routes(project_name, model_name, table, tconfig)
-        gen_wtforms(project_name, model_name, table, tconfig)
+        gen.gen_mod_inifile(project_name, table)
+        gen.gen_mod_css(project_name, table)
+        gen.gen_mod_templates(project_name, table, tconfig, templates)
+        gen.gen_routes(project_name, model_name, table, tconfig)
+        gen.gen_wtforms(project_name, model_name, table, tconfig)
 
-    gen_source_files(project_name, config["tables"])
-    gen_models(config)
-    gen_user_links(project_name, config["tables"])
-    # run_app()
-    return render_template('generator.html')
+    gen.gen_source_files(project_name, config["tables"])
+    gen.gen_models(config)
+    gen.gen_server(project_name, config["app_port"])
+    gen.gen_user_links(project_name, config["tables"])
+
+    return "Code generation is complete!"
 
 
-def run_app():
-    # run_app(app_name):
-    # app_dir = os.path.dirname(__file__)
+@gen_bp.route('/initdb/<int:project_id>')
+def gen_uwsgi_db(project_id):
+    config = create_config(project_id, all=False)
+    project_name = config['project_name']
+
     app_dir_parent = os.path.abspath(os.path.join(__file__, "../../.."))
-    app_dir = os.path.join(app_dir_parent, "builds/adam")
-    #  printvar('app_dir', app_dir)
-    # app_dir = get_app_dir(app_name)
-    subprocess.run(['python3', 'server.py'], cwd=app_dir)
+    app_dir = os.path.join(app_dir_parent, "builds", project_name, "app")
+    subprocess.run(['python3', 'models.py'], cwd=app_dir)
+    return "DB Setup is complete!"
 
 
-def create_config(project_id):
-    """Creates dictionary of configurations for generating codes"""
-    project = Project.query.get(project_id)
-    schema = create_schema(project)
-    tables = [table for table in schema]
+@gen_bp.route('/runapp/<int:project_id>')
+def gen_uwsgi_app(project_id):
+    config = create_config(project_id, all=False)
+    project_name = config['project_name']
 
-    config = {}
-    config["project_name"] = project.name
-    config["conn"] = project.db_uri
-    config["tables"] = tables
-    config["tables_camelcase"] = [camel_case(table) for table in tables]
-    config["templates"] = get_templates(project)
+    gen_app_uwsgi(project_name, config["app_port"])
+    link = f"http://localhost:{config['app_port']}"
 
-    # tschema = table schema
-    for table in tables:
-        tschema = schema[table]
-        input_types = set([tschema[field]['input_type'] for field in tschema])
-        config[table] = {
-            "tschema": tschema,
-            "input_types": input_types,
-            "wtf_formfields": ', '.join(set([wtf[input_type] for input_type in input_types])),
-            "image_fields": [field for field in tschema if tschema[field]['input_type'] == 'image'],
-            "create_fields": [field for field in tschema if tschema[field]['add']],
-            "update_fields": [field for field in tschema if tschema[field]['edit']],
-            "details_fields": [field for field in tschema if tschema[field]['view']],
-            "list_fields": [field for field in tschema if tschema[field]['list']],
-            "delete_fields": [field for field in tschema if tschema[field]['view']]
-        }
-    printvar('config', config)
-    return config
-
-
-# ----------------Config functions--------------#
-def create_schema(prj_model):
-    """Create schema of each table for a given project.
-    prj_model is equal to Project.query.get(id)
-    """
-    schema = {}
-    for table in prj_model.tables:
-        schema[table.name] = {}
-        for field in table.fields:
-            schema[table.name][field.name] = {
-                "label": field.label,
-                "placeholder": field.placeholder,
-                "input_type": field.input_type,
-                "required": field.required,
-                "list": field.list_page,
-                "add": field.add_page,
-                "edit": field.edit_page,
-                "view": field.view_page,
-                "default_val": field.default_val,
-                "kwargs": field.kwargs
-            }
-
-    return schema
-
-
-# ----------------HTML Templates--------------#
-def get_templates(prj_model):
-    """Get the html templates of each table for a given project.
-    prj_model is equal to Project.query.get(id)
-    """
-    templates = {}
-    for table in prj_model.tables:
-        templates[table.name] = {}
-        if table.page_templates:
-            tpl = table.page_templates
-            templates[table.name] = {
-                # templates.get(f"{file}_kwargs")
-                'list': tpl.list_page if tpl.list_page else 'default',
-                'list_kwargs': tpl.list_kwargs,
-                'create': tpl.add_page if tpl.add_page else 'default',
-                'create_kwargs': tpl.add_kwargs,
-                'update': tpl.edit_page if tpl.edit_page else 'default',
-                'update_kwargs': tpl.edit_kwargs,
-                'details': tpl.view_page if tpl.view_page else 'default',
-                'details_kwargs': tpl.view_kwargs,
-                'delete': tpl.delete_page if tpl.delete_page else 'default',
-                'delete_kwargs': tpl.delete_kwargs
-            }
-        else:
-            templates[table.name] = {
-                'list': 'default',
-                'create': 'default',
-                'update': 'default',
-                'details': 'default',
-                'delete': 'default'
-            }
-
-    return templates
-
-
-# ----------------models.py Generator--------------#
-def gen_models(config):
-    src_path = "source/app"
-    src_file = "models.txt"
-    kwargs = config
-    output_obj = {"output_path": f"{config['project_name']}/app",
-                  "output_file": "models.py"}
-    write_code(src_path, src_file, kwargs, output_obj)
-    return None
-
-
-# ----------------routes Generator--------------#
-def gen_routes(project_name, model_name, table, tconfig):
-    src_path = "source/app/module"
-    src_file = "routes.txt"
-    kwargs = {}
-    kwargs['project_name'] = project_name
-    kwargs['model_name'] = model_name
-    kwargs['table'] = table
-    kwargs['table_schema'] = tconfig['tschema']
-    kwargs['image_fields'] = tconfig['image_fields']
-    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
-                  "output_file": f"{table}_routes.py"}
-    write_code(src_path, src_file, kwargs, output_obj)
-    return None
-
-
-def gen_wtforms(project_name, model_name, table, tconfig):
-    src_path = "source/app/module"
-    src_file = "forms.txt"
-    kwargs = {}
-    kwargs['model_name'] = model_name
-    kwargs['table'] = table
-    # kwargs['table_schema'] = table_schema
-    kwargs['table_schema'] = tconfig['tschema']
-    kwargs['input_types'] = tconfig['input_types']
-    kwargs['wtf_formfields'] = tconfig['wtf_formfields']
-    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
-                  "output_file": f"{table}_form.py"}
-    write_code(src_path, src_file, kwargs, output_obj)
-    return None
-
-
-# ----------------HTML Templates Generator--------------#
-def gen_mod_templates(project_name, table, tconfig, templates):
-    src_path = "source/app/module/templates"
-    files = ['create', 'update', 'details', 'list', 'delete']
-    kwargs = {}
-    kwargs["table"] = table
-    kwargs["tschema"] = tconfig["tschema"]
-    kwargs['image_fields'] = tconfig['image_fields']
-
-    for file in files:
-        src_file = f"{file}_{templates[file]}.html"
-        output_file = f"{table}_{file}.html"
-        fields = f"{file}_fields"
-        output_obj = {"output_path": f"{project_name}/app/mod_{table}/templates",
-                      "output_file": output_file}
-        kwargs[fields] = tconfig[fields]
-        kwargs[f"{file}_kwargs"] = templates.get(f"{file}_kwargs")
-        write_code(src_path, src_file, kwargs, output_obj)
-
-    return None
-
-
-# ----------------__init__.py Generator for every module--------------#
-def gen_mod_inifile(project_name, table):
-    src_path = "source/app/module"
-    src_file = "__init__.txt"
-    kwargs = {}
-    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
-                  "output_file": "__init__.py"}
-    write_code(src_path, src_file, kwargs, output_obj)
-    return None
-
-
-# ----------------style.css Generator for every module--------------#
-def gen_mod_css(project_name, table):
-    src_path = "source/app/module/static/css"
-    src_file = "style.css"
-    kwargs = {}
-    output_obj = {"output_path": f"{project_name}/app/mod_{table}",
-                  "output_file": "style.css"}
-    write_code(src_path, src_file, kwargs, output_obj)
-    return None
-
-
-# ----------------Generate other files from source templates--------------#
-def gen_source_files(project_name, tables):
-    """Generate other files from source templates"""
-    for k, v in source.items():
-        filenames = v.split()
-        src_path = k.split('__')[0]
-        src_file = filenames[0]
-        output_file = filenames[1]
-        output_path = src_path.replace("source", project_name)
-        output_obj = {
-            "output_path": output_path,
-            "output_file": output_file
-        }
-        kwargs = {
-            "tables": tables
-        }
-
-        write_code(src_path, src_file, kwargs, output_obj)
-
-    return None
-
-
-def gen_user_links(project_name, tables):
-    src_path = "source/app/templates"
-    src_file = "user_links.html"
-    kwargs = {}
-    kwargs['tables'] = tables
-    output_obj = {"output_path": f"{project_name}/app/templates",
-                  "output_file": "user_links.html"}
-    write_code(src_path, src_file, kwargs, output_obj)
-    return None
+    return f'Your app is running on <a target="_blank" href="{link}">{link}</a>'
