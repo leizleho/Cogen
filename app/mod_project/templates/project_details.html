@@ -27,7 +27,7 @@
 </h3>
 
   {% for table in project.tables %}
-    <div class="card bg-dark">
+    <div class="card bg-dark mb-5">
       <div class="card-body">
       <h5 class="card-title"><a class="text-secondary" href="/projects/tables/{{ table.id }}">{{ table.name }}</a>&nbsp;&nbsp;
       <a href="/projects/tables/update/{{ table.id }}" class="btn btn-secondary btn-sm" role="button">
@@ -36,6 +36,9 @@
       Delete</a>
       <a class="btn btn-secondary btn-sm" href="/projects/tables/{{ table.id }}/fields/create">Add a field</a>
       <a class="btn btn-secondary btn-sm" href="/projects/{{ project.id }}/tables/{{ table.id }}/relationships/create">Relationships</a>
+      <button type="button" class="btn btn-secondary btn-sm"
+              data-toggle="modal" data-target="#tableModal" data-id="{{ table.id }}"
+              data-name="{{ table.name }}" data-action="Rename">Rename Table</button>
       </h5>
         <div class="table-responsive card-text">
           <table class="table table-sm table-dark">
@@ -80,7 +83,42 @@
         </div>
       </div>
     </div>
-    <br>&nbsp;
   {% endfor %}
 </div>
+
+<div class="modal fade" id="tableModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content bg-dark">
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="table-name" class="col-form-label">Table name</label>
+            <input type="text" class="form-control" id="table-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary">Update Table name</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block more_scripts %}
+  <script>
+    $('#tableModal').on('show.bs.modal', function (event) {
+      const button = $(event.relatedTarget) // Button that triggered the modal
+      const table_name = button.data('name') // Extract info from data-* attributes
+      const action = button.data('action')
+      const table_id = button.data('id')
+
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.col-form-label').text(`${action} table`)
+      modal.find('.modal-body input').val(table_name)
+    })
+  </script>
 {% endblock %}

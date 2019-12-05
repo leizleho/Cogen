@@ -1,0 +1,23 @@
+.gen-info {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  background-color: rgba(16, 57, 54, 1) !important;
+  color: #4fa707;
+}
+
+.gen-btn {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  padding: 0.75rem 1.25rem;
+}
+
+.gen-row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}

@@ -1,6 +1,56 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
-  <h1 class="mt-5">Code generation is complete!</h1>
+<div class="container mx-5">
+    <div class="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+      <div class="lh-100">
+        <h5 id="{{config.project_id}}" class="mb-0 text-white lh-100">{{config.project_name}}</h5>
+        <small>Code generation page</small>
+      </div>
+    </div>
+
+    <div class="col-md-8 bg-dark3 rounded shadow-sm pt-3 px-3">
+        <div class="gen-row">
+          <button id="gencodes-btn" type="button" class="col-md-4 mr-1 btn gen-btn">Generate Code</button>
+          <div id="gencodes-text" class="gen-info ml-1 col-md-8">&nbsp;
+          </div>
+        </div>
+
+        <div class="gen-row">
+          <button id="initdb-btn" type="button" class="col-md-4 mr-1 btn gen-btn">Create DB Models</button>
+          <div id="initdb-text" class="gen-info ml-1 col-md-8">&nbsp;
+          </div>
+        </div>
+
+        <div class="gen-row">
+          <button id="runapp-btn" type="button" class="col-md-4 mr-1 btn gen-btn">Run Generated App</button>
+          <div id="runapp-text" class="gen-info ml-1 col-md-8">&nbsp;
+          </div>
+        </div>
+    </div>
+
 </div>
+{% endblock %}
+{% block more_scripts %}
+<script>
+  const projectId = document.querySelector('h5').getAttribute('id');
+
+  $('#gencodes-btn').on('click', () => {
+    $.get(`/gen/generatecodes/${projectId}`, (res) => {
+      $("#gencodes-text").text(res);
+    });
+  });
+
+  $('#initdb-btn').on('click', () => {
+    $.get(`/gen/initdb/${projectId}`, (res) => {
+    $("#initdb-text").text(res);
+    });
+  });
+
+  $('#runapp-btn').on('click', () => {
+    $.get(`/gen/runapp/${projectId}`, (res) => {
+    $("#runapp-text").html(res);
+    });
+  });
+
+</script>
 {% endblock %}

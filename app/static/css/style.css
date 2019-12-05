@@ -96,3 +96,8 @@
   color: #495057;
   background-color: rgba(32, 44, 81, 1);
 }
+
+/* -------------------------   */
+.modal-footer {
+  border-top: 1px solid #4a4d50;
+}
