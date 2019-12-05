@@ -2,7 +2,6 @@ source = {
     "source__1": "gitignore.txt .gitignore",
     "source__2": "README.md README.md",
     "source__3": "requirements.txt requirements.txt",
-    "source__4": "server.txt server.py",
     "source/app__5": "__init__.txt __init__.py",
     "source/app/static/css___6": "style.css style.css",
     "source/app/templates___8": "layout.html layout.html",

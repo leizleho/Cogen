@@ -80,9 +80,13 @@ def connect_to_db(app):
 
 
 if __name__ == "__main__":
+    # run this file only when you are initializing db
     from flask import Flask
     app = Flask(__name__)
 
     connect_to_db(app)
+    # initialize db
+    db.drop_all()
+    db.create_all()
     print("Connected to DB.")
 {% endraw %}
