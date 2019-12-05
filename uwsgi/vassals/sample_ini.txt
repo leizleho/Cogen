@@ -1,0 +1,7 @@
+[uwsgi]
+chdir=/builds/sample_app
+http=:5000
+wsgi-file=server.py
+callable=app
+processes=2
+threads=1
