@@ -1,8 +1,10 @@
 from app.mod_gen.coder import write_code
 from app.mod_gen.source_dict import source
-
+from datetime import datetime
 
 # ----------------models.py Generator--------------#
+
+
 def gen_models(config):
     src_path = "source/app"
     src_file = "models.txt"
@@ -131,5 +133,18 @@ def gen_user_links(project_name, tables):
     kwargs['tables'] = tables
     output_obj = {"output_path": f"{project_name}/app/templates",
                   "output_file": "user_links.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+
+# ----------------Nav Links Generator--------------#
+def gen_layout(project_name, brand):
+    src_path = "source/app/templates"
+    src_file = "layout.html"
+    kwargs = {}
+    kwargs['brand'] = brand
+    kwargs['year'] = datetime.now().year
+    output_obj = {"output_path": f"{project_name}/app/templates",
+                  "output_file": "layout.html"}
     write_code(src_path, src_file, kwargs, output_obj)
     return None

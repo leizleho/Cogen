@@ -4,7 +4,6 @@
     {% raw %}
     {% include 'meta.html' %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontawesome-all.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/style.css') }}">
@@ -29,9 +28,7 @@
 
     <!-- Show page content -->
   <main role="main" class="flex-shrink-0">
-    <div class="container">
     {% block content %}{% endblock %}
-    </div>
   </main>
 
     <!-- Scripts -->
@@ -41,7 +38,7 @@
   </body>
 <footer class="footer mt-auto py-3">
   <div class="container text-center">
-    <span class="text-muted">&copy; 2019 Cogen</span>
+    <span class="text-muted">&copy; {{ kwargs['year'] ~ ' ' ~ kwargs['brand'] }}</span>
   </div>
 </footer>
 </html>

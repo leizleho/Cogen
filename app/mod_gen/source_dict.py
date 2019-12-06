@@ -4,7 +4,6 @@ source = {
     "source__3": "requirements.txt requirements.txt",
     "source/app__5": "__init__.txt __init__.py",
     "source/app/static/css___6": "style.css style.css",
-    "source/app/templates___8": "layout.html layout.html",
     "source/app/templates___9": "meta.html meta.html",
     "source/app/templates___10": "navbar_default.html navbar_default.html",
     "source/app/templates___11": "navbar_loggedin.html navbar_loggedin.html",

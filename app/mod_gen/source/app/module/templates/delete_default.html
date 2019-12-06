@@ -3,7 +3,7 @@
 {% set details_fields = kwargs["details_fields"] -%}
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
-  <div>
+  <div class="container m-5">
     <h3>{{ '{{ title }}' }}</h3>
       <div class="alert alert-danger" role="alert">
         You are deleting table "{{ '{{ ' ~ table ~ '.name }}' }}"

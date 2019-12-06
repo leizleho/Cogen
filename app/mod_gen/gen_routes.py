@@ -37,7 +37,7 @@ def gen_codes(project_id):
     gen.gen_models(config)
     gen.gen_server(project_name, config["app_port"])
     gen.gen_user_links(project_name, config["tables"])
-
+    gen.gen_layout(project_name, config["brand"])
     return "Code generation is complete!"
 
 

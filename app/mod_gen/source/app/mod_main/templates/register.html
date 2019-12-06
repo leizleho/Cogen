@@ -2,31 +2,35 @@
 {{ '{% from "_render_field.html" import render_field %}' }}
 
 {{ '{% block content %}' }}
-<div>
-<h1>{{ '{{ title }}' }}</h1>
-{% raw %}
-  <form action="/register" method="POST">
-    {{ form.csrf_token }}
-    <div class="form-group">
-    {{ render_field(form.fname) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.lname) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.username) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.email) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.password) }}
-    </div>
-    <div class="form-group">
-    {{ render_field(form.pass_confirm) }}
-    </div>
-    {{ form.submit(class="btn btn-info") }}
-  </form>
-{% endraw %}
+<div class="container">
+  <div class="col-md-6 offset-md-3 p-5">
+      <h1>{{ '{{ title }}' }}</h1>
+      {% raw %}
+        <form action="/register" method="POST">
+          {{ form.csrf_token }}
+          <div class="form-row">
+              <div class="form-group col-md-6">
+              {{ render_field(form.fname) }}
+              </div>
+              <div class="form-group col-md-6">
+              {{ render_field(form.lname) }}
+              </div>
+          </div>
+          <div class="form-group">
+          {{ render_field(form.username) }}
+          </div>
+          <div class="form-group">
+          {{ render_field(form.email) }}
+          </div>
+          <div class="form-group">
+          {{ render_field(form.password) }}
+          </div>
+          <div class="form-group">
+          {{ render_field(form.pass_confirm) }}
+          </div>
+          {{ form.submit(class="btn btn-info") }}
+        </form>
+      {% endraw %}
+  </div>
 </div>
 {{ '{% endblock %}' }}

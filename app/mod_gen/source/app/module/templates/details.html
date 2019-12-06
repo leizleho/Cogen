@@ -3,7 +3,7 @@
 {% set details_fields = kwargs["details_fields"] -%}
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
-  <div>
+  <div class="container m-5">
       <h1>{{ '{{ title }}' }}</h1>
       [<a href="/{{ table }}/update/{{ '{{ ' ~ table ~ '.id }}' }}">Update</a>]
       [<a href="/{{ table }}/del/{{ '{{ ' ~ table ~ '.id }}' }}">Delete</a>]<br>

@@ -1,15 +1,21 @@
 {{ '{% extends "layout.html" %}' }}
 {% set table = kwargs['table'] -%}
 {% set details_fields = kwargs["details_fields"] -%}
+{% set image_fields = kwargs['image_fields'] -%}
+
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
-  <div>
+  <div class="container m-5">
       <h3>{{ '{{ title }}' }}</h3>
       [<a href="/{{ table }}/update/{{ '{{ ' ~ table ~ '.id }}' }}">Update</a>]
       [<a href="/{{ table }}/del/{{ '{{ ' ~ table ~ '.id }}' }}">Delete</a>]<br>
       <br>
       {%- for field in details_fields %}
-        <b>{{ tschema[field]['label'] }}:</b> {{ '{{ ' ~ table ~ '.' ~ field ~ ' }}' }}<br>
+        {% if field in image_fields -%}
+         <b>{{ tschema[field]['label'] }}:</b><br><img src="/static/img/{{ '{{ ' ~ table ~ '.' ~ field ~ ' }}' }}" id="{{ field }}"><br>
+        {% else %}
+         <b>{{ tschema[field]['label'] }}:</b> {{ '{{ ' ~ table ~ '.' ~ field ~ ' }}' }}<br>
+        {% endif %}
       {%- endfor %}
   </div>
 {{ '{% endblock %}' }}

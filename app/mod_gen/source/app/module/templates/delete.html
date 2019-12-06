@@ -3,7 +3,7 @@
 {% set details_fields = kwargs["details_fields"] -%}
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
-  <div>
+  <div class="container m-5">
     <h1>{{ '{{ title }}' }}</h1>
     <h3 class="danger">Danger! You are deleting {{ '{{ ' ~ table ~ '.id }}' }}</h3>
     {%- for field in details_fields %}

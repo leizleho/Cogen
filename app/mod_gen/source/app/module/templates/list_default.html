@@ -4,7 +4,7 @@
 {% set list_fields = kwargs["list_fields"] -%}
 {% set tschema = kwargs["tschema"] -%}
 {{ '{% block content %}' }}
-  <div>
+  <div class="container m-5">
     <h3>{{ '{{ title }}' }}</h3>
     <a class="btn btn-secondary btn-info" href="/{{ table }}/create">Create {{ title }}</a> <br>&nbsp;
       <div class="table-responsive card-text">

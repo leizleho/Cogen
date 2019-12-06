@@ -5,7 +5,7 @@
 {% set update_fields = kwargs["update_fields"] -%}
 
 {{ '{% block content %}' }}
-  <div>
+  <div class="container m-5">
     <h1>{{ '{{ title }}' }}</h1>
     <form action="/{{ kwargs['table'] }}/update/{{ '{{ id }}' }}" method="POST">
     {{ "{{ form.csrf_token }}" }}

@@ -3,14 +3,30 @@
 
 {% set tschema = kwargs["tschema"] -%}
 {% set update_fields = kwargs["update_fields"] -%}
+{% set image_fields = kwargs['image_fields'] -%}
+{% if image_fields -%}
+{% set enctype = 'enctype="multipart/form-data"' -%}
+{% else -%}
+{% set enctype = '' -%}
+{% endif -%}
 
 {{ '{% block content %}' }}
-  <div>
+  <div class="container m-5">
     <h3>{{ '{{ title }}' }}</h3>
-    <form action="/{{ kwargs['table'] }}/update/{{ '{{ id }}' }}" method="POST">
+    <form action="/{{ kwargs['table'] }}/update/{{ '{{ id }}' }}" method="POST" {{ enctype }}>
     {{ "{{ form.csrf_token }}" }}
     {%- for field in update_fields %}
-      {{ "{{ render_field(form." ~ field ~ ") }}<br>" }}
+    <div class="form-group">
+    {% if field in image_fields -%}
+      <label class="control-label" for="{{ field }}">{{ '{{ form.' ~ field ~ '.label }} ' }}</label>
+      <div class="custom-file">
+      {{ '{{ render_field(form.' ~ field ~ ', class="custom-file-input") }}' }}
+      <label class="custom-file-label" for="{{ field }}">Choose file...</label>
+      </div>
+    {% else %}
+      {{ "{{ render_field(form." ~ field ~ ") }}" }}
+    {% endif %}
+    </div>
     {%- endfor %}
       <div class="form-group">
         <input class="btn btn-info" type="submit" value="Update {{ kwargs['table'].replace("_", " ").title() }}">
@@ -18,3 +34,4 @@
     </form>
   </div>
 {{ '{% endblock %}' }}
+

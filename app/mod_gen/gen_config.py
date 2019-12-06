@@ -23,6 +23,7 @@ def create_config(project_id, all=True):
     config = {}
     config["project_id"] = project.id
     config["project_name"] = project.name
+    config["brand"] = project.brand
     config["conn"] = project.db_uri
     config["app_port"] = PORT + int(project_id)
     config["tables"] = tables
