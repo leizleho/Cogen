@@ -67,6 +67,8 @@ def update_project(project_id):
 
     form.name.data = project.name
     form.description.data = project.description
+    form.brand.data = project.brand
+    form.logo.data = project.logo
     form.db_uri.data = project.db_uri
     return render_template('project_update.html',
                            title='Projects', id=project_id, form=form)

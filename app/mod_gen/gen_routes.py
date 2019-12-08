@@ -38,6 +38,8 @@ def gen_codes(project_id):
     gen.gen_server(project_name, config["app_port"])
     gen.gen_user_links(project_name, config["tables"])
     gen.gen_layout(project_name, config["brand"])
+    gen.gen_default_nav(project_name, config["brand"])
+    gen.gen_loggedin_nav(project_name, config["brand"])
     return "Code generation is complete!"
 
 

@@ -21,9 +21,7 @@ def load_user(user_id):
 @main_bp.route('/')
 def home():
     """Homepage route."""
-    return render_template('index.html',
-                           title='App',
-                           welcome='Welcome!')
+    return render_template('index.html', title='Generated App',)
 
 @main_bp.route('/register', methods=['GET', 'POST'])
 def register():

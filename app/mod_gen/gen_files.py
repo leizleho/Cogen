@@ -148,3 +148,25 @@ def gen_layout(project_name, brand):
                   "output_file": "layout.html"}
     write_code(src_path, src_file, kwargs, output_obj)
     return None
+
+# ----------------Nav Bar Generator--------------#
+def gen_default_nav(project_name, brand):
+    src_path = "source/app/templates"
+    src_file = "navbar_default.html"
+    kwargs = {}
+    kwargs['brand'] = brand
+    output_obj = {"output_path": f"{project_name}/app/templates",
+                  "output_file": "navbar_default.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
+
+
+def gen_loggedin_nav(project_name, brand):
+    src_path = "source/app/templates"
+    src_file = "navbar_loggedin.html"
+    kwargs = {}
+    kwargs['brand'] = brand
+    output_obj = {"output_path": f"{project_name}/app/templates",
+                  "output_file": "navbar_loggedin.html"}
+    write_code(src_path, src_file, kwargs, output_obj)
+    return None
