@@ -1,0 +1,4 @@
+; sample emperor.ini file
+[uwsgi]
+emperor = /path/to/your/uwsgi/vassals
+die-on-term = true

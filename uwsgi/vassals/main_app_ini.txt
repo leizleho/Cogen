@@ -1,0 +1,7 @@
+[uwsgi]
+chdir=/path/to/your/main_app
+http=:5555
+wsgi-file=server.py
+callable=app
+processes=2
+threads=1
