@@ -82,6 +82,6 @@ def logout():
 def user_info(user_id):
     """Show info about user."""
     user = User.query.get(user_id)
-    return render_template("user.html", title="User Info", user=user)
+    return render_template("user.html", title="Welcome", user=user)
 
 {% endraw -%}

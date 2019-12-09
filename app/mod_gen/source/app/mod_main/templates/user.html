@@ -1,10 +1,7 @@
 {{ '{% extends "layout.html" %}' }}
 
 {{ '{% block content %}' }}
-  <div class="container">
-      <h1>{{ '{{ title }}' }}</h1>
-      <p>User Info
-      {{ '{{ user.fname }} {{ user.lname }}' }}
-      </p>
+  <div class="container m-5">
+      <h3>{{ '{{ title }}' }} {{ '{{ user.fname }}' }}!</h3>
   </div>
 {{ '{% endblock %}' }}

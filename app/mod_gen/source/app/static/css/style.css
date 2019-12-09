@@ -4,6 +4,15 @@
   background-color: bisque;
 }
 
+h1,
+h2,
+h3 {
+  color: #606060;
+}
+
+.control-label {
+  color: #606060;
+}
 .footer {
   background-color: #f5f5f5;
 }

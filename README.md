@@ -17,9 +17,7 @@ Backend: Python, Flask, PostgreSQL, SQLAlchemy
  - User Account
     - Registration
     - Login
-
  - Landing Page
-
  - Pages generated for each table
     - List
     - View
@@ -28,41 +26,42 @@ Backend: Python, Flask, PostgreSQL, SQLAlchemy
     - Update
 
 ----
-## Screenshots
+### Create Project
+![](create-project.gif)
+
+### Generate Codes
+![](generate-codes.gif)
 
 ---
-## Installation
+
 
 #### Requirements:
  - Python 3.7
  - PostgreSQL
 
-#### Clone repository
+## Installation
 ```
+# Clone repository
 $ https://github.com/leizleho/Cogen.git
-```
 
-#### Create virtual environment
-```
+
+# Create virtual environment
 $ python -m venv env
-```
 
-#### Activate the environment
-```
+
+# Activate the environment
 $ source env/bin/activate
-```
 
-#### Install dependencies
-```
+
+# Install dependencies
 $ pip install -r requirements.txt
-```
 
-#### Create database 'cogen'
-```
-$ createdb cogen
-```
-#### Create your database tables and seed🌱sample data
-```
+
+# Create database 'testdb'
+$ createdb testdb
+
+
+# Create your database tables and seed🌱sample data
 $ python -i seed.py
 $ seed_data()
 ```
