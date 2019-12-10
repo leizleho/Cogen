@@ -18,12 +18,8 @@
   </form>
   <br>
 
-  <h3 class="mt-5 mb-3">Table Name: {{ table.name }}</h3>
-  <p class="text-neon">
-    <b>Table #</b> {{ table.id }}<br>
-    <b>Table Name:</b> {{ table.name }}
-  </p>
-  <div class="py-2">
+  <h3 class="mt-5 mb-3">Table Name: {{ table.name }} (id: {{ table.id }} )</h3>
+  <div class="py-1">
     <a href="/projects/tables/update/{{ table.id }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;
     <a href="/projects/tables/del/{{ table.id }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>
   </div>

@@ -71,6 +71,34 @@ $ seed_data()
 $ python server.py
 ```
 
+#### Create ini file to run the main app and the generated app side by side
+```
+# Create "main_app.ini" in this directory: "uwsgi/vassals/"
+# add the following script and change the chdir path:
+
+[uwsgi]
+chdir=/path/to/your/cloned/app
+http=:5555
+wsgi-file=server.py
+callable=app
+processes=2
+threads=1
+
+
+# Create "main_app.ini" in this directory: "uwsgi/"
+# add the following script and change the emperor path:
+
+[uwsgi]
+emperor = /path/to/your/uwsgi/vassals
+die-on-term = true
+
+```
+
+#### Run uwsgi emperor to run the main app and the generated app side by side
+```
+$ uswgi uwsgi/emperor.ini
+```
+
 #### TODO
  - Complete API module
  - Add react frondend
