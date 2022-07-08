@@ -23,8 +23,8 @@ def users_data():
               email='leizleho@yahoo.com')
     u1.set_password('12345')
 
-    u2 = User(fname='Rain', lname='Ulan', username='rain',
-              email='rain.ulan@gmail.com')
+    u2 = User(fname='Higor', lname='Vaz', username='higorvaz',
+              email='higorvaz@gmail.com')
     u2.set_password('12345')
     db.session.add_all([u1, u2])
     db.session.commit()
@@ -32,8 +32,9 @@ def users_data():
 
 def projects_data():
     Project.query.delete()
-    p1 = Project(user_id=1, name='tgallery', description='Gallery of Travel Photos',
-                 db_uri="postgresql://postgres@localhost:5433/testdb")
+    p1 = Project(user_id=2, name='tgallery', description='Gallery of Travel Photos',
+                 db_uri="mssql+pymssql://sa:StrongPa55#@localhost/CogenDBGallery")
+                #  db_uri="postgresql://postgres@localhost:5433/CogenDB")
     # p2 = Project(user_id=1, name='jobapptracker', description='Job Application Tracker',
     #              db_uri="postgresql://postgres@localhost:5433/testdb2")
     # p3 = Project(user_id=1, name='rfq', description='Web Dev Services - Request for Quote',

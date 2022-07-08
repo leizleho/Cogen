@@ -2,51 +2,57 @@
 <br />
 COGEN is a code generator for building flask web application. With a given database model,it generates a fully working app with a backend and frontend UI that allows users to create, read, update and delete records on the web. The generated code is clean and easy-to-customize.
 
+## Cogen App Tech Stack
 
-## Main App Tech Stack
 Frontend: JavaScript, jQuery, AJAX, Jinja2, Bootstrap, HTML5, CSS3
-Backend: Python, Flask, PostgreSQL, SQLAlchemy
+Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
 
-## Generated App Tech Stack
+## Generated Apps Tech Stack
+
 Frontend: JavaScript, jQuery, AJAX, Jinja2, Bootstrap, HTML5, CSS3
-Backend: Python, Flask, PostgreSQL, SQLAlchemy
-
+Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
 
 ## Generated App Features
- - PostgreSQL Support
- - User Account
-    - Registration
-    - Login
- - Landing Page
- - Pages generated for each table
-    - List
-    - View
-    - Add
-    - Delete
-    - Update
+
+- PostgreSQL Support
+- User Account
+  - Registration
+  - Login
+- Landing Page
+- Pages generated for each table
+  - List
+  - View
+  - Add
+  - Delete
+  - Update
 
 ----
+
 ### Create Project
+
 ![](create-project.gif)
 
 ### Generate Codes
+
 ![](generate-codes.gif)
 
 ---
 
+#### Requirements
 
-#### Requirements:
- - Python 3.7
- - PostgreSQL
+- Python 3.7
+- PostgreSQL or
+- MSSQL Server
 
 ## Installation
-```
+
+```bash
 # Clone repository
-$ https://github.com/leizleho/Cogen.git
+$ https://github.com/higorvaz/Python-App-Generator.git
 
 
 # Create virtual environment
-$ python -m venv env
+$ python3 -m venv env
 
 
 # Activate the environment
@@ -56,23 +62,31 @@ $ source env/bin/activate
 # Install dependencies
 $ pip install -r requirements.txt
 
+# Install uwsgi
+$ sudo apt install uwsgi-plugin-python3 uwsgi-core
 
-# Create database 'testdb'
-$ createdb testdb
+
+# Create database 'CogenDB'
+$ sqlcmd -S localhost -U sa
+$ CREATE DATABASE CogenDB
+ GO
+
 
 
 # Create your database tables and seed🌱sample data
-$ python -i seed.py
+$ python3 -i seed.py
 $ seed_data()
 ```
 
 #### Run the app from the command line
-```
-$ python server.py
+
+```bash
+python3 server.py
 ```
 
 #### Create ini file to run the main app and the generated app side by side
-```
+
+```text
 # Create "main_app.ini" in this directory: "uwsgi/vassals/"
 # add the following script and change the chdir path:
 
@@ -85,7 +99,7 @@ processes=2
 threads=1
 
 
-# Create "main_app.ini" in this directory: "uwsgi/"
+# Create "emperor.ini" in this directory: "uwsgi/"
 # add the following script and change the emperor path:
 
 [uwsgi]
@@ -95,18 +109,24 @@ die-on-term = true
 ```
 
 #### Run uwsgi emperor to run the main app and the generated app side by side
-```
-$ uswgi uwsgi/emperor.ini
+
+```bash
+uwsgi uwsgi/emperor.ini
 ```
 
 #### TODO
- - Complete API module
- - Add react frondend
- - Add Search functionality
- - Export function
 
+- Project Database parameter
+- Database existing tables read
+-- sqlacodegen mssql+pymssql://sa:StrongPa55#@localhost/SampleDB > SampleDB.py
+It will create SampleDB.py in your current directory containing all Model Classes code(a pirce of cake 🍰)
+- Complete API module
+- Add react frondend
+- Add Search functionality
+- Export function
 
 ### File Structure
+
 <pre>
 cogen/
    app/

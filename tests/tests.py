@@ -9,7 +9,8 @@ class UsersTests(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/tempdb'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pymssql://sa:StrongPa55#@localhost/CogenDB'
+        # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/tempdb'
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         self.app = app.test_client()
 
