@@ -14,7 +14,7 @@ Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
 
 ## Generated App Features
 
-- PostgreSQL Support
+- MSSQL Server/PostgreSQL Support
 - User Account
   - Registration
   - Login
