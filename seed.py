@@ -33,7 +33,7 @@ def users_data():
 def projects_data():
     Project.query.delete()
     p1 = Project(user_id=2, name='tgallery', description='Gallery of Travel Photos',
-                 db_uri="mssql+pymssql://sa:StrongPa55#@localhost/CogenDBGallery")
+                 db_uri="mssql+pymssql://sa:StrongPa55#@localhost/test")
                 #  db_uri="postgresql://postgres@localhost:5433/CogenDB")
     # p2 = Project(user_id=1, name='jobapptracker', description='Job Application Tracker',
     #              db_uri="postgresql://postgres@localhost:5433/testdb2")

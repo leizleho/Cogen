@@ -9,6 +9,7 @@ def gen_models(config):
     src_path = "source/app"
     src_file = "models.txt"
     kwargs = config
+    kwargs['conn'] = config["conn"]
     output_obj = {"output_path": f"{config['project_name']}/app",
                   "output_file": "models.py"}
     write_code(src_path, src_file, kwargs, output_obj)
