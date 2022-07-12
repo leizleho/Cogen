@@ -14,7 +14,7 @@ Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
 
 ## Generated App Features
 
-- PostgreSQL Support
+- MSSQL Server/PostgreSQL Support
 - User Account
   - Registration
   - Login
@@ -25,8 +25,14 @@ Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
   - Add
   - Delete
   - Update
+ 
+ 
+## Screencast at YouTube
+[![Screencast at YouTube](https://img.youtube.com/vi/IXnfVXoKiaE/0.jpg)](https://www.youtube.com/watch?v=IXnfVXoKiaE)
 
 ----
+
+
 
 ### Create Project
 
@@ -116,10 +122,11 @@ uwsgi uwsgi/emperor.ini
 
 #### TODO
 
-- Project Database parameter
+- Project Database parameter (now you have to edit the txt model and inform the database name before create project)
 - Database existing tables read
 -- sqlacodegen mssql+pymssql://sa:StrongPa55#@localhost/SampleDB > SampleDB.py
-It will create SampleDB.py in your current directory containing all Model Classes code(a pirce of cake 🍰)
+It will create SampleDB.py in your current directory containing all Model Classes code(a piece of cake 🍰)
+- Correct the autorun the app after generated
 - Complete API module
 - Add react frondend
 - Add Search functionality
