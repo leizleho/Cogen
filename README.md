@@ -91,7 +91,7 @@ python3 server.py
 # add the following script and change the chdir path:
 
 [uwsgi]
-chdir=/path/to/your/cloned/app
+chdir=/home/Python-App-Generator
 http=:5555
 wsgi-file=server.py
 callable=app
@@ -103,7 +103,7 @@ threads=1
 # add the following script and change the emperor path:
 
 [uwsgi]
-emperor = /path/to/your/uwsgi/vassals
+emperor = /home/Python-App-Generator/uwsgi/vassals
 die-on-term = true
 
 ```

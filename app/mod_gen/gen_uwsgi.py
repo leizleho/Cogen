@@ -9,6 +9,7 @@ def gen_app_uwsgi(project_name, port):
     src_file = "app.ini"
     app_dir_parent = os.path.abspath(os.path.join(__file__, "../../.."))
     app_dir = os.path.join(app_dir_parent, "builds", project_name)
+    # app_dir = os.path.join(app_dir_parent, "builds", project_name, "app")
     out_dir = os.path.join(app_dir_parent, "uwsgi/vassals")
     kwargs = {}
     kwargs['port'] = port
