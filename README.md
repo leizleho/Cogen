@@ -132,5 +132,24 @@ uwsgi uwsgi/emperor.ini
 *   Export function
 
 ### File Structure
+<pre>
+cogen/
+   app/
+      mod_api/                     <-- API module
+      mod_gen/                     <-- Code generator module
+      mod_main/                    <-- Main app pages (Home, About, etc)
+      mod_project/                 <-- Project module - used for your app config
+      mod_user/                    <-- User Acount, Login, Registration
+      models/                      <-- Data model for project/app configurations
+      static/
+      templates/
+   builds/
+   env/
+   tests/
+   .gitignore
+   README.md
+   requirements.txt
+   server.py
+   tests.py
 
-cogen/   app/      mod\_api/                     \<-- API module      mod\_gen/                     \<-- Code generator module      mod\_main/                    \<-- Main app pages (Home, About, etc)      mod\_project/                 \<-- Project module - used for your app config      mod\_user/                    \<-- User Acount, Login, Registration      models/                      \<-- Data model for project/app configurations      static/      templates/   builds/   env/   tests/   .gitignore   README.md   requirements.txt   server.py   tests.py
+</pre>
