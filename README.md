@@ -1,38 +1,37 @@
-<h2 align="center">🚀 Cogen - CRUD generator for a flask web app</h2>
-<br />
+## 🚀 Cogen - CRUD generator for a flask web app
+
+  
 COGEN is a code generator for building flask web application. With a given database model,it generates a fully working app with a backend and frontend UI that allows users to create, read, update and delete records on the web. The generated code is clean and easy-to-customize.
 
 ## Cogen App Tech Stack
 
-Frontend: JavaScript, jQuery, AJAX, Jinja2, Bootstrap, HTML5, CSS3
+Frontend: JavaScript, jQuery, AJAX, Jinja2, Bootstrap, HTML5, CSS3  
 Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
 
 ## Generated Apps Tech Stack
 
-Frontend: JavaScript, jQuery, AJAX, Jinja2, Bootstrap, HTML5, CSS3
+Frontend: JavaScript, jQuery, AJAX, Jinja2, Bootstrap, HTML5, CSS3  
 Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
 
 ## Generated App Features
 
-- MSSQL Server/PostgreSQL Support
-- User Account
-  - Registration
-  - Login
-- Landing Page
-- Pages generated for each table
-  - List
-  - View
-  - Add
-  - Delete
-  - Update
- 
- 
+*   MSSQL Server/PostgreSQL Support
+*   User Account
+    *   Registration
+    *   Login
+*   Landing Page
+*   Pages generated for each table
+    *   List
+    *   View
+    *   Add
+    *   Delete
+    *   Update
+
 ## Screencast at YouTube
+
 [![Screencast at YouTube](https://img.youtube.com/vi/IXnfVXoKiaE/0.jpg)](https://www.youtube.com/watch?v=IXnfVXoKiaE)
 
-----
-
-
+---
 
 ### Create Project
 
@@ -46,9 +45,9 @@ Backend: Python, Flask, MSSQL Server/PostgreSQL, SQLAlchemy
 
 #### Requirements
 
-- Python 3.7
-- PostgreSQL or
-- MSSQL Server
+*   Python 3.7
+*   PostgreSQL or
+*   MSSQL Server
 
 ## Installation
 
@@ -111,7 +110,6 @@ threads=1
 [uwsgi]
 emperor = /home/Python-App-Generator/uwsgi/vassals
 die-on-term = true
-
 ```
 
 #### Run uwsgi emperor to run the main app and the generated app side by side
@@ -122,36 +120,17 @@ uwsgi uwsgi/emperor.ini
 
 #### TODO
 
-- Project Database parameter (now you have to edit the txt model and inform the database name before create project)
-- Database existing tables read
--- sqlacodegen mssql+pymssql://sa:StrongPa55#@localhost/SampleDB > SampleDB.py
-It will create SampleDB.py in your current directory containing all Model Classes code(a piece of cake 🍰)
-- Correct the autorun the app after generated
-- Complete API module
-- Add react frondend
-- Add Search functionality
-- Export function
+*   ~Project Database parameter (now you have to edit the txt model and inform the database name before create project)~
+*   Database existing tables read
+*    
+    *   sqlacodegen mssql+pymssql://sa:StrongPa55#@localhost/SampleDB > SampleDB.py  
+        It will create SampleDB.py in your current directory containing all Model Classes code(a piece of cake 🍰)
+*   ~Correct the autorun the app after generated~
+*   Complete API module
+*   Add react frondend
+*   Add Search functionality
+*   Export function
 
 ### File Structure
 
-<pre>
-cogen/
-   app/
-      mod_api/                     <-- API module
-      mod_gen/                     <-- Code generator module
-      mod_main/                    <-- Main app pages (Home, About, etc)
-      mod_project/                 <-- Project module - used for your app config
-      mod_user/                    <-- User Acount, Login, Registration
-      models/                      <-- Data model for project/app configurations
-      static/
-      templates/
-   builds/
-   env/
-   tests/
-   .gitignore
-   README.md
-   requirements.txt
-   server.py
-   tests.py
-
-</pre>
+cogen/   app/      mod\_api/                     \<-- API module      mod\_gen/                     \<-- Code generator module      mod\_main/                    \<-- Main app pages (Home, About, etc)      mod\_project/                 \<-- Project module - used for your app config      mod\_user/                    \<-- User Acount, Login, Registration      models/                      \<-- Data model for project/app configurations      static/      templates/   builds/   env/   tests/   .gitignore   README.md   requirements.txt   server.py   tests.py
