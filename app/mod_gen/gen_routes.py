@@ -56,7 +56,7 @@ def gen_uwsgi_db(project_id):
 
 @gen_bp.route('/runapp/<int:project_id>')
 def gen_uwsgi_app(project_id):
-    config = create_config(project_id, all=False)
+    config = create_config(project_id, all=True)
     project_name = config['project_name']
 
     gen_app_uwsgi(project_name, config["app_port"])

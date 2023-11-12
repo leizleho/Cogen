@@ -13,7 +13,7 @@ class ProjectForm(FlaskForm):
     brand = StringField('Brand Name')
     logo = FileField('Logo')
     db_uri = StringField('Database Connection String',
-                         default='postgresql://postgres@localhost:5432/testdb')
+                         default='mssql+pymssql://sa:StrongPa55#@localhost/CogenDB')
     submit = SubmitField('Submit')
 
 
